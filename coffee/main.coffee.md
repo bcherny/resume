@@ -62,6 +62,14 @@ define the data we'll be feeding into our `Resume` instance
 			"""
 			skills: ['HTML', 'CSS', 'SASS', 'JavaScript', 'NodeJS', 'MongoDB', 'PHP', 'MySQL', 'Photoshop', 'Illustrator']
 
+how to contact
+		
+	contact =
+		email: 'boris@performancejs.com'
+		github: 'eighttrackmind'
+		npm: 'bcherny'
+		www: 'performancejs.com'
+
 create a `Resume` instance!
 
 	resume = new Resume div, data

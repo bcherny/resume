@@ -1,5 +1,10 @@
 
+// vars
+
+$root = "../images/"
+
 // reset
+
 *
 	border 0
 	margin 0
@@ -7,7 +12,53 @@
 	padding 0
 
 // general
+
 body
-	background url("../images/ticks_@2X.png") 0 0 repeat
+	background url($root + "ticks_@2X.png") 0 0 repeat
 	background-size 200px
 	font 13px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif
+
+a
+	text-decoration none
+
+	&:hover
+		text-decoration underline
+
+// general classes
+
+.email
+.github
+.www
+	background 0 center no-repeat
+	background-size auto 20px
+	padding-left 21px
+
+.email
+	background-image url($root + "iconmonstr-email-10-icon.svg")
+.github
+	background-image url($root + "iconmonstr-github-5-icon.svg")
+.npm
+	&:before
+		content: "NPM"
+		display inline-block
+		font bold 8px "Courier New", Courier, monospace
+		position relative
+		top -2px
+		text-align center
+		width 21px
+.www
+	background-image url($root + "iconmonstr-globe-3-icon.svg")
+
+// header
+
+header
+	margin 20px
+	
+	h1
+
+	li
+		display block
+		list-style none
+
+	a
+		line-height 22px
