@@ -36,7 +36,12 @@ HTML templates
 						when 'email' then "mailto:#{value}"
 						when 'github' then "https://github.com/#{value}"
 						when 'npm' then "https://npmjs.org/~#{value}"
-						when 'www' then value
+						when 'www'
+
+							if value.indexOf('http') isnt 0
+								"http://#{value}"
+							else
+								value
 
 				contacts = ''
 
