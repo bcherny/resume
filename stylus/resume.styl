@@ -3,6 +3,10 @@
 
 $root = "../images/"
 
+// imports
+
+@import "mixins"
+
 // reset
 
 *
@@ -54,11 +58,26 @@ a
 header
 	margin 20px
 	
-	h1
+	ul
+		margin-left 24px
+		width 100px
+
+		&:before
+			color rgba(0,0,0,.2)
+			content: "Contact"
+			display inline-block
+			font-weight bold
+			position relative
+			bottom -44px
+			left -50px
+			text-transform uppercase
+			transform rotate(-90deg)
 
 	li
 		display block
 		list-style none
 
 	a
+		color #000
+		display block
 		line-height 22px
