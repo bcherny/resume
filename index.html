@@ -6,16 +6,17 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
 	<link rel="stylesheet" type="text/css" href="css/resume.css" />
-	<link rel="stylesheet" type="text/css" href="css/main.css" />
 
 </head>
 <body>
 
-	<script src="node_modules/lodash/lodash.js"></script>
-	<script src="node_modules/d3/d3.js"></script>
-	<script src="node_modules/marked/lib/marked.js"></script>
-	<script src="js/resume.js"></script>
-	<script src="js/main.js"></script>
+	<div id="resume"></div>
+
+	<!--
+		raphael doesn't support requirejs (eve should be packaged separately!), so we're stuck with using it sans require, as a browser global. raphael has lots of existing amd-compatible forks, but most of them are out of date. since keeping up to date is more important to us than consistency for resource loading, we'll opt for the bit of ugliness.
+	-->
+	<script src="node_modules/raphael/raphael.js"></script>
+	<script src="node_modules/requirejs/require.js" data-main="js/main.js"></script>
 
 </body>
 </html>
