@@ -10,7 +10,7 @@ get the current date and month as a string (eg. "2013-11")
 
 define the data we'll be feeding into our `Resume` instance
 
-	data =
+	history =
 
 		'BC Design':
 			when: ['2002-01', today]
@@ -62,14 +62,15 @@ define the data we'll be feeding into our `Resume` instance
 			"""
 			skills: ['HTML', 'CSS', 'SASS', 'JavaScript', 'NodeJS', 'MongoDB', 'PHP', 'MySQL', 'Photoshop', 'Illustrator']
 
-how to contact
-		
-	contact =
-		email: 'boris@performancejs.com'
-		github: 'eighttrackmind'
-		npm: 'bcherny'
-		www: 'performancejs.com'
-
 create a `Resume` instance!
 
-	resume = new Resume div, data
+	resume = new Resume
+		name: 'Boris Cherny'
+		contact:
+			email: 'boris@performancejs.com'
+			github: 'eighttrackmind'
+			npm: 'bcherny'
+			www: 'performancejs.com'
+		history: history
+
+
