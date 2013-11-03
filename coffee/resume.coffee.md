@@ -1,0 +1,8 @@
+resume
+=======================================
+
+	class Resume
+
+		constructor: ->
+
+		
