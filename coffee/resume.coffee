@@ -7,6 +7,7 @@ require.config
 define (require) ->
 
 	_ = require 'lodash'
+	marked = require 'marked'
 
 	months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 	strtotime = (string) ->
@@ -81,21 +82,33 @@ define (require) ->
 				skills = ''
 				for skill in @skills
 					skills += '<span class="tag">' + skill + '</span>'
+				
+				# explicitly define data (using array instead of object to maintain order)
+				data = [
+					{ field: 'title', value: @title }
+					{ field: 'company', value: @company }
+					{ field: 'location', value: @location }
+					{ field: 'when', value: "#{from} - #{to}" }
+					{ field: 'description', value: @description }
+					{ field: 'responsibilities', value: @responsibilities }
+					{ field: 'skills', value: skills }
+				]
 
-				# title
-				title = if @title then "<h3>#{@title}</h3>" else ''
+				# format other fields
+				fields = ''
+				for item in data
+					value = item.value?
+					if value?
+						fields += "<dt>#{item.field}</dt><dd>#{marked item.value}</dd>"
+
+				# google map
+				map = if @location then '<img class="map" src="#" alt="" />' else ''
 
 				"""
 					<section class="detail">
-						#{title}
-						<h2>#{@company}</h2>
-
-						<span class="date">#{from} - #{to}</span>
-
+						#{map}
 						<dl>
-
-							#{ if skills.length then '<dt>Skills</dt><dd>'+skills+'</dd>' }
-
+							#{ fields }
 						</dl>
 					</section>
 				"""
@@ -198,6 +211,33 @@ define (require) ->
 
 			@options.element.innerHTML = html
 			@history()
+
+			# render maps
+			element = document.getElementById 'details'
+			imgs = element.querySelectorAll '.map'
+			width = element.offsetWidth
+
+			_.each @options.history, (item, n) ->
+
+				if item.location
+					GMaps.geocode
+						address: item.location
+						callback: (results, status) ->
+
+							if status is 'OK'
+
+								coords = results[0].geometry.location
+								url = GMaps.staticMapURL
+									size: [width, width/2],
+									lat: coords.lb,
+									lng: coords.mb,
+									markers: [
+										{ lat: coords.lb, lng: coords.mb }
+									]
+								console.log imgs, n
+								imgs[n].src = url
+
+
 
 		click: (element) ->
 

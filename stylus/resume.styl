@@ -123,10 +123,14 @@ circle
 // details area
 
 .detail
+
+	$padding = 20px
+
 	opacity 0
 	position absolute
-	left 0
-	top 0
+	bottom $padding
+	left $padding
+	top $padding
 	transition opacity .2s ease-out
 
 	&.active
@@ -148,6 +152,17 @@ circle
 		&:before
 			content 'from '
 
+	dt
+		color #999
+		font-size 10px
+		text-transform capitalize
+
+	dd
+		margin 0 0 10px
+
+	li
+		list-style square inside
+
 
 .tag
 	background #998087
@@ -159,9 +174,11 @@ circle
 	text-shadow 0 1px rgba(0,0,0,.1)
 
 #details
-	overflow auto
+	//background rgba(255,255,255,.5)
+	//box-shadow inset 3px 0 5px rgba(0,0,0,.2)
+	overflow-y auto
 	position absolute
-	bottom 20px
-	right 20px
-	top 20px
+	bottom 0
+	right 0
+	top 0
 	width 30%

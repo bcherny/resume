@@ -1,0 +1,26 @@
+{
+  "name": "resume",
+  "version": "0.0.0",
+  "description": "",
+  "main": "js/resume.js",
+  "dependencies": {
+    "lodash": "~2.2.1",
+    "marked": "~0.2.10",
+    "requirejs": "~2.1.9",
+    "raphael": "~2.1.0",
+    "gmaps": "git+https://github.com/HPNeo/gmaps.git"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/eighttrackmind/resume.git"
+  },
+  "author": "Boris Cherny <boris@performancejs.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eighttrackmind/resume/issues"
+  }
+}
