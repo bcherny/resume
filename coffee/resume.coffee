@@ -82,8 +82,12 @@ define (require) ->
 				for skill in @skills
 					skills += '<span class="tag">' + skill + '</span>'
 
+				# title
+				title = if @title then "<h3>#{@title}</h3>" else ''
+
 				"""
 					<section class="detail">
+						#{title}
 						<h2>#{@company}</h2>
 
 						<span class="date">#{from} - #{to}</span>
@@ -197,8 +201,6 @@ define (require) ->
 			@history()
 
 		click: (element) ->
-
-			console.log element
 
 			id = element.node.getAttribute 'data-id'
 

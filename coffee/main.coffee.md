@@ -19,6 +19,7 @@ define the data we'll be feeding into our `Resume` instance
 				company: 'BC Design'
 				when: ['2002-01', today]
 				url: 'bcdesignplace.com'
+				title: 'Director'
 				description: 'My freelance web design company'
 				responsibilities: """
 					- Managing and acquiring clients, subcontracting and managing subcontractors and talent, design and development
@@ -30,6 +31,7 @@ define the data we'll be feeding into our `Resume` instance
 			},{
 				company: 'C4'
 				when: ['2009-09', '2011-10']
+				title: 'Director of development'
 				description: 'Thin layer chromatography analysis software'
 				responsibilities: """
 
