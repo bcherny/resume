@@ -165,10 +165,9 @@ define (require) ->
 
 					circle = paper.circle x, y, r
 
-					circle
-					.mouseover => @over circle
-					.mouseout => @out circle
-					.click => @click circle
+					circle.mouseover => @over circle
+					circle.mouseout => @out circle
+					circle.click => @click circle
 
 					circle.node.setAttribute 'class', "color#{n%5}"
 					circle.node.setAttribute 'data-id', key
