@@ -8,6 +8,10 @@ define (require) ->
 
 	_ = require 'lodash'
 
+	months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+	strtotime = (string) ->
+		new Date string + '-01T12:00:00'
+
 	class Resume
 
 		options:
@@ -57,6 +61,41 @@ define (require) ->
 					</header>
 				"""
 
+			templateHistory: ->
+
+				"""
+					<div id="details">
+						#{@content}
+					</div>
+				"""
+
+			templateHistoryItem: ->
+
+				# format dates
+				from = strtotime @when[0]
+				to = strtotime @when[1]
+				from = "#{months[from.getMonth()]} #{from.getFullYear()}"
+				to = "#{months[to.getMonth()]} #{to.getFullYear()}"
+
+				# format skills
+				skills = ''
+				for skill in @skills
+					skills += '<span class="tag">' + skill + '</span>'
+
+				"""
+					<section class="detail">
+						<h2>#{@company}</h2>
+
+						<span class="date">#{from} - #{to}</span>
+
+						<dl>
+
+							#{ if skills.length then '<dt>Skills</dt><dd>'+skills+'</dd>' }
+
+						</dl>
+					</section>
+				"""
+
 		history: ->
 
 				history = @options.history
@@ -76,8 +115,8 @@ define (require) ->
 
 					if time?
 
-						time[0] = new Date (time[0] + '-01T12:00:00')
-						time[1] = new Date (time[1] + '-01T12:00:00')
+						time[0] = strtotime time[0]
+						time[1] = strtotime time[1]
 
 						diff = Math.abs(time[1].getTime() - time[0].getTime())
 						days = Math.ceil(diff / (1000 * 3600 * 24))
@@ -90,7 +129,7 @@ define (require) ->
 
 				#
 				#
-				# compute positions, making items with the largest timespans largest, like so:
+				# compute positions, making items with the largest timespans largest in size, like so:
 				#  
 				#   __
 				#  /  \
@@ -112,25 +151,23 @@ define (require) ->
 				n = 0
 				accumulator = 0
 
-				_.each history, (item) =>
+				_.each history, (item, key) =>
 
-					r = (size.width*item.timespan/max)/(2*Math.PI)
+					r = size.width*item.timespan/(max*2*Math.PI)
 					x = accumulator + r
-					y = 1.5*r
+					y = r + 5 # .active stroke-width = 5px
 
 					item.timespan = x
-
-					console.log x, y, r, size
 
 					circle = paper.circle x, y, r
 
 					circle
-					.attr
-						fill: 'rgba(26, 49, 97, 0.4)'
-						stroke: 0
 					.mouseover => @over circle
 					.mouseout => @out circle
 					.click => @click circle
+
+					circle.node.setAttribute 'class', "color#{n%5}"
+					circle.node.setAttribute 'data-id', key
 
 					++n
 					accumulator += 2*r
@@ -146,8 +183,15 @@ define (require) ->
 		render: ->
 
 			html = ''
+			htmlDetails = ''
 
-			html += @options.templateHeader @options
+			html += @options.templateHeader.call @options
+
+			for item in @options.history
+				htmlDetails += @options.templateHistoryItem.call item
+
+			html += @options.templateHistory.call
+				content: htmlDetails
 
 			@options.element.innerHTML = html
 			@history()
@@ -156,20 +200,27 @@ define (require) ->
 
 			console.log element
 
-			element.attr
-				fill: 'rgba(26, 49, 97, 0.84)'
+			id = element.node.getAttribute 'data-id'
+
+			# deactivate others?
+			active = document.querySelector('circle.active')
+			if active
+				active.classList.remove 'active'
+
+			# activate this
+			element.node.classList.add 'active'
+
+			# deactivate other details?
+			active = document.querySelector('.detail.active')
+			if active
+				active.classList.remove 'active'
+
+			# activate this detail panel
+			document.querySelectorAll('.detail')[id].classList.add 'active'
 
 		over: (element) ->
 
-			console.log 'hover'
-
-			element.attr
-				fill: 'rgba(26, 49, 97, 0.6)'
-
 		out: (element) ->
-
-			element.attr
-				fill: 'rgba(26, 49, 97, 0.4)'
 
 		setElement: (element) ->
 
