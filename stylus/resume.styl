@@ -105,8 +105,14 @@ header
 	right 0
 	top 0
 
-circle.throb
+circle.color3.throb
 	animation throb 1s infinite
+
+svg
+	transition all .2s ease-out
+
+	&.small
+		transform scale(.8) translate3d(-25%, -47%, 0) rotate(-60deg)
 
 // for color scheme see http://www.colourlovers.com/palette/580974/Adrift_in_Dreams
 .color0
@@ -131,7 +137,7 @@ circle.throb
 	border-left 1px solid rgba(0,0,0,.2)
 	opacity 0
 	overflow-y auto
-	padding 20px
+	padding 30px
 	position absolute
 	bottom 0
 	left 0
@@ -143,7 +149,7 @@ circle.throb
 	&:after
 		gradient(transparent, #fff)
 		content: ""
-		height 150px
+		height 170px
 		position absolute
 		left 0
 		right 0
@@ -195,7 +201,7 @@ circle.throb
 	.map-placeholder
 		height (150px - 59px)
 		opacity .5
-		padding-top 59px
+		padding-top 50px
 		text-align center
 
 	.spinner
@@ -223,11 +229,14 @@ circle.throb
 	bottom 0
 	right 0
 	top 0
-	width 30%
 	z-index 1
+
+#details
+	width 50%
 
 #cover
 	padding 20px
+	width 30%
 
 	h3
 		font-size 32px

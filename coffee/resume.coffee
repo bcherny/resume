@@ -326,6 +326,7 @@ define (require) ->
 			_.each @options.history, (item, n) ->
 
 				location = item.location
+				width = document.querySelector("#details").offsetWidth - 20 # 20 is the padding
 
 				if location
 
@@ -338,7 +339,7 @@ define (require) ->
 								address: address
 							}
 						]
-						size: [389, 150]
+						size: [width, 150]
 						zoom: 9
 
 					# create <img> for map
@@ -391,11 +392,16 @@ define (require) ->
 				@model.set 'active', null
 
 			if pane
+
+				# hide pane
 				pane.classList.remove 'active'
 
 				setTimeout ->
 					pane.classList.add 'hide'
 				, .2
+
+				# scale up <svg>
+				document.querySelector('svg').classList.remove 'small'
 
 		activate: (element) ->
 
@@ -415,6 +421,9 @@ define (require) ->
 			.toFront()
 			.animate(@animations.active)
 			.transform('s1.1')
+
+			# scale down <svg>
+			document.querySelector('svg').classList.add 'small'
 
 			# store in model
 			@model.set 'active', element
