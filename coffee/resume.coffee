@@ -206,8 +206,41 @@ define (require) ->
 			# set options
 			_.extend @options, options
 
+			# attach DOM events
+			@attachEvents()
+
 			# render it!
 			@render()
+
+		attachEvents: ->
+
+			document.addEventListener 'click', (e) => @clickBody e
+
+		clickBody: (event) ->
+
+			element = event.target
+			isCircle = @isCircle element
+			isDetails = @getDetails element
+
+			if not isCircle and not isDetails
+
+				@deactivate()
+
+		isCircle: (element) ->
+
+			element.tagName is 'circle'
+
+		isDetails: (element) ->
+
+			element.id is 'details'
+
+		getDetails: (element) ->
+
+			while element isnt document
+
+				return element if @isDetails element
+
+				element = element.parentNode
 
 		render: ->
 
@@ -272,25 +305,34 @@ define (require) ->
 
 						, 200
 
-		click: (element) ->
+		deactivate: ->
+
+			circle = document.querySelector 'circle.active'
+			pane = document.querySelector '.detail.active'
+
+			if circle
+				circle.classList.remove 'active'
+
+			if pane
+				pane.classList.remove 'active'
+
+		activate: (element) ->
 
 			id = element.node.getAttribute 'data-id'
-
-			# deactivate others?
-			active = document.querySelector('circle.active')
-			if active
-				active.classList.remove 'active'
 
 			# activate this
 			element.node.classList.add 'active'
 
-			# deactivate other details?
-			active = document.querySelector('.detail.active')
-			if active
-				active.classList.remove 'active'
-
 			# activate this detail panel
 			document.querySelectorAll('.detail')[id].classList.add 'active'
+
+		click: (element) ->
+
+			# deactivate others?
+			@deactivate()
+
+			# activate this
+			@activate element
 
 		over: (element) ->
 
