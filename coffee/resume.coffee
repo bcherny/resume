@@ -184,6 +184,7 @@ define (require) ->
 				_.each history, (item, key) =>
 
 					r = size.width*item.timespan/(max*2*Math.PI)
+					r += max/(5*r) # scale up small bubbles
 					x = accumulator + r
 					y = r + 5 # .active stroke-width = 5px
 

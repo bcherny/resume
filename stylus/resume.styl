@@ -22,6 +22,7 @@ body
 	background url($root + "ticks_@2X.png") 0 0 repeat
 	background-size 200px
 	font 13px "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif
+	overflow hidden
 
 a
 	text-decoration none
@@ -133,7 +134,13 @@ circle
 
 .detail
 	opacity 0
+	overflow auto
 	padding 20px
+	position absolute
+	bottom 0
+	left 0
+	right 0
+	top 0
 	transition opacity .2s ease-out
 
 	&.active
@@ -192,7 +199,6 @@ circle
 #details
 	//background rgba(255,255,255,.5)
 	//box-shadow inset 3px 0 5px rgba(0,0,0,.2)
-	overflow-y auto
 	position absolute
 	bottom 0
 	right 0
