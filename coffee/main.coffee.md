@@ -33,7 +33,7 @@ define the data we'll be feeding into our `Resume` instance
 				company: 'C4'
 				location: '5250 Toscana Way San Diego, CA'
 				when: ['2009-09', '2011-10']
-				title: 'Director of web and development'
+				title: 'Director of web and product development'
 				description: 'Thin layer chromatography analysis software'
 				responsibilities: """
 					Creating a product website and administration backend for clients, as well as researching, developing, and implementing a fast and affordable alternative to existing medical densitometry software. My solution drove down the cost of high resolution thin layer chromatography imaging and densitometry software and hardware from $20,000 fixed cost for hardware plus $200 per test to $20 fixed and under $1 per test. I implemented the software using HTML, CSS, JavaScript, PHP (using the [GD](http://php.net/manual/en/book.image.php) and [ImageMagick](http://php.net/manual/en/book.imagick.php) imaging libraries), and MySQL.

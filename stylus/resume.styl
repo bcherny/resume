@@ -6,6 +6,7 @@ $root = "../images/"
 // imports
 
 @import "mixins"
+@import "spinner"
 
 // reset
 
@@ -52,6 +53,14 @@ a
 		width 21px
 .www
 	background-image url($root + "iconmonstr-globe-3-icon.svg")
+
+.fade-in
+	opacity 1 !important
+	transition opacity .2s ease-out
+
+.fade-out
+	opacity 0 !important
+	transition opacity .2s ease-out
 
 // header
 
@@ -163,6 +172,19 @@ circle
 	li
 		list-style square inside
 
+	.map
+	.map-placeholder
+		display block
+		height 150px
+		margin-bottom 20px
+		width 338px
+
+	.map
+		box-shadow 0 0 2px rgba(0,0,0,.3)
+		opacity 0
+
+	.map-placeholder
+		opacity .5
 
 .tag
 	background #998087

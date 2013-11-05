@@ -3,10 +3,12 @@ require.config
 	paths:
 		lodash: '../node_modules/lodash/lodash'
 		marked: '../node_modules/marked/lib/marked'
+		GMaps: '../../github/gmaps/gmaps'
 
 define (require) ->
 
 	_ = require 'lodash'
+	GMaps = require 'GMaps'
 	marked = require 'marked'
 
 	months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -97,12 +99,10 @@ define (require) ->
 				# format other fields
 				fields = ''
 				for item in data
-					value = item.value?
-					if value?
-						fields += "<dt>#{item.field}</dt><dd>#{marked item.value}</dd>"
+					fields += "<dt>#{item.field}</dt><dd>#{marked item.value}</dd>" if item.value?
 
 				# google map
-				map = if @location then '<img class="map" src="#" alt="" />' else ''
+				map = if @location then '<span class="spinner map-placeholder"></span>' else ''
 
 				"""
 					<section class="detail">
@@ -213,9 +213,8 @@ define (require) ->
 			@history()
 
 			# render maps
-			element = document.getElementById 'details'
-			imgs = element.querySelectorAll '.map'
-			width = element.offsetWidth
+			placeholders = document.querySelectorAll '#details .map-placeholder'
+			circles = document.querySelectorAll 'circle'
 
 			_.each @options.history, (item, n) ->
 
@@ -227,17 +226,43 @@ define (require) ->
 							if status is 'OK'
 
 								coords = results[0].geometry.location
-								url = GMaps.staticMapURL
-									size: [width, width/2],
-									lat: coords.lb,
-									lng: coords.mb,
+								src = GMaps.staticMapURL
+									lat: coords.lb
+									lng: coords.mb
 									markers: [
-										{ lat: coords.lb, lng: coords.mb }
+										{
+											color: getComputedStyle(circles[n]).fill
+											lat: coords.lb
+											lng: coords.mb
+										}
 									]
-								console.log imgs, n
-								imgs[n].src = url
+									size: [338, 150]
+									zoom: 9
 
+								# create <img> for map
+								img = document.createElement 'img'
+								img.alt = ''
+								img.className = 'map'
+								img.src = src
 
+								# wait for the image to finish loading
+								img.onload = ->
+
+									# fade placeholder out
+									placeholders[n].classList.add 'fade-out'
+
+									# remove placeholder, inject map <img>
+									setTimeout ->
+
+										# remove, inject
+										placeholders[n].parentNode.replaceChild img, placeholders[n]
+
+										# force render before fading the map in
+										setTimeout ->
+											img.classList.add 'fade-in'
+										, 0
+
+									, 200
 
 		click: (element) ->
 
