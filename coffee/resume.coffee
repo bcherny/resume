@@ -111,10 +111,10 @@ define (require) ->
 				
 				# explicitly define data (using array instead of object to maintain order)
 				data = [
-					{ field: 'company', value: @company }
+					{ field: 'company', value: "**#{@company}**" }
+					{ field: 'title', value: @title }
 					{ field: 'location', value: location }
 					{ field: 'when', value: "#{from} - #{to}" }
-					{ field: 'title', value: @title }
 					{ field: 'description', value: @description }
 					{ field: 'responsibilities', value: @responsibilities }
 					{ field: 'skills', value: skills }
@@ -167,7 +167,7 @@ define (require) ->
 					opacity: .5
 				, 200
 
-		history: ->
+		renderBubbles: ->
 
 				history = @options.history
 
@@ -221,6 +221,7 @@ define (require) ->
 				# convert to % of screen width
 				n = 0
 				accumulator = 0
+				last = history.length - 1
 
 				_.each history, (item, n) =>
 
@@ -229,15 +230,18 @@ define (require) ->
 					x = accumulator + r + 5 + .2*r
 					y = if not n then 1.2*r+5 else (size.height - height - r)/2 + .2*r # .active stroke-width = 5px
 
-					item.timespan = x
-
 					circle = paper.circle x, y, r
 
 					circle.mouseover => @over circle
 					circle.mouseout => @out circle
 					circle.click => @click circle
 
-					circle.node.setAttribute 'class', "color#{n%5}"
+					className = "color#{n%5}"
+
+					if n is last
+						className += ' throb'
+
+					circle.node.setAttribute 'class', className
 					circle.node.setAttribute 'data-id', n
 
 					circle.attr
@@ -309,7 +313,7 @@ define (require) ->
 			@options.element.innerHTML = html
 
 			# render history bubbles
-			@history()
+			@renderBubbles()
 
 			# render maps
 			@renderMaps()
@@ -362,6 +366,13 @@ define (require) ->
 
 						, 200
 
+		clearThrobber: ->
+
+			element = document.querySelector '.throb'
+
+			if element
+				element.classList.remove 'throb'
+
 		deactivate: ->
 
 			circle = document.querySelector 'circle.active'
@@ -395,6 +406,7 @@ define (require) ->
 
 			# activate this detail panel
 			classList = document.querySelectorAll('.detail')[id].classList
+
 			classList.remove 'hide'
 			classList.add 'active'
 
@@ -408,6 +420,9 @@ define (require) ->
 			@model.set 'active', element
 
 		click: (element) ->
+
+			# clear throbbing circle (used as teaching tool)
+			@clearThrobber()
 
 			# deactivate others?
 			@deactivate()
