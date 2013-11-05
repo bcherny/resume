@@ -17,6 +17,13 @@ border-radius()
 box-shadow()
 	vendor('box-shadow', arguments)
 
+gradient($from, $to, $angle=-90deg)
+	background-image -webkit-linear-gradient($angle, $from, $to)
+	background-image    -moz-linear-gradient($angle, $from, $to)
+	background-image     -ms-linear-gradient($angle, $from, $to)
+	background-image      -o-linear-gradient($angle, $from, $to)
+	background-image         linear-gradient($angle - 90, $from, $to)
+
 opacity()
 	vendor('opacity', arguments)
 

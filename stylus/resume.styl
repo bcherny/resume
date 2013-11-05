@@ -135,6 +135,16 @@ header
 	top 0
 	transition opacity .2s ease-out
 
+	// overlay over map
+	&:after
+		gradient(transparent, #fff)
+		content: ""
+		height 150px
+		position absolute
+		left 0
+		right 0
+		top 0
+
 	&.active
 		opacity 1
 
@@ -175,8 +185,7 @@ header
 		margin-bottom 20px
 
 	.map
-		// box-shadow 0 0 2px rgba(0,0,0,.3)
-		margin -20px -20px 20px
+		margin -20px -20px 15px
 		opacity 0
 
 	.map-placeholder
