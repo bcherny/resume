@@ -86,7 +86,9 @@ define the data we'll be feeding into our `Resume` instance
 					- Proposed and lead usability improvement sprints involving:
 						- User interviews
 						- Live and taped usability testing
-						- Automated A/B testing, competitor research, and adoption of concepts from other industries (eg. aviation checklists)
+						- Automated A/B testing
+						- Competitor research
+						- Adoption of concepts from other industries (eg. aviation checklists)
 				"""
 				skills: ['HTML', 'CSS', 'SASS', 'JavaScript', 'NodeJS', 'MongoDB', 'PHP', 'MySQL', 'Photoshop', 'Illustrator']
 			}
