@@ -217,8 +217,8 @@ define (require) ->
 
 					r = size.width*item.timespan/(max*2*Math.PI)
 					r += max/(5*r) # scale up small bubbles
-					x = accumulator + r + 5
-					y = if not n then r+5 else (size.height - height - r)/2 # .active stroke-width = 5px
+					x = accumulator + r + 5 + .2*r
+					y = if not n then 1.2*r+5 else (size.height - height - r)/2 + .2*r # .active stroke-width = 5px
 
 					item.timespan = x
 
@@ -354,6 +354,7 @@ define (require) ->
 
 				# animate
 				element.animate @animations.inactive
+				element.transform 's1'
 
 				# update model
 				@model.set 'active', null
@@ -378,7 +379,10 @@ define (require) ->
 			classList.add 'active'
 
 			# animate
-			element.animate @animations.active
+			element
+			.toFront()
+			.animate(@animations.active)
+			.transform('s1.1')
 
 			# store in model
 			@model.set 'active', element
