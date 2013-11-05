@@ -68,10 +68,19 @@ define (require) ->
 
 			templateCover: ->
 
+				# collect skills
+				# skills = []
+				# _.each @history, (item) ->
+				# 	if item.skills
+				# 		skills = skills.concat item.skills
+				# skills = _.unique skills
+
+				skills = '<span class="tag">' + @skills.join('</span><span class="tag">') + '</span>'
+
 				"""
 					<div id="cover">
-						<h3 id="objective">#{@objective}</h3>
-						<
+						<h3 id="objective">#{marked @objective}</h3>
+						<div id="skills">#{skills}</div>
 					</div>
 				"""
 
@@ -284,8 +293,13 @@ define (require) ->
 			html = ''
 			htmlDetails = ''
 
+			# render header (title, contact information)
 			html += @options.templateHeader.call @options
 
+			# render objective, skills
+			html += @options.templateCover.call @options
+
+			# render history details (what shows up when user clicks on bubbles)
 			for item in @options.history
 				htmlDetails += @options.templateHistoryItem.call item
 
@@ -293,9 +307,15 @@ define (require) ->
 				content: htmlDetails
 
 			@options.element.innerHTML = html
+
+			# render history bubbles
 			@history()
 
 			# render maps
+			@renderMaps()
+
+		renderMaps: ->
+
 			placeholders = document.querySelectorAll '#details .map-placeholder'
 			circles = document.querySelectorAll 'circle'
 
@@ -314,7 +334,7 @@ define (require) ->
 								address: address
 							}
 						]
-						size: [338, 150]
+						size: [389, 150]
 						zoom: 9
 
 					# create <img> for map

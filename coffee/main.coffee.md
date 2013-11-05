@@ -103,5 +103,5 @@ create a `Resume` instance!
 				npm: 'bcherny'
 				www: 'performancejs.com'
 			history: history
-			objective: 'Using the latest web technologies to craft amazing user experiences.'
-			skills: ['HTML', 'CSS', 'SASS', 'LESS', 'Stylus', 'JavaScript', 'CoffeeScript', 'NodeJS', 'MongoDB', 'PHP', 'MySQL', 'Photoshop', 'Illustrator']
+			objective: 'Using the **latest web technologies** to craft **amazing user experiences**'
+			skills: ['HTML', 'CSS', 'SASS', 'LESS', 'Stylus', 'JavaScript', 'CoffeeScript', 'NodeJS', 'PHP', 'MongoDB', 'MySQL', 'Photoshop', 'Illustrator']
