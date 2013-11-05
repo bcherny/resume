@@ -64,6 +64,15 @@ define (require) ->
 					</header>
 				"""
 
+			templateCover: ->
+
+				"""
+					<div id="cover">
+						<h3 id="objective">#{@objective}</h3>
+						<
+					</div>
+				"""
+
 			templateHistory: ->
 
 				"""
@@ -87,16 +96,14 @@ define (require) ->
 					location = ''
 
 				# format skills
-				skills = ''
-				for skill in @skills
-					skills += '<span class="tag">' + skill + '</span>'
+				skills = '<span class="tag">' + @skills.join('</span><span class="tag">') + '</span>'
 				
 				# explicitly define data (using array instead of object to maintain order)
 				data = [
-					{ field: 'title', value: @title }
 					{ field: 'company', value: @company }
 					{ field: 'location', value: location }
 					{ field: 'when', value: "#{from} - #{to}" }
+					{ field: 'title', value: @title }
 					{ field: 'description', value: @description }
 					{ field: 'responsibilities', value: @responsibilities }
 					{ field: 'skills', value: skills }

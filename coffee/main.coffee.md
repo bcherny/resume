@@ -44,9 +44,11 @@ define the data we'll be feeding into our `Resume` instance
 				title: 'Director of web and product development'
 				description: 'Thin layer chromatography analysis software'
 				responsibilities: """
-					Creating a product website and administration backend for clients, as well as researching, developing, and implementing a fast and affordable alternative to existing medical densitometry software. My solution drove down the cost of high resolution thin layer chromatography imaging and densitometry software and hardware from $20,000 fixed cost for hardware plus $200 per test to $20 fixed and under $1 per test. I implemented the software using HTML, CSS, JavaScript, PHP (using the [GD](http://php.net/manual/en/book.image.php) and [ImageMagick](http://php.net/manual/en/book.imagick.php) imaging libraries), and MySQL.
-
-					I also developed an automated web-based solution for printing test results in multiple formats, which helped drive down the cost of printing from over $2 per test to under $0.01 per test. The printing solution included a custom data-to-printable-HTML templating engine, CSS for layout, and Canvas (using [Raphael.js](http://raphaeljs.com/)) for charts.
+					- Researched, developed, and implemented a fast and affordable alternative to existing laboratory densitometry software
+					- Created an automated pipeline for retrieving and delivering, testing and analyzing, and delivering printed test results for clients' samples
+					- Created an administrative backend for clients to place and track orders
+					- Drove down the cost of high resolution thin layer chromatography imaging and densitometry testing from $20,000 fixed cost for hardware plus $200 per test to $20 fixed and under $1 per test
+					- Implemented custom software for analysis and management using HTML, CSS, JavaScript, PHP (using the [GD](http://php.net/manual/en/book.image.php) and [ImageMagick](http://php.net/manual/en/book.imagick.php) imaging libraries), and MySQL
 				"""
 				skills: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL', 'Photoshop', 'Illustrator', 'Stata', 'R', 'Print design']
 			},{
@@ -60,10 +62,10 @@ define the data we'll be feeding into our `Resume` instance
 				title: 'Principal software architect'
 				description: 'Strategic planning software startup'
 				responsibilities: """
-					- Full design and implementation of a custom article publishing platform
-					- Full design and implementation of strategic planning and performance review software
-					- Creating a brand and corporate style
-					- Managing off-site developers, setting scope and ensuring requirements are met
+					- Designed and implemented a suite of strategic planning and performance review software
+					- Designed and implemented a custom article publishing platform for use by thousands of authors
+					- Created the ForwardMetrics brand and corporate style
+					- Managed off-site developers, setting scope and ensuring requirements were met
 				"""
 				skills: ['HTML', 'CSS', 'SASS', 'JavaScript', 'PHP', 'MySQL', 'Photoshop', 'Illustrator', 'FontCreator']
 			},{
@@ -79,9 +81,9 @@ define the data we'll be feeding into our `Resume` instance
 				responsibilities: """
 					- Rewrote the existing application frontend from the ground up with focuses on performance and usability
 					- Designed and implemented the frontend and middleware for a user-friendly authoring tool for use by doctors and 3rd and 4th years medical students
-					- Ensured that all products were performant across browsers (including IE7 and up, Chrome, Firefox, iOS, and Android)
-					- Wireframed and developed numerous prototype spin-off products for use in pilot studies
-					- Lead usability improvement sprints involving:
+					- Ensured that all products were performant across browsers (including IE6 and up, Chrome, Firefox, iOS, and Android)
+					- Wireframed and developed numerous prototype spin-off products
+					- Proposed and lead usability improvement sprints involving:
 						- User interviews
 						- Live and taped usability testing
 						- Automated A/B testing, competitor research, and adoption of concepts from other industries (eg. aviation checklists)
@@ -101,3 +103,5 @@ create a `Resume` instance!
 				npm: 'bcherny'
 				www: 'performancejs.com'
 			history: history
+			objective: 'Using the latest web technologies to craft amazing user experiences.'
+			skills: ['HTML', 'CSS', 'SASS', 'LESS', 'Stylus', 'JavaScript', 'CoffeeScript', 'NodeJS', 'MongoDB', 'PHP', 'MySQL', 'Photoshop', 'Illustrator']
