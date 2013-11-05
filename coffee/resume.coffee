@@ -118,7 +118,7 @@ define (require) ->
 				map = if @location then '<span class="spinner map-placeholder"></span>' else ''
 
 				"""
-					<section class="detail">
+					<section class="detail hide">
 						#{map}
 						<dl>
 							#{ fields }
@@ -316,6 +316,10 @@ define (require) ->
 			if pane
 				pane.classList.remove 'active'
 
+				setTimeout ->
+					pane.classList.add 'hide'
+				, .2
+
 		activate: (element) ->
 
 			id = element.node.getAttribute 'data-id'
@@ -324,7 +328,9 @@ define (require) ->
 			element.node.classList.add 'active'
 
 			# activate this detail panel
-			document.querySelectorAll('.detail')[id].classList.add 'active'
+			classList = document.querySelectorAll('.detail')[id].classList
+			classList.remove 'hide'
+			classList.add 'active'
 
 		click: (element) ->
 
