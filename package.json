@@ -8,7 +8,7 @@
     "marked": "~0.2.10",
     "requirejs": "~2.1.9",
     "raphael": "~2.1.0",
-    "gmaps": "git+https://github.com/HPNeo/gmaps.git",
+    "gmaps": "git+https://github.com/eighttrackmind/gmaps.git",
     "github": "~0.1.12",
     "umodel": "0.0.5"
   },

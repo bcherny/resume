@@ -3,7 +3,7 @@ require.config({
   paths: {
     lodash: '../node_modules/lodash/lodash',
     marked: '../node_modules/marked/lib/marked',
-    GMaps: '../../github/gmaps/gmaps',
+    GMaps: '../node_modules/gmaps/gmaps',
     umodel: '../node_modules/umodel/umodel'
   }
 });
