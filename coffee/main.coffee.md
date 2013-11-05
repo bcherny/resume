@@ -17,13 +17,18 @@ define the data we'll be feeding into our `Resume` instance
 		history = [
 			{
 				company: 'BC Design'
-				location: '270 Serena Way Santa Clara, CA'
+				location:
+					address: '3322 Duke Court'
+					city: 'Santa Clara'
+					state: 'CA'
 				when: ['2002-01', today]
 				url: 'bcdesignplace.com'
 				title: 'Director'
 				description: 'My freelance web design company'
 				responsibilities: """
-					- Managing and acquiring clients, subcontracting and managing subcontractors and talent, design and development
+					- Designing and developing websites and applications for clients
+					- Acquiring and managing clients
+					- Subcontracting and managing talent
 					- Wireframing sites and applications in Photoshop, hand coding into HTML/CSS/JavaScript
 					- Custom backends in PHP/MySQL, usually based on a framework like [Cake](http://cakephp.org/), [Symfony](http://symfony.com/), or [Zend](http://www.zend.com/en/)
 					- UX design, usability testing, and A/B testing
@@ -31,7 +36,10 @@ define the data we'll be feeding into our `Resume` instance
 				skills: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL', 'Photoshop', 'Illustrator']
 			},{
 				company: 'C4'
-				location: '5250 Toscana Way San Diego, CA'
+				location:
+					address: '5250 Toscana Way'
+					city: 'San Diego'
+					state: 'CA'
 				when: ['2009-09', '2011-10']
 				title: 'Director of web and product development'
 				description: 'Thin layer chromatography analysis software'
@@ -43,7 +51,10 @@ define the data we'll be feeding into our `Resume` instance
 				skills: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL', 'Photoshop', 'Illustrator', 'Stata', 'R', 'Print design']
 			},{
 				company: 'ForwardMetrics'
-				location: '183 Calle Magdalena Encinitas, CA'
+				location:
+					address: '183 Calle Magdalena'
+					city: 'Encinitas'
+					state: 'CA'
 				when: ['2011-11', '2012-06']
 				url: 'forwardmetrics.com'
 				title: 'Principal software architect'
@@ -57,7 +68,10 @@ define the data we'll be feeding into our `Resume` instance
 				skills: ['HTML', 'CSS', 'SASS', 'JavaScript', 'PHP', 'MySQL', 'Photoshop', 'Illustrator', 'FontCreator']
 			},{
 				company: 'AgileMD'
-				location: '565 Stanford Ave. Palo Alto, CA'
+				location:
+					address: '565 Stanford Avenue'
+					city: 'Palo Alto'
+					state: 'CA'
 				when: ['2012-06', '2013-06']
 				url: 'agilemd.com'
 				title: 'Senior front end developer'

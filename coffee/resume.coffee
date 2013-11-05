@@ -80,6 +80,12 @@ define (require) ->
 				from = "#{months[from.getMonth()]} #{from.getFullYear()}"
 				to = "#{months[to.getMonth()]} #{to.getFullYear()}"
 
+				# format location
+				if @location
+					location = (if @location.city then "#{@location.city}," else '') + ' ' + (@location.state or '')
+				else
+					location = ''
+
 				# format skills
 				skills = ''
 				for skill in @skills
@@ -89,7 +95,7 @@ define (require) ->
 				data = [
 					{ field: 'title', value: @title }
 					{ field: 'company', value: @company }
-					{ field: 'location', value: @location }
+					{ field: 'location', value: location }
 					{ field: 'when', value: "#{from} - #{to}" }
 					{ field: 'description', value: @description }
 					{ field: 'responsibilities', value: @responsibilities }
@@ -218,9 +224,11 @@ define (require) ->
 
 			_.each @options.history, (item, n) ->
 
-				if item.location
+				location = item.location
+
+				if location
 					GMaps.geocode
-						address: item.location
+						address: "#{location.address or ''} #{location.city or ''} #{location.state or ''}" 
 						callback: (results, status) ->
 
 							if status is 'OK'
