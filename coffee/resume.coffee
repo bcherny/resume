@@ -4,12 +4,14 @@ require.config
 		lodash: '../node_modules/lodash/lodash'
 		marked: '../node_modules/marked/lib/marked'
 		GMaps: '../../github/gmaps/gmaps'
+		umodel: '../node_modules/umodel/umodel'
 
 define (require) ->
 
 	_ = require 'lodash'
 	GMaps = require 'GMaps'
 	marked = require 'marked'
+	umodel = require 'umodel'
 
 	months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 	strtotime = (string) ->
@@ -115,7 +117,13 @@ define (require) ->
 					fields += "<dt>#{item.field}</dt><dd>#{marked item.value}</dd>" if item.value?
 
 				# google map
-				map = if @location then '<span class="spinner map-placeholder"></span>' else ''
+				map = if @location then """
+					<span class="map-placeholder">
+						Loading<br />
+						map...
+						<span class="spinner"></span>
+					</span>
+				""" else ''
 
 				"""
 					<section class="detail hide">
@@ -125,6 +133,30 @@ define (require) ->
 						</dl>
 					</section>
 				"""
+
+		model: new umodel
+
+			active: null
+
+		animations:
+
+			active: Raphael.animation
+					opacity: 1
+					'stroke-width': 5
+				, 200
+
+			inactive: Raphael.animation
+					opacity: .5
+					'stroke-width': 0
+				, 200
+
+			over: Raphael.animation
+					opacity: .7
+				, 200
+
+			out: Raphael.animation
+					opacity: .5
+				, 200
 
 		history: ->
 
@@ -198,6 +230,11 @@ define (require) ->
 
 					circle.node.setAttribute 'class', "color#{n%5}"
 					circle.node.setAttribute 'data-id', n
+
+					circle.attr
+						opacity: .5
+						stroke: '#fff'
+						'stroke-width': 0
 
 					accumulator += 2*r
 					
@@ -313,6 +350,14 @@ define (require) ->
 			if circle
 				circle.classList.remove 'active'
 
+				element = @model.get 'active'
+
+				# animate
+				element.animate @animations.inactive
+
+				# update model
+				@model.set 'active', null
+
 			if pane
 				pane.classList.remove 'active'
 
@@ -332,6 +377,12 @@ define (require) ->
 			classList.remove 'hide'
 			classList.add 'active'
 
+			# animate
+			element.animate @animations.active
+
+			# store in model
+			@model.set 'active', element
+
 		click: (element) ->
 
 			# deactivate others?
@@ -342,7 +393,17 @@ define (require) ->
 
 		over: (element) ->
 
+			active = @model.get 'active'
+
+			if element isnt active
+				element.animate @animations.over
+
 		out: (element) ->
+
+			active = @model.get 'active'
+
+			if element isnt active
+				element.animate @animations.out
 
 		setElement: (element) ->
 
