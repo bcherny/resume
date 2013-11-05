@@ -87,7 +87,7 @@ define (require) ->
 			templateHistory: ->
 
 				"""
-					<div id="details">
+					<div id="details" class="hide">
 						#{@content}
 					</div>
 				"""
@@ -320,13 +320,21 @@ define (require) ->
 
 		renderMaps: ->
 
-			placeholders = document.querySelectorAll '#details .map-placeholder'
+			# compute details pane width
+			details = document.querySelector '#details'
+
+			details.classList.remove 'hide'
+			width = details.offsetWidth - 20 # 20 is the padding
+			details.classList.add 'hide'
+
+			placeholders = details.querySelectorAll '.map-placeholder'
 			circles = document.querySelectorAll 'circle'
+
+			# fetch map images from google
 
 			_.each @options.history, (item, n) ->
 
 				location = item.location
-				width = document.querySelector("#details").offsetWidth - 20 # 20 is the padding
 
 				if location
 
@@ -400,6 +408,9 @@ define (require) ->
 					pane.classList.add 'hide'
 				, .2
 
+				# hide details container
+				document.querySelector('#details').classList.add 'hide'
+
 				# scale up <svg>
 				document.querySelector('svg').classList.remove 'small'
 
@@ -409,6 +420,9 @@ define (require) ->
 
 			# activate this
 			element.node.classList.add 'active'
+
+			# show details container
+			document.querySelector('#details').classList.remove 'hide'
 
 			# activate this detail panel
 			classList = document.querySelectorAll('.detail')[id].classList
