@@ -181,12 +181,12 @@ define (require) ->
 				n = 0
 				accumulator = 0
 
-				_.each history, (item, key) =>
+				_.each history, (item, n) =>
 
 					r = size.width*item.timespan/(max*2*Math.PI)
 					r += max/(5*r) # scale up small bubbles
-					x = accumulator + r
-					y = r + 5 # .active stroke-width = 5px
+					x = accumulator + r + 5
+					y = if not n then r+5 else (size.height - height - r)/2 # .active stroke-width = 5px
 
 					item.timespan = x
 
@@ -197,9 +197,8 @@ define (require) ->
 					circle.click => @click circle
 
 					circle.node.setAttribute 'class', "color#{n%5}"
-					circle.node.setAttribute 'data-id', key
+					circle.node.setAttribute 'data-id', n
 
-					++n
 					accumulator += 2*r
 					
 		constructor: (options) ->
@@ -235,50 +234,43 @@ define (require) ->
 				location = item.location
 
 				if location
-					GMaps.geocode
-						address: "#{location.address or ''} #{location.city or ''} #{location.state or ''}" 
-						callback: (results, status) ->
 
-							if status is 'OK'
+					address = "#{location.address or ''} #{location.city or ''} #{location.state or ''}"
+					src = GMaps.staticMapURL
+						address: address
+						markers: [
+							{
+								color: getComputedStyle(circles[n]).fill
+								address: address
+							}
+						]
+						size: [338, 150]
+						zoom: 9
 
-								coords = results[0].geometry.location
-								src = GMaps.staticMapURL
-									lat: coords.lb
-									lng: coords.mb
-									markers: [
-										{
-											color: getComputedStyle(circles[n]).fill
-											lat: coords.lb
-											lng: coords.mb
-										}
-									]
-									size: [338, 150]
-									zoom: 9
+					# create <img> for map
+					img = document.createElement 'img'
+					img.alt = ''
+					img.className = 'map'
+					img.src = src
 
-								# create <img> for map
-								img = document.createElement 'img'
-								img.alt = ''
-								img.className = 'map'
-								img.src = src
+					# wait for the image to finish loading
+					img.onload = ->
 
-								# wait for the image to finish loading
-								img.onload = ->
+						# fade placeholder out
+						placeholders[n].classList.add 'fade-out'
 
-									# fade placeholder out
-									placeholders[n].classList.add 'fade-out'
+						# remove placeholder, inject map <img>
+						setTimeout ->
 
-									# remove placeholder, inject map <img>
-									setTimeout ->
+							# remove, inject
+							placeholders[n].parentNode.replaceChild img, placeholders[n]
 
-										# remove, inject
-										placeholders[n].parentNode.replaceChild img, placeholders[n]
+							# force render before fading the map in
+							setTimeout ->
+								img.classList.add 'fade-in'
+							, 0
 
-										# force render before fading the map in
-										setTimeout ->
-											img.classList.add 'fade-in'
-										, 0
-
-									, 200
+						, 200
 
 		click: (element) ->
 
