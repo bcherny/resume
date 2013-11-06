@@ -533,8 +533,6 @@ use vendor APIs to fetch repository counts. currently only supports Github
 
 					uri = @parseApi api
 
-					console.log 'ok', uri
-
 					if uri
 						uxhr uri, {},
 							complete: (res) =>
@@ -544,8 +542,6 @@ use vendor APIs to fetch repository counts. currently only supports Github
 
 				count = data.length
 				elements = document.querySelectorAll ".#{api}"
-
-				console.log 'count', data, elements
 
 				for element in elements
 					element.innerHTML += " (#{count})"
