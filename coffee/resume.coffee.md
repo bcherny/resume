@@ -419,13 +419,6 @@ substituting in the tangency condition for `d`,
 ```math
 	d = r₁ + r₂
 ```
-							
-							dist = (x1, y1, x2, y2) ->
-
-								dx = x2 - x1
-								dy = y2 - y1
-							
-								Math.sqrt x2*x2 + y2*y2
 
 							#unless n is last
 
@@ -562,17 +555,39 @@ use vendor APIs to fetch repository counts. currently only supports Github
 
 				if @options.contact? and @options.contact[api]?
 
+					page = 1
+					result = []
 					uri = @parseApi api
 
 					if uri
-						uxhr uri, {},
-							complete: (res) =>
-								@showRepoCount JSON.parse(res), api
+									
+						_check = (res) =>
+
+							res = JSON.parse res
+
+the response could be paginated, try requesting the next page by incrementing the `page` GET parameter
+
+							if res.length
+
+								result = result.concat res
+								_fetch ++page
+
+							else
+								@showRepoCount result, api
+
+						_fetch = (page) =>
+							
+							uxhr uri, page: page,
+								complete: _check
+
+						_fetch page
 
 ## showRepoCount
 show a repository count in the DOM
 
 			showRepoCount: (data, api) ->
+
+				console.log _.pluck data, 'name'
 
 				count = data.length
 				elements = document.querySelectorAll ".#{api}"
