@@ -217,6 +217,8 @@ prepare `Raphael` animations
 				out: Raphael.animation
 						opacity: .5
 					, 200
+
+## constructor
 						
 			constructor: (options) ->
 
@@ -229,9 +231,13 @@ prepare `Raphael` animations
 				# render it!
 				@render()
 
+## attachEvents
+
 			attachEvents: ->
 
 				document.addEventListener 'click', (e) => @clickBody e
+
+## clickBody
 
 			clickBody: (event) ->
 
@@ -243,13 +249,19 @@ prepare `Raphael` animations
 
 					@deactivate()
 
+## isCircle
+
 			isCircle: (element) ->
 
 				element.tagName is 'circle'
 
+## isDetails
+
 			isDetails: (element) ->
 
 				element.id is 'details'
+
+## getDetails
 
 			getDetails: (element) ->
 
@@ -259,18 +271,23 @@ prepare `Raphael` animations
 
 					element = element.parentNode
 
+## render
+
 			render: ->
 
 				html = ''
 				htmlDetails = ''
 
-				# render header (title, contact information)
+render header (title, contact information)
+
 				html += @options.templateHeader.call @options
 
-				# render objective, skills
+render objective, skills
+
 				html += @options.templateCover.call @options
 
-				# render history details (what shows up when user clicks on bubbles)
+render history details (what shows up when user clicks on bubbles)
+
 				for item in @options.history
 					htmlDetails += @options.templateHistoryItem.call item
 
@@ -279,10 +296,12 @@ prepare `Raphael` animations
 
 				@options.element.innerHTML = html
 
-				# render history bubbles
+render history bubbles
+
 				@renderBubbles()
 
-				# render maps
+render maps
+
 				@renderMaps()
 
 ## renderBubbles
@@ -304,7 +323,7 @@ get timespan for each job
 
 					for item in history
 
-eg. time=['2012-06', '2013-06']
+eg. `time = ['2012-06', '2013-06']`
 
 						time = item.when
 
@@ -330,6 +349,8 @@ compute positions with the following constraints:
 - bubbles should be tangent to one another
 - the generated layout should be visually appealing
 
+like so:
+
 ```text
       __
      /  \ ____ 
@@ -350,41 +371,56 @@ compute positions with the following constraints:
 						x: null
 						y: null
 
+loop over history items, generating bubbles along the way
+
 					_.each history, (item, n) =>
 
 						r = size.width*item.timespan/(max*2*Math.PI)
-						r += max/(5*r) # scale up small bubbles
+
+scale up small bubbles
+
+						r += max/(5*r)
 						
-						# subsequent circles should form a tail
+subsequent circles should form a "tail"
+
 						if prev.x
 
-							#
-							#	y is derived using the distance formula,
-							#	
-							#		d = √((x₂ - x₁)² + (y₂ - y₁)²)
-							#		
-							#	substituting in the tangency condition for d,
-							#	
-							#		d = r₁ + r₂
-							#		
-							#	then solving for x₂
-							#
+y is derived using the distance formula,
+
+```math
+	d = √((x₂ - x₁)² + (y₂ - y₁)²)
+```
+
+substituting in the tangency condition for `d`,
+
+```math
+	d = r₁ + r₂
+```
+
+then solving for `x₂`:
 							
 							y = (size.height - height)/2 - .3*r + _.random 0,100
 							x = prev.x + Math.sqrt(Math.abs((y - prev.y)*(y - prev.y) - (r + prev.r)*(r + prev.r)))
 							# y = _.random .8*size.height, 1.2*size.height
 
-						# first circle should be at the bottom left, 5px from the bottom of the canvas
+the first bubble should be at the bottom left, 5px from the bottom of the canvas
+
 						else
 							x = 20 + r
 							y = size.height - r - 20
+
+use `Raphael` to generate the bubble
 
 						circle = paper.circle x, y, r
 						circle.mouseover => @over circle
 						circle.mouseout => @out circle
 						circle.click => @click circle
 
+colorize it
+
 						className = "color#{n%5}"
+
+the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
 
 						if n is last
 							className += ' throb'
@@ -392,21 +428,29 @@ compute positions with the following constraints:
 						circle.node.setAttribute 'class', className
 						circle.node.setAttribute 'data-id', n
 
+use `Raphael` to style each bubble rather than CSS, because it behaves more consistently (even within modern browsers!!!)
+
 						circle.attr
 							opacity: .5
 							stroke: '#fff'
 							'stroke-width': 0
 
-						# store for the next iteration
+store parameters for the next iteration
+
 						prev =
 							r: r
 							x: x
 							y: y
 
+## renderMaps
+
 			renderMaps: ->
 
-				# compute details pane width
+compute details pane width
+
 				details = document.querySelector '#details'
+
+show the pane for a sec to give it a measurable `offsetWidth`
 
 				details.classList.remove 'hide'
 				width = details.offsetWidth - 20 # 20 is the padding
@@ -415,7 +459,7 @@ compute positions with the following constraints:
 				placeholders = details.querySelectorAll '.map-placeholder'
 				circles = document.querySelectorAll 'circle'
 
-				# fetch map images from google
+fetch map images from google using `GMaps`
 
 				_.each @options.history, (item, n) ->
 
@@ -435,30 +479,38 @@ compute positions with the following constraints:
 							size: [width, 150]
 							zoom: 9
 
-						# create <img> for map
+create an `<img>` for map
+
 						img = document.createElement 'img'
 						img.alt = ''
 						img.className = 'map'
 						img.src = src
 
-						# wait for the image to finish loading
+wait for the image to finish loading, then render it nicely
+
 						img.onload = ->
 
-							# fade placeholder out
+fade placeholder out
+
 							placeholders[n].classList.add 'fade-out'
 
-							# remove placeholder, inject map <img>
+remove placeholder, inject map `<img>`
+
 							setTimeout ->
 
-								# remove, inject
+remove, inject
+
 								placeholders[n].parentNode.replaceChild img, placeholders[n]
 
-								# force render before fading the map in
+force render before fading the map in
+
 								setTimeout ->
 									img.classList.add 'fade-in'
 								, 0
 
 							, 200
+
+## clearThrobber
 
 			clearThrobber: ->
 
@@ -466,6 +518,9 @@ compute positions with the following constraints:
 
 				if element
 					element.classList.remove 'throb'
+
+## deactivate
+deactivates active circles, panes
 
 			deactivate: ->
 
@@ -477,66 +532,88 @@ compute positions with the following constraints:
 
 					element = @model.get 'active'
 
-					# animate
+animate
+
 					element.animate @animations.inactive
 					element.transform 's1'
 
-					# update model
+update model
+
 					@model.set 'active', null
 
 				if pane
 
-					# hide pane
+hide pane
+
 					pane.classList.remove 'active'
 
 					setTimeout ->
 						pane.classList.add 'hide'
 					, .2
 
-					# hide details container
+hide details container
+
 					document.querySelector('#details').classList.add 'hide'
 
-					# scale up <svg>
+scale up `<svg>`
+
 					document.querySelector('svg').classList.remove 'small'
+
+## activate
+activates active circles, panes
 
 			activate: (element) ->
 
 				id = element.node.getAttribute 'data-id'
 
-				# activate this
+activate this
+
 				element.node.classList.add 'active'
 
-				# show details container
+show details container
+
 				document.querySelector('#details').classList.remove 'hide'
 
-				# activate this detail panel
-				classList = document.querySelectorAll('.detail')[id].classList
+activate this detail panel
 
+				classList = document.querySelectorAll('.detail')[id].classList
 				classList.remove 'hide'
 				classList.add 'active'
 
-				# animate
+animate
+
 				element
 				.toFront()
 				.animate(@animations.active)
 				.transform('s1.1')
 
-				# scale down <svg>
+scale down `<svg>`
+
 				document.querySelector('svg').classList.add 'small'
 
-				# store in model
+store in model
+
 				@model.set 'active', element
+
+## click
+`click` handler for bubbles
 
 			click: (element) ->
 
-				# clear throbbing circle (used as teaching tool)
+clear throbbing circle (used as teaching tool)
+
 				@clearThrobber()
 
-				# deactivate others?
+deactivate others?
+
 				@deactivate()
 
-				# activate this
+activate this
+
 				@activate element
+
+## over
+`mouseover` handler for bubbles
 
 			over: (element) ->
 
@@ -545,18 +622,12 @@ compute positions with the following constraints:
 				if element isnt active
 					element.animate @animations.over
 
+## out
+`mouseout` handler for bubbles
+
 			out: (element) ->
 
 				active = @model.get 'active'
 
 				if element isnt active
 					element.animate @animations.out
-
-			setElement: (element) ->
-
-				if element then @options.element = element
-
-			setHistory: (history) ->
-
-				if history then @options.history = history
-
