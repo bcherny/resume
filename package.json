@@ -9,7 +9,8 @@
     "requirejs": "~2.1.9",
     "raphael": "~2.1.0",
     "gmaps": "git+https://github.com/HPNeo/gmaps.git",
-    "umodel": "0.0.x"
+    "umodel": "0.0.x",
+    "uxhr": "~1.0.2"
   },
   "devDependencies": {},
   "scripts": {

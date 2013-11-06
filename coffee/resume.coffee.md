@@ -9,6 +9,7 @@ configure require paths
 			lodash: '../node_modules/lodash/lodash'
 			marked: '../node_modules/marked/lib/marked'
 			umodel: '../node_modules/umodel/umodel'
+			uxhr: '../node_modules/uxhr/uxhr'
 
 	define (require) ->
 
@@ -18,6 +19,7 @@ dependencies
 		GMaps = require 'GMaps'
 		marked = require 'marked'
 		umodel = require 'umodel'
+		uxhr = require 'uxhr'
 
 helper for converting dates to human-readable format
 
@@ -191,6 +193,12 @@ return compiled
 						</section>
 					"""
 
+URLs for API `GET`s
+
+				apis:
+
+					github: 'https://api.github.com/users/:user/repos'
+
 simple model to keep track of the active bubble
 
 			model: new umodel
@@ -304,6 +312,10 @@ render maps
 
 				@renderMaps()
 
+fetch repo count?
+
+				@fetchRepos()
+
 ## renderBubbles
 
 			renderBubbles: ->
@@ -317,7 +329,7 @@ compute container size
 
 render raphael container
 
-					paper = Raphael 0, 0, size.width, size.height
+					paper = Raphael @options.element, size.width, size.height
 
 get timespan for each job
 
@@ -509,6 +521,45 @@ force render before fading the map in
 								, 0
 
 							, 200
+
+## fetchRepos
+use vendor APIs to fetch repository counts. currently only supports Github
+
+			fetchRepos: ->
+
+				api = 'github'
+
+				if @options.contact? and @options.contact[api]?
+
+					uri = @parseApi api
+
+					console.log 'ok', uri
+
+					if uri
+						uxhr uri, {},
+							complete: (res) =>
+								@showRepoCount JSON.parse(res), api
+
+			showRepoCount: (data, api) ->
+
+				count = data.length
+				elements = document.querySelectorAll ".#{api}"
+
+				console.log 'count', data, elements
+
+				for element in elements
+					element.innerHTML += " (#{count})"
+
+
+## parseApi
+templates API URLs
+
+			parseApi: (api) ->
+
+				if @options.apis? and @options.apis[api]? and @options.contact[api]?
+
+					uri = @options.apis[api]
+					uri.replace ':user', @options.contact[api]
 
 ## clearThrobber
 
