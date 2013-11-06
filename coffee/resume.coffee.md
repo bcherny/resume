@@ -1,6 +1,14 @@
 resume
 ==============================
 
+todo:
+
+[] refactor!!!
+[] unit tests
+[] mobile version
+[] legacy browser support?
+[] blog about it
+
 configure require paths
 
 	require.config
@@ -537,6 +545,9 @@ use vendor APIs to fetch repository counts. currently only supports Github
 						uxhr uri, {},
 							complete: (res) =>
 								@showRepoCount JSON.parse(res), api
+
+## showRepoCount
+show a repository count in the DOM
 
 			showRepoCount: (data, api) ->
 
