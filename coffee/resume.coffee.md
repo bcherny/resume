@@ -276,6 +276,10 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 
 					@deactivate()
 
+scale up `<svg>`
+
+					document.querySelector('svg').classList.remove 'small'
+
 ## isCircle
 
 			isCircle: (element) ->
@@ -627,20 +631,26 @@ deactivates active circles, panes
 
 			deactivate: ->
 
-				circle = document.querySelector 'circle.active'
+				circle = @model.get 'active'
 				pane = document.querySelector '.detail.active'
 
 				if circle
-					circle.classList.remove 'active'
 
-					element = @model.get 'active'
+					setTimeout =>
+
+weirdness because of `<svg>` behavior (even in modern browsers!)
+
+						className = circle.node.className
+						circle.node.className = circle.node.getAttribute 'class'
 
 animate
 
-					element.animate @animations.inactive
-					element.transform 's1'
+						circle.animate @animations.inactive
+						circle.transform 's1'
 
 update model
+
+					,10
 
 					@model.set 'active', null
 
@@ -658,20 +668,17 @@ hide details container
 
 					document.querySelector('#details').classList.add 'hide'
 
-scale up `<svg>`
-
-					document.querySelector('svg').classList.remove 'small'
-
 ## activate
 activates active circles, panes
 
 			activate: (element) ->
 
+				className = element.attr 'class'
 				id = element.node.getAttribute 'data-id'
 
 activate this
 
-				element.node.classList.add 'active'
+				element.attr 'class', "#{className} active"
 
 show details container
 
@@ -700,11 +707,20 @@ store in model
 
 			toggle: (element) ->
 
-				@deactivate()
-
 				if @model.get('active') isnt element
 
+					@deactivate()
+
 					@activate element
+
+				else
+
+scale up `<svg>`
+
+					document.querySelector('svg').classList.remove 'small'
+
+					@deactivate()
+
 
 ## click
 `click` handler for bubbles
