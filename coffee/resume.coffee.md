@@ -587,8 +587,6 @@ show a repository count in the DOM
 
 			showRepoCount: (data, api) ->
 
-				console.log _.pluck data, 'name'
-
 				count = data.length
 				elements = document.querySelectorAll ".#{api}"
 
