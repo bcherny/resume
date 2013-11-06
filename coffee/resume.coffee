@@ -1,9 +1,9 @@
 
 require.config
 	paths:
+		GMaps: '../../github/gmaps/gmaps'
 		lodash: '../node_modules/lodash/lodash'
 		marked: '../node_modules/marked/lib/marked'
-		GMaps: '../../github/gmaps/gmaps'
 		umodel: '../node_modules/umodel/umodel'
 
 define (require) ->
@@ -172,11 +172,11 @@ define (require) ->
 				history = @options.history
 
 				# compute sizes
-				height = 150
 				size = @options.element.getBoundingClientRect()
+				height = size.height/3
 
 				# render raphael container
-				paper = Raphael 0, height, size.width, size.height - height
+				paper = Raphael 0, 0, size.width, size.height
 
 				# get timespan for each job
 				for item in history
@@ -200,38 +200,52 @@ define (require) ->
 
 				#
 				#
-				# compute positions, making items with the largest timespans largest in size, like so:
+				# compute positions with the following constraints:
+				# 
+				# - items with the largest time spans should be the largest in size
+				# - very large bubbles should be scaled down, and very small ones scaled up
+				# - bubbles should be tangent to one another
+				# - the generated layout should be visually appealing
 				#  
-				#   __
-				#  /  \
-				#  \__/   ____ 
-				#        /    \     _______
-				#       |      |   /       \       
-				#        \____/   /         \
-				#                |           |
-				#                 \         /
-				#                  \_______/     __
-				#                               /  \
-				#                               \__/
+				#
+				#     __
+				#    /  \ ____ 
+				#    \__//    \  _______
+				#       |      |/       \       
+				#        \____//         \
+				#             |           |
+				#              \         /
+				#               \_______/__
+				#                       /  \
+				#                       \__/
 				#                               
 				#               time ->
 				# 
 				#
 
-				# convert to % of screen width
-				n = 0
-				accumulator = 0
 				last = history.length - 1
+				prev =
+					r: null
+					x: null
+					y: null
 
 				_.each history, (item, n) =>
 
 					r = size.width*item.timespan/(max*2*Math.PI)
 					r += max/(5*r) # scale up small bubbles
-					x = accumulator + r + 5 + .2*r
-					y = if not n then 1.2*r+5 else (size.height - height - r)/2 + .2*r # .active stroke-width = 5px
+					
+					# subsequent circles should form a tail
+					if prev.x
+						y = (size.height - height)/2 - .3*r + _.random 0,100
+						x = prev.x + Math.sqrt(Math.abs((y - prev.y)*(y - prev.y) - (r + prev.r)*(r + prev.r)))
+						# y = _.random .8*size.height, 1.2*size.height
+
+					# first circle should be at the bottom left, 5px from the bottom of the canvas
+					else
+						x = 20 + r
+						y = size.height - r - 20
 
 					circle = paper.circle x, y, r
-
 					circle.mouseover => @over circle
 					circle.mouseout => @out circle
 					circle.click => @click circle
@@ -249,7 +263,11 @@ define (require) ->
 						stroke: '#fff'
 						'stroke-width': 0
 
-					accumulator += 2*r
+					# store for the next iteration
+					prev =
+						r: r
+						x: x
+						y: y
 					
 		constructor: (options) ->
 
