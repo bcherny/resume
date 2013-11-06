@@ -240,20 +240,28 @@ prepare `Raphael` animations
 						
 			constructor: (options) ->
 
-				# set options
+set options
+
 				_.extend @options, options
 
-				# attach DOM events
+attach DOM events
+
 				@attachEvents()
 
-				# render it!
+render it!
+
 				@render()
+
+append CSS rules for properly sizing the bubbles when they're moved out of the way (aka. when they are clicked) to the stylesheet
+
+				@resize()
 
 ## attachEvents
 
 			attachEvents: ->
 
 				document.addEventListener 'click', (e) => @clickBody e
+				window.addEventListener 'resize', @resize
 
 ## clickBody
 
@@ -733,3 +741,31 @@ activate this?
 
 				if element isnt active
 					element.animate @animations.out
+
+## resize
+`window.resize` handler, also fired onLoad
+
+			resize: ->
+
+				scale = .7
+				rotate = -60
+				x = -28
+				y = -27
+
+define CSS rule for bubble group when it's activated and moved out of the way
+
+				rule =
+					"""
+						svg.small {
+							-webkit-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							   -moz-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							    -ms-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							     -o-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							        transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+						}
+					"""
+
+Append to the DOM. See http://stackoverflow.com/a/707794/435124 for how CSS rule insertion works
+			
+				sheet = document.styleSheets[0]
+				sheet.insertRule rule, sheet.cssRules.length
