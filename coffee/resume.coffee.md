@@ -31,6 +31,19 @@ dependencies
 		umodel = require 'umodel'
 		uxhr = require 'uxhr'
 
+helper for logging time it took for everything
+
+		log = (message) ->
+
+			time = +new Date()
+
+			if not @time
+				@time = time
+
+			console.log message, " (#{time - @time}ms)"
+
+			@time = time
+
 helper for converting dates to human-readable format
 
 		months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -306,6 +319,8 @@ scale up `<svg>`
 
 			render: ->
 
+				log 'rendering...'
+
 				html = ''
 				htmlDetails = ''
 
@@ -327,17 +342,22 @@ render history details (what shows up when user clicks on bubbles)
 
 				@options.element.innerHTML = html
 
+				log 'rendered history!'
+
 render history bubbles
 
 				@renderBubbles()
+				log 'rendered bubbles!'
 
 render maps
 
 				@renderMaps()
+				log 'rendered maps!'
 
 fetch repo count?
-
+				
 				@fetchRepos()
+				log 'fetched repos!'
 
 ## renderBubbles
 
@@ -572,28 +592,30 @@ use vendor APIs to fetch repository counts. currently only supports Github
 					result = []
 					uri = @parseApi api
 
-					if uri
-									
-						_check = (res) =>
+					_.defer ->
 
-							res = JSON.parse res
+						if uri
+										
+							_check = (res) =>
+
+								res = JSON.parse res
 
 the response could be paginated, try requesting the next page by incrementing the `page` GET parameter
 
-							if res.length
+								if res.length
 
-								result = result.concat res
-								_fetch ++page
+									result = result.concat res
+									_fetch ++page
 
-							else
-								@showRepoCount result, api
+								else
+									@showRepoCount result, api
 
-						_fetch = (page) =>
-							
-							uxhr uri, page: page,
-								success: _check
+							_fetch = (page) =>
+								
+								uxhr uri, page: page,
+									success: _check
 
-						_fetch page
+							_fetch page
 
 ## showRepoCount
 show a repository count in the DOM
