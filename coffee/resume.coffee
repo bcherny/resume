@@ -199,14 +199,12 @@ define (require) ->
 				max = _.max spans
 
 				#
-				#
-				# compute positions with the following constraints:
+				#	compute positions with the following constraints:
 				# 
-				# - items with the largest time spans should be the largest in size
-				# - very large bubbles should be scaled down, and very small ones scaled up
-				# - bubbles should be tangent to one another
-				# - the generated layout should be visually appealing
-				#  
+				#	 - items with the largest time spans should be the largest in size
+				#	 - very large bubbles should be scaled down, and very small ones scaled up
+				#	 - bubbles should be tangent to one another
+				#	 - the generated layout should be visually appealing
 				#
 				#     __
 				#    /  \ ____ 
@@ -219,8 +217,7 @@ define (require) ->
 				#                       /  \
 				#                       \__/
 				#                               
-				#               time ->
-				# 
+				#         time ->
 				#
 
 				last = history.length - 1
@@ -236,6 +233,19 @@ define (require) ->
 					
 					# subsequent circles should form a tail
 					if prev.x
+
+						#
+						#	y is derived using the distance formula,
+						#	
+						#		d = √((x₂ - x₁)² + (y₂ - y₁)²)
+						#		
+						#	substituting in the tangency condition for d,
+						#	
+						#		d = r₁ + r₂
+						#		
+						#	then solving for x₂
+						#
+						
 						y = (size.height - height)/2 - .3*r + _.random 0,100
 						x = prev.x + Math.sqrt(Math.abs((y - prev.y)*(y - prev.y) - (r + prev.r)*(r + prev.r)))
 						# y = _.random .8*size.height, 1.2*size.height
