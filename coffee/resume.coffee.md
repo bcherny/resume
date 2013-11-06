@@ -3,11 +3,11 @@ resume
 
 todo:
 
-[ ] refactor!!!
-[ ] unit tests
-[ ] mobile version
-[ ] legacy browser support?
-[ ] blog about it
+- [ ] refactor!!!
+- [ ] unit tests
+- [ ] mobile version
+- [ ] legacy browser support?
+- [ ] blog about it
 
 configure require paths
 
