@@ -655,6 +655,14 @@ store in model
 
 				@model.set 'active', element
 
+			toggle: (element) ->
+
+				@deactivate()
+
+				if @model.get('active') isnt element
+
+					@activate element
+
 ## click
 `click` handler for bubbles
 
@@ -666,11 +674,11 @@ clear throbbing circle (used as teaching tool)
 
 deactivate others?
 
-				@deactivate()
+				#@deactivate()
 
-activate this
+activate this?
 
-				@activate element
+				@toggle element
 
 ## over
 `mouseover` handler for bubbles
