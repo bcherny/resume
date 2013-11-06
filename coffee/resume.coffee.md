@@ -1,15 +1,15 @@
 resume
 ==============================
 
-**note:* the source is unminified and unconcatenated by design, so that it is still readable as emdedded source code. if building yourself, use the included `build.js` script with the `require.js` optimizer. *
+*note: the source is unminified and unconcatenated by design, so that it is still readable as emdedded source code. if building yourself, use the included `build.js` script with the `require.js` optimizer.*
 
 todo:
 
-- [ ] refactor!!!
-- [ ] unit tests
-- [ ] mobile version
-- [ ] legacy browser support?
-- [ ] blog about it
+- refactor!!!
+- unit tests
+- mobile version
+- legacy browser support?
+- blog about it
 
 configure require paths
 
