@@ -261,7 +261,8 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 			attachEvents: ->
 
 				document.addEventListener 'click', (e) => @clickBody e
-				window.addEventListener 'resize', @resize
+				window.addEventListener 'resize', => @resize
+				window.addEventListener 'deviceorientation', => @resize
 
 ## clickBody
 
@@ -586,7 +587,7 @@ the response could be paginated, try requesting the next page by incrementing th
 						_fetch = (page) =>
 							
 							uxhr uri, page: page,
-								complete: _check
+								success: _check
 
 						_fetch page
 
@@ -751,6 +752,12 @@ activate this?
 				rotate = -60
 				x = -28
 				y = -27
+				bin = Math.floor @options.element.offsetHeight/100
+
+				if bin < 5
+
+					scale = (bin+1)/10
+					rotate = -60 + 20*(5 - bin)
 
 define CSS rule for bubble group when it's activated and moved out of the way
 
