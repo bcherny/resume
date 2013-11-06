@@ -294,6 +294,7 @@ prepare `Raphael` animations
 compute container size
 
 					size = @options.element.getBoundingClientRect()
+					height = size.height/3
 
 render raphael container
 
@@ -329,7 +330,7 @@ compute positions with the following constraints:
 - bubbles should be tangent to one another
 - the generated layout should be visually appealing
 
-```
+```text
       __
      /  \ ____ 
      \__//    \  _______
@@ -339,9 +340,8 @@ compute positions with the following constraints:
                \         /
                 \_______/__
                         /  \
-                        \__/
-                                
-time ->
+                        \__/            
+		time ->
 ```
 
 					last = history.length - 1
