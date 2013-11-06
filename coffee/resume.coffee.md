@@ -397,6 +397,7 @@ loop over history items, generating bubbles along the way
 
 					_.each history, (item, n) =>
 
+						className = "color#{n%5}" # className for <circle>s
 						r = size.width*item.timespan/(max*2*Math.PI)
 
 scale up small bubbles
@@ -418,12 +419,32 @@ substituting in the tangency condition for `d`,
 ```math
 	d = r₁ + r₂
 ```
+							
+							dist = (x1, y1, x2, y2) ->
+
+								dx = x2 - x1
+								dy = y2 - y1
+							
+								Math.sqrt x2*x2 + y2*y2
+
+							#unless n is last
 
 then solving for `x₂`:
 							
 							y = (size.height - height)/2 - .3*r + _.random 0,100
 							x = prev.x + Math.sqrt(Math.abs((y - prev.y)*(y - prev.y) - (r + prev.r)*(r + prev.r)))
 							# y = _.random .8*size.height, 1.2*size.height
+
+							#else
+
+*deprecated* make sure that the last bubble obeys the rule of thirds
+
+								#x = 2*@options.element.offsetWidth/3
+								#y = @options.element.offsetHeight/3
+
+*deprecated* grow the bubble's radius till it touches the bubble before it. on the other extreme, if the bubble covers up its predecessor, that's ok. this way we make sure that it's always in view even when screen real estate is low, at the expense of the one it overlaps
+
+								#r = - prev.r + Math.sqrt(Math.abs(-Math.pow(x - prev.x,2) - Math.pow(y - prev.y,2)))
 
 the first bubble should be at the bottom left, 5px from the bottom of the canvas
 
@@ -440,7 +461,7 @@ use `Raphael` to generate the bubble
 
 colorize it
 
-						className = "color#{n%5}"
+						
 
 the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
 
