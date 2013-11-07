@@ -77,6 +77,11 @@ dependencies
 				skills: []
 
 
+{Array} colors for bubbles
+
+				colors: ['0B486B', 'A8DBA8', '79BD9A', '3B8686', 'CFF09E']
+
+
 {Function} template for the header element
 
 				templateHeader: ->
@@ -211,32 +216,10 @@ URLs for API `GET`s
 
 					github: 'https://api.github.com/users/:user/repos'
 
-simple model to keep track of the active bubble
+simple model
 
 			model: new umodel
-				active: null
-
-prepare `Raphael` animations
-
-			animations:
-
-				active: Raphael.animation
-						opacity: 1
-						'stroke-width': 5
-					, 200
-
-				inactive: Raphael.animation
-						opacity: .5
-						'stroke-width': 0
-					, 200
-
-				over: Raphael.animation
-						opacity: .7
-					, 200
-
-				out: Raphael.animation
-						opacity: .5
-					, 200
+				graph: null
 
 ## constructor
 						
@@ -273,10 +256,11 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 				element = event.target
 				isCircle = @isCircle element
 				isDetails = @getDetails element
+				graph = @model.get 'graph'
 
-				if not isCircle and not isDetails
+				if not isCircle and not isDetails and graph
 
-					@deactivate()
+					graph.deactivate()
 
 scale up `<svg>`
 
@@ -352,9 +336,12 @@ fetch repo count?
 
 			renderBubbles: ->
 
-				new BubbleGraph
+				graph = new BubbleGraph
+					colors: @options.colors
 					data: @options.history
 					element: @options.element
+
+				@model.set 'graph', graph
 
 				
 ## renderMaps
@@ -372,11 +359,10 @@ show the pane for a sec to give it a measurable `offsetWidth`
 				details.classList.add 'hide'
 
 				placeholders = details.querySelectorAll '.map-placeholder'
-				circles = document.querySelectorAll 'circle'
 
 fetch map images from google using `GMaps`
 
-				_.each @options.history, (item, n) ->
+				_.each @options.history, (item, n) =>
 
 					location = item.location
 
@@ -387,7 +373,7 @@ fetch map images from google using `GMaps`
 							address: address
 							markers: [
 								{
-									color: getComputedStyle(circles[n]).fill
+									color: @options.colors[n%@options.colors.length]
 									address: address
 								}
 							]
@@ -483,144 +469,6 @@ templates API URLs
 
 					uri = @options.apis[api]
 					uri.replace ':user', @options.contact[api]
-
-## clearThrobber
-
-			clearThrobber: ->
-
-				element = document.querySelector '.throb'
-
-				if element
-					element.classList.remove 'throb'
-
-## deactivate
-deactivates active circles, panes
-
-			deactivate: ->
-
-				circle = @model.get 'active'
-				pane = document.querySelector '.detail.active'
-
-				if circle
-
-					setTimeout =>
-
-weirdness because of `<svg>` behavior (even in modern browsers!)
-
-						className = circle.node.className
-						circle.node.className = circle.node.getAttribute 'class'
-
-animate
-
-						circle.animate @animations.inactive
-						circle.transform 's1'
-
-update model
-
-					,10
-
-					@model.set 'active', null
-
-				if pane
-
-hide pane
-
-					pane.classList.remove 'active'
-
-					setTimeout ->
-						pane.classList.add 'hide'
-					, .2
-
-hide details container
-
-					document.querySelector('#details').classList.add 'hide'
-
-## activate
-activates active circles, panes
-
-			activate: (element) ->
-
-				className = element.attr 'class'
-				id = element.node.getAttribute 'data-id'
-
-activate this
-
-				element.attr 'class', "#{className} active"
-
-show details container
-
-				document.querySelector('#details').classList.remove 'hide'
-
-activate this detail panel
-
-				classList = document.querySelectorAll('.detail')[id].classList
-				classList.remove 'hide'
-				classList.add 'active'
-
-animate
-
-				element
-				.toFront()
-				.animate(@animations.active)
-				.transform('s1.1')
-
-scale down `<svg>`
-
-				document.querySelector('svg').classList.add 'small'
-
-store in model
-
-				@model.set 'active', element
-
-			toggle: (element) ->
-
-				if @model.get('active') isnt element
-
-					@deactivate()
-
-					@activate element
-
-				else
-
-scale up `<svg>`
-
-					document.querySelector('svg').classList.remove 'small'
-
-					@deactivate()
-
-
-## click
-`click` handler for bubbles
-
-			click: (element) ->
-
-clear throbbing circle (used as teaching tool)
-
-				@clearThrobber()
-
-activate this?
-
-				@toggle element
-
-## over
-`mouseover` handler for bubbles
-
-			over: (element) ->
-
-				active = @model.get 'active'
-
-				if element isnt active
-					element.animate @animations.over
-
-## out
-`mouseout` handler for bubbles
-
-			out: (element) ->
-
-				active = @model.get 'active'
-
-				if element isnt active
-					element.animate @animations.out
 
 ## resize
 `window.resize` handler, also fired onLoad

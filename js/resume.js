@@ -33,6 +33,7 @@ define(function(require) {
       history: [],
       objective: '',
       skills: [],
+      colors: ['0B486B', 'A8DBA8', '79BD9A', '3B8686', 'CFF09E'],
       templateHeader: function() {
         var contacts, key, value, _labels, _ref, _template;
         _labels = {
@@ -124,25 +125,8 @@ define(function(require) {
     };
 
     Resume.prototype.model = new umodel({
-      active: null
+      graph: null
     });
-
-    Resume.prototype.animations = {
-      active: Raphael.animation({
-        opacity: 1,
-        'stroke-width': 5
-      }, 200),
-      inactive: Raphael.animation({
-        opacity: .5,
-        'stroke-width': 0
-      }, 200),
-      over: Raphael.animation({
-        opacity: .7
-      }, 200),
-      out: Raphael.animation({
-        opacity: .5
-      }, 200)
-    };
 
     function Resume(options) {
       _.extend(this.options, options);
@@ -165,12 +149,13 @@ define(function(require) {
     };
 
     Resume.prototype.clickBody = function(event) {
-      var element, isCircle, isDetails;
+      var element, graph, isCircle, isDetails;
       element = event.target;
       isCircle = this.isCircle(element);
       isDetails = this.getDetails(element);
-      if (!isCircle && !isDetails) {
-        this.deactivate();
+      graph = this.model.get('graph');
+      if (!isCircle && !isDetails && graph) {
+        graph.deactivate();
         return document.querySelector('svg').classList.remove('small');
       }
     };
@@ -218,20 +203,23 @@ define(function(require) {
     };
 
     Resume.prototype.renderBubbles = function() {
-      return new BubbleGraph({
+      var graph;
+      graph = new BubbleGraph({
+        colors: this.options.colors,
         data: this.options.history,
         element: this.options.element
       });
+      return this.model.set('graph', graph);
     };
 
     Resume.prototype.renderMaps = function() {
-      var circles, details, placeholders, width;
+      var details, placeholders, width,
+        _this = this;
       details = document.querySelector('#details');
       details.classList.remove('hide');
       width = details.offsetWidth - 20;
       details.classList.add('hide');
       placeholders = details.querySelectorAll('.map-placeholder');
-      circles = document.querySelectorAll('circle');
       return _.each(this.options.history, function(item, n) {
         var address, img, location, src;
         location = item.location;
@@ -241,7 +229,7 @@ define(function(require) {
             address: address,
             markers: [
               {
-                color: getComputedStyle(circles[n]).fill,
+                color: _this.options.colors[n % _this.options.colors.length],
                 address: address
               }
             ],
@@ -315,83 +303,6 @@ define(function(require) {
       if ((this.options.apis != null) && (this.options.apis[api] != null) && (this.options.contact[api] != null)) {
         uri = this.options.apis[api];
         return uri.replace(':user', this.options.contact[api]);
-      }
-    };
-
-    Resume.prototype.clearThrobber = function() {
-      var element;
-      element = document.querySelector('.throb');
-      if (element) {
-        return element.classList.remove('throb');
-      }
-    };
-
-    Resume.prototype.deactivate = function() {
-      var circle, pane,
-        _this = this;
-      circle = this.model.get('active');
-      pane = document.querySelector('.detail.active');
-      if (circle) {
-        setTimeout(function() {
-          var className;
-          className = circle.node.className;
-          circle.node.className = circle.node.getAttribute('class');
-          circle.animate(_this.animations.inactive);
-          return circle.transform('s1');
-        }, 10);
-        this.model.set('active', null);
-      }
-      if (pane) {
-        pane.classList.remove('active');
-        setTimeout(function() {
-          return pane.classList.add('hide');
-        }, .2);
-        return document.querySelector('#details').classList.add('hide');
-      }
-    };
-
-    Resume.prototype.activate = function(element) {
-      var classList, className, id;
-      className = element.attr('class');
-      id = element.node.getAttribute('data-id');
-      element.attr('class', "" + className + " active");
-      document.querySelector('#details').classList.remove('hide');
-      classList = document.querySelectorAll('.detail')[id].classList;
-      classList.remove('hide');
-      classList.add('active');
-      element.toFront().animate(this.animations.active).transform('s1.1');
-      document.querySelector('svg').classList.add('small');
-      return this.model.set('active', element);
-    };
-
-    Resume.prototype.toggle = function(element) {
-      if (this.model.get('active') !== element) {
-        this.deactivate();
-        return this.activate(element);
-      } else {
-        document.querySelector('svg').classList.remove('small');
-        return this.deactivate();
-      }
-    };
-
-    Resume.prototype.click = function(element) {
-      this.clearThrobber();
-      return this.toggle(element);
-    };
-
-    Resume.prototype.over = function(element) {
-      var active;
-      active = this.model.get('active');
-      if (element !== active) {
-        return element.animate(this.animations.over);
-      }
-    };
-
-    Resume.prototype.out = function(element) {
-      var active;
-      active = this.model.get('active');
-      if (element !== active) {
-        return element.animate(this.animations.out);
       }
     };
 

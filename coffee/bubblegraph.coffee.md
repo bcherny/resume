@@ -1,18 +1,52 @@
+bubblegraph resume component
+============================
 
 	define (require) ->
 
 		_ = require 'lodash'
+		umodel = require 'umodel'
+		util = require 'util'
 
 		class BubbleGraph
 
 			options:
 
+				colors: []
 				data: {}
 				element: document.body
+
+simple model to keep track of the active bubble
+
+			model: new umodel
+				active: null
+
+prepare `Raphael` animations
+
+			animations:
+
+				active: Raphael.animation
+						opacity: 1
+						'stroke-width': 5
+					, 200
+
+				inactive: Raphael.animation
+						opacity: .5
+						'stroke-width': 0
+					, 200
+
+				over: Raphael.animation
+						opacity: .7
+					, 200
+
+				out: Raphael.animation
+						opacity: .5
+					, 200
 
 			constructor: (options) ->
 
 				_.extend @options, options
+
+				@render()
 
 			render: ->
 
@@ -37,8 +71,8 @@ eg. `time = ['2012-06', '2013-06']`
 
 					if time?
 
-						time[0] = strtotime time[0]
-						time[1] = strtotime time[1]
+						time[0] = util.strtotime time[0]
+						time[1] = util.strtotime time[1]
 
 						diff = Math.abs(time[1].getTime() - time[0].getTime())
 						days = Math.ceil(diff / (1000 * 3600 * 24))
@@ -84,7 +118,7 @@ loop over data items, generating bubbles along the way
 				_.each data, (item, n) =>
 
 					className = "color#{n%5}" # className for <circle>s
-					r = size.width*item.timespan/(max*2*Math.PI)
+					r = size.width * item.timespan / (2 * max * Math.PI)
 
 scale up small bubbles
 
@@ -146,3 +180,141 @@ store parameters for the next iteration
 						r: r
 						x: x
 						y: y
+
+## clearThrobber
+
+			clearThrobber: ->
+
+				element = document.querySelector '.throb'
+
+				if element
+					element.classList.remove 'throb'
+
+## deactivate
+deactivates active circles, panes
+
+			deactivate: ->
+
+				circle = @model.get 'active'
+				pane = document.querySelector '.detail.active'
+
+				if circle
+
+					setTimeout =>
+
+weirdness because of `<svg>` behavior (even in modern browsers!)
+
+						className = circle.node.className
+						circle.node.className = circle.node.getAttribute 'class'
+
+animate
+
+						circle.animate @animations.inactive
+						circle.transform 's1'
+
+update model
+
+					,10
+
+					@model.set 'active', null
+
+				if pane
+
+hide pane
+
+					pane.classList.remove 'active'
+
+					setTimeout ->
+						pane.classList.add 'hide'
+					, .2
+
+hide details container
+
+					document.querySelector('#details').classList.add 'hide'
+
+## activate
+activates active circles, panes
+
+			activate: (element) ->
+
+				className = element.attr 'class'
+				id = element.node.getAttribute 'data-id'
+
+activate this
+
+				element.attr 'class', "#{className} active"
+
+show details container
+
+				document.querySelector('#details').classList.remove 'hide'
+
+activate this detail panel
+
+				classList = document.querySelectorAll('.detail')[id].classList
+				classList.remove 'hide'
+				classList.add 'active'
+
+animate
+
+				element
+				.toFront()
+				.animate(@animations.active)
+				.transform('s1.1')
+
+scale down `<svg>`
+
+				document.querySelector('svg').classList.add 'small'
+
+store in model
+
+				@model.set 'active', element
+
+			toggle: (element) ->
+
+				if @model.get('active') isnt element
+
+					@deactivate()
+
+					@activate element
+
+				else
+
+scale up `<svg>`
+
+					document.querySelector('svg').classList.remove 'small'
+
+					@deactivate()
+
+
+## click
+`click` handler for bubbles
+
+			click: (element) ->
+
+clear throbbing circle (used as teaching tool)
+
+				@clearThrobber()
+
+activate this?
+
+				@toggle element
+
+## over
+`mouseover` handler for bubbles
+
+			over: (element) ->
+
+				active = @model.get 'active'
+
+				if element isnt active
+					element.animate @animations.over
+
+## out
+`mouseout` handler for bubbles
+
+			out: (element) ->
+
+				active = @model.get 'active'
+
+				if element isnt active
+					element.animate @animations.out
