@@ -206,9 +206,22 @@ a:hover {
 }
 header {
   margin: 20px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  z-index: 100;
+}
+header h1 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 290px;
 }
 header ul {
-  margin-left: 24px;
+  position: absolute;
+  left: 24px;
+  top: 30px;
   width: 100px;
 }
 header ul:before {
@@ -242,6 +255,9 @@ header a {
   right: 0;
   top: 0;
 }
+circle {
+  cursor: pointer;
+}
 circle.color3.throb {
   -webkit-animation: throb 1s infinite;
   -moz-animation: throb 1s infinite;
@@ -255,13 +271,6 @@ svg {
   -ms-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
-}
-svg.small {
-  -webkit-transform: scale(0.8) translate3d(-25%, -47%, 0) rotate(-60deg);
-  -moz-transform: scale(0.8) translate3d(-25%, -47%, 0) rotate(-60deg);
-  -ms-transform: scale(0.8) translate3d(-25%, -47%, 0) rotate(-60deg);
-  -o-transform: scale(0.8) translate3d(-25%, -47%, 0) rotate(-60deg);
-  transform: scale(0.8) translate3d(-25%, -47%, 0) rotate(-60deg);
 }
 .color0 {
   fill: #0b486b;

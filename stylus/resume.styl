@@ -71,9 +71,22 @@ a
 
 header
 	margin 20px
+	position absolute
+	left 0
+	top 0
+	width 0
+	z-index 100
+
+	h1
+		position absolute
+		left 0
+		top 0
+		width 290px
 	
 	ul
-		margin-left 24px
+		position absolute
+		left 24px
+		top 30px
 		width 100px
 
 		&:before
@@ -105,14 +118,14 @@ header
 	right 0
 	top 0
 
-circle.color3.throb
-	animation throb 1s infinite
+circle
+	cursor pointer
+
+	&.color3.throb
+		animation throb 1s infinite
 
 svg
 	transition all .2s ease-out
-
-	&.small
-		transform scale(.8) translate3d(-25%, -47%, 0) rotate(-60deg)
 
 // for color scheme see http://www.colourlovers.com/palette/580974/Adrift_in_Dreams
 .color0
