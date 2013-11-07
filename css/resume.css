@@ -148,11 +148,6 @@ a {
 a:hover {
   text-decoration: underline;
 }
-.fork-me {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
 .email,
 .github,
 .www {
