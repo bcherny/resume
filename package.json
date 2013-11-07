@@ -11,7 +11,8 @@
     "gmaps": "git+https://github.com/eighttrackmind/gmaps.git",
     "umodel": "0.0.x",
     "uxhr": "1.0.x",
-    "strftime": "~0.6.2"
+    "strftime": "~0.6.2",
+    "repocount": "0.0.1"
   },
   "devDependencies": {},
   "scripts": {

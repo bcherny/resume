@@ -18,6 +18,7 @@ configure require paths
 			GMaps: '../node_modules/gmaps/gmaps'
 			lodash: '../node_modules/lodash/lodash'
 			marked: '../node_modules/marked/lib/marked'
+			repocount: '../node_modules/repocount/repocount'
 			strftime: '../node_modules/strftime/strftime'
 			umodel: '../node_modules/umodel/umodel'
 			uxhr: '../node_modules/uxhr/uxhr'
@@ -34,6 +35,7 @@ dependencies
 		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
 		marked = require 'marked'
+		repocount = require 'repocount'
 		strftime = require 'strftime'
 		umodel = require 'umodel'
 		util = require 'util'
@@ -121,13 +123,6 @@ dependencies
 
 				templateCover: ->
 
-					# collect skills from each history item
-					# skills = []
-					# _.each @history, (item) ->
-					# 	if item.skills
-					# 		skills = skills.concat item.skills
-					# skills = _.unique skills
-
 					skills = '<span class="tag">' + @skills.join('</span><span class="tag">') + '</span>'
 
 					"""
@@ -157,8 +152,6 @@ format dates
 
 					from = strftime '%B %Y', util.strtotime @when[0]
 					to = strftime '%B %Y', util.strtotime @when[1]
-
-					console.log from, to
 
 format location
 
@@ -209,12 +202,6 @@ return compiled
 							</dl>
 						</section>
 					"""
-
-URLs for API `GET`s
-
-				apis:
-
-					github: 'https://api.github.com/users/:user/repos'
 
 simple model
 
@@ -329,7 +316,7 @@ render maps
 
 fetch repo count?
 				
-				@fetchRepos()
+				@getRepoCount()
 				util.log 'fetched repos!'
 
 ## renderBubbles
@@ -410,65 +397,21 @@ force render before fading the map in
 
 							, 200
 
-## fetchRepos
-use vendor APIs to fetch repository counts. currently only supports Github
-
-			fetchRepos: ->
-
-				api = 'github'
-
-				if @options.contact? and @options.contact[api]?
-
-					page = 1
-					result = []
-					uri = @parseApi api
-
-					_.defer =>
-
-						if uri
-										
-							_check = (res) =>
-
-								res = JSON.parse res
-
-the response could be paginated, try requesting the next page by incrementing the `page` GET parameter
-
-								if res.length
-
-									result = result.concat res
-									_fetch ++page
-
-								else
-									@showRepoCount result, api
-
-							_fetch = (page) =>
-								
-								uxhr uri, page: page,
-									success: _check
-
-							_fetch page
-
-## showRepoCount
+## getRepoCount
 show a repository count in the DOM
 
-			showRepoCount: (data, api) ->
+			getRepoCount: ->
 
-				count = data.length
-				elements = document.querySelectorAll ".#{api}"
+				if @options.contact.github
+					new repocount
+						github: @options.contact.github
+					, (data) ->
 
-				for element in elements
-					element.innerHTML += " (#{count})"
+						count = data.github.length
+						elements = document.querySelectorAll '.github'
 
-
-## parseApi
-templates API URLs
-
-			parseApi: (api) ->
-
-				if @options.apis? and @options.apis[api]? and @options.contact[api]?
-
-					uri = @options.apis[api]
-					uri.replace ':user', @options.contact[api]
+						for element in elements
+							element.innerHTML += " (#{count})"
 
 ## resize
 `window.resize` handler, also fired onLoad
