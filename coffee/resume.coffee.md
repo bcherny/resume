@@ -574,9 +574,8 @@ remove, inject
 
 force render before fading the map in
 
-								setTimeout ->
+								_.defer ->
 									img.classList.add 'fade-in'
-								, 0
 
 							, 200
 
@@ -593,7 +592,7 @@ use vendor APIs to fetch repository counts. currently only supports Github
 					result = []
 					uri = @parseApi api
 
-					_.defer ->
+					_.defer =>
 
 						if uri
 										
