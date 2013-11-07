@@ -735,10 +735,6 @@ clear throbbing circle (used as teaching tool)
 
 				@clearThrobber()
 
-deactivate others?
-
-				#@deactivate()
-
 activate this?
 
 				@toggle element
