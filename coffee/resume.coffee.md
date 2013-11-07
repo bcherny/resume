@@ -18,37 +18,26 @@ configure require paths
 			GMaps: '../node_modules/gmaps/gmaps'
 			lodash: '../node_modules/lodash/lodash'
 			marked: '../node_modules/marked/lib/marked'
+			strftime: '../node_modules/strftime/strftime'
 			umodel: '../node_modules/umodel/umodel'
 			uxhr: '../node_modules/uxhr/uxhr'
+
+		shim:
+			strftime:
+				exports: 'strftime'
 
 	define (require) ->
 
 dependencies
 
 		_ = require 'lodash'
+		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
 		marked = require 'marked'
+		strftime = require 'strftime'
 		umodel = require 'umodel'
+		util = require 'util'
 		uxhr = require 'uxhr'
-
-helper for logging time it took for everything
-
-		log = (message) ->
-
-			time = +new Date()
-
-			if not @time
-				@time = time
-
-			console.log message, " (#{time - @time}ms)"
-
-			@time = time
-
-helper for converting dates to human-readable format
-
-		months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-		strtotime = (string) ->
-			new Date string + '-01T12:00:00'
 
 # resume
 
@@ -161,10 +150,10 @@ helper for converting dates to human-readable format
 
 format dates
 
-					from = strtotime @when[0]
-					to = strtotime @when[1]
-					from = "#{months[from.getMonth()]} #{from.getFullYear()}"
-					to = "#{months[to.getMonth()]} #{to.getFullYear()}"
+					from = strftime '%B %Y', util.strtotime @when[0]
+					to = strftime '%B %Y', util.strtotime @when[1]
+
+					console.log from, to
 
 format location
 
@@ -319,7 +308,7 @@ scale up `<svg>`
 
 			render: ->
 
-				log 'rendering...'
+				util.log 'rendering...'
 
 				html = ''
 				htmlDetails = ''
@@ -342,158 +331,32 @@ render history details (what shows up when user clicks on bubbles)
 
 				@options.element.innerHTML = html
 
-				log 'rendered history!'
+				util.log 'rendered history!'
 
 render history bubbles
 
 				@renderBubbles()
-				log 'rendered bubbles!'
+				util.log 'rendered bubbles!'
 
 render maps
 
 				@renderMaps()
-				log 'rendered maps!'
+				util.log 'rendered maps!'
 
 fetch repo count?
 				
 				@fetchRepos()
-				log 'fetched repos!'
+				util.log 'fetched repos!'
 
 ## renderBubbles
 
 			renderBubbles: ->
 
-				history = @options.history
+				new BubbleGraph
+					data: @options.history
+					element: @options.element
 
-compute container size
-
-				size = @options.element.getBoundingClientRect()
-				height = size.height/3
-
-render raphael container
-
-				paper = Raphael @options.element, size.width, size.height
-
-get timespan for each job
-
-				for item in history
-
-eg. `time = ['2012-06', '2013-06']`
-
-					time = item.when
-
-					if time?
-
-						time[0] = strtotime time[0]
-						time[1] = strtotime time[1]
-
-						diff = Math.abs(time[1].getTime() - time[0].getTime())
-						days = Math.ceil(diff / (1000 * 3600 * 24))
-
-						item.timespan = days
-
-get largest timespan, to scale bubbles appropriately
-
-				spans = _.pluck history, 'timespan'
-				max = _.max spans
-
-compute positions with the following constraints:
-
-- items with the largest time spans should be the largest in size
-- very large bubbles should be scaled down, and very small ones scaled up
-- bubbles should be tangent to one another
-- the generated layout should be visually appealing
-
-like so:
-
-```text
-      __
-     /  \ ____ 
-     \__//    \  _______
-        |      |/       \       
-         \____//         \
-              |           |
-               \         /
-                \_______/__
-                        /  \
-                        \__/            
-		time ->
-```
-
-				last = history.length - 1
-				prev =
-					r: null
-					x: null
-					y: null
-
-loop over history items, generating bubbles along the way
-
-				_.each history, (item, n) =>
-
-					className = "color#{n%5}" # className for <circle>s
-					r = size.width*item.timespan/(max*2*Math.PI)
-
-scale up small bubbles
-
-					r += max/(5*r)
-						
-subsequent circles should form a "tail"
-
-					if prev.x
-
-y is derived using the distance formula,
-
-```math
-	d = √((x₂ - x₁)² + (y₂ - y₁)²)
-```
-
-substituting in the tangency condition for `d`,
-
-```math
-	d = r₁ + r₂
-```
-
-then solving for `x₂`:
-							
-						y = (size.height - height)/2 - .3*r + _.random 0,100
-						x = prev.x + Math.sqrt(Math.abs((y - prev.y)*(y - prev.y) - (r + prev.r)*(r + prev.r)))
-
-the first bubble should be at the bottom left, 5px from the bottom of the canvas
-
-					else
-						x = 20 + r
-						y = size.height - r - 20
-
-use `Raphael` to generate the bubble
-
-					circle = paper.circle x, y, r
-					circle.mouseover => @over circle
-					circle.mouseout => @out circle
-					circle.click => @click circle
-
-colorize it. the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
-
-					if n is last
-						className += ' throb'
-
-					circle.node.setAttribute 'class', className
-					circle.node.setAttribute 'data-id', n
-
-use `Raphael` to style each bubble rather than CSS, because it behaves more consistently (even within modern browsers!!!)
-
-					circle.attr
-						opacity: .5
-						stroke: '#fff'
-						'stroke-width': 0
-
-store parameters for the next iteration
-
-					prev =
-						circle: circle
-						r: r
-						x: x
-						y: y
-
+				
 ## renderMaps
 
 			renderMaps: ->

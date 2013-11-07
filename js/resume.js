@@ -4,31 +4,27 @@ require.config({
     GMaps: '../node_modules/gmaps/gmaps',
     lodash: '../node_modules/lodash/lodash',
     marked: '../node_modules/marked/lib/marked',
+    strftime: '../node_modules/strftime/strftime',
     umodel: '../node_modules/umodel/umodel',
     uxhr: '../node_modules/uxhr/uxhr'
+  },
+  shim: {
+    strftime: {
+      exports: 'strftime'
+    }
   }
 });
 
 define(function(require) {
-  var GMaps, Resume, log, marked, months, strtotime, umodel, uxhr, _;
+  var BubbleGraph, GMaps, Resume, marked, strftime, umodel, util, uxhr, _;
   _ = require('lodash');
+  BubbleGraph = require('bubblegraph');
   GMaps = require('GMaps');
   marked = require('marked');
+  strftime = require('strftime');
   umodel = require('umodel');
+  util = require('util');
   uxhr = require('uxhr');
-  log = function(message) {
-    var time;
-    time = +new Date();
-    if (!this.time) {
-      this.time = time;
-    }
-    console.log(message, " (" + (time - this.time) + "ms)");
-    return this.time = time;
-  };
-  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  strtotime = function(string) {
-    return new Date(string + '-01T12:00:00');
-  };
   return Resume = (function() {
     Resume.prototype.options = {
       name: 'John Smith',
@@ -79,10 +75,9 @@ define(function(require) {
       },
       templateHistoryItem: function() {
         var data, fields, from, item, location, map, skills, to, _i, _len;
-        from = strtotime(this.when[0]);
-        to = strtotime(this.when[1]);
-        from = "" + months[from.getMonth()] + " " + (from.getFullYear());
-        to = "" + months[to.getMonth()] + " " + (to.getFullYear());
+        from = strftime('%B %Y', util.strtotime(this.when[0]));
+        to = strftime('%B %Y', util.strtotime(this.when[1]));
+        console.log(from, to);
         if (this.location) {
           location = (this.location.city ? "" + this.location.city + "," : '') + ' ' + (this.location.state || '');
         } else {
@@ -199,7 +194,7 @@ define(function(require) {
 
     Resume.prototype.render = function() {
       var html, htmlDetails, item, _i, _len, _ref;
-      log('rendering...');
+      util.log('rendering...');
       html = '';
       htmlDetails = '';
       html += this.options.templateHeader.call(this.options);
@@ -213,79 +208,19 @@ define(function(require) {
         content: htmlDetails
       });
       this.options.element.innerHTML = html;
-      log('rendered history!');
+      util.log('rendered history!');
       this.renderBubbles();
-      log('rendered bubbles!');
+      util.log('rendered bubbles!');
       this.renderMaps();
-      log('rendered maps!');
+      util.log('rendered maps!');
       this.fetchRepos();
-      return log('fetched repos!');
+      return util.log('fetched repos!');
     };
 
     Resume.prototype.renderBubbles = function() {
-      var days, diff, height, history, item, last, max, paper, prev, size, spans, time, _i, _len,
-        _this = this;
-      history = this.options.history;
-      size = this.options.element.getBoundingClientRect();
-      height = size.height / 3;
-      paper = Raphael(this.options.element, size.width, size.height);
-      for (_i = 0, _len = history.length; _i < _len; _i++) {
-        item = history[_i];
-        time = item.when;
-        if (time != null) {
-          time[0] = strtotime(time[0]);
-          time[1] = strtotime(time[1]);
-          diff = Math.abs(time[1].getTime() - time[0].getTime());
-          days = Math.ceil(diff / (1000 * 3600 * 24));
-          item.timespan = days;
-        }
-      }
-      spans = _.pluck(history, 'timespan');
-      max = _.max(spans);
-      last = history.length - 1;
-      prev = {
-        r: null,
-        x: null,
-        y: null
-      };
-      return _.each(history, function(item, n) {
-        var circle, className, r, x, y;
-        className = "color" + (n % 5);
-        r = size.width * item.timespan / (max * 2 * Math.PI);
-        r += max / (5 * r);
-        if (prev.x) {
-          y = (size.height - height) / 2 - .3 * r + _.random(0, 100);
-          x = prev.x + Math.sqrt(Math.abs((y - prev.y) * (y - prev.y) - (r + prev.r) * (r + prev.r)));
-        } else {
-          x = 20 + r;
-          y = size.height - r - 20;
-        }
-        circle = paper.circle(x, y, r);
-        circle.mouseover(function() {
-          return _this.over(circle);
-        });
-        circle.mouseout(function() {
-          return _this.out(circle);
-        });
-        circle.click(function() {
-          return _this.click(circle);
-        });
-        if (n === last) {
-          className += ' throb';
-        }
-        circle.node.setAttribute('class', className);
-        circle.node.setAttribute('data-id', n);
-        circle.attr({
-          opacity: .5,
-          stroke: '#fff',
-          'stroke-width': 0
-        });
-        return prev = {
-          circle: circle,
-          r: r,
-          x: x,
-          y: y
-        };
+      return new BubbleGraph({
+        data: this.options.history,
+        element: this.options.element
       });
     };
 
