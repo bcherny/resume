@@ -1,0 +1,70 @@
+@-o-keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+@-ms-keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+@-moz-keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+@-webkit-keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(359deg);
+  }
+}
+@-o-keyframes throb {
+  50% {
+    fill: #2fc7c7;
+  }
+}
+@-ms-keyframes throb {
+  50% {
+    fill: #2fc7c7;
+  }
+}
+@-moz-keyframes throb {
+  50% {
+    fill: #2fc7c7;
+  }
+}
+@-webkit-keyframes throb {
+  50% {
+    fill: #2fc7c7;
+  }
+}
+@keyframes throb {
+  50% {
+    fill: #2fc7c7;
+  }
+}
