@@ -42,11 +42,15 @@ prepare `Raphael` animations
 						opacity: .5
 					, 200
 
+## constructor
+
 			constructor: (options) ->
 
 				_.extend @options, options
 
 				@render()
+
+## render
 
 			render: ->
 

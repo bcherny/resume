@@ -6,6 +6,7 @@ resume.util
 		util =
 
 ## strtotime
+converts year-month strings like `2012-01` to timestamps
 
 			strtotime: (string) ->
 				new Date "#{string}-01T12:00:00"
