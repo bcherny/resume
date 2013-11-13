@@ -46,25 +46,30 @@
 @-o-keyframes throb {
   50% {
     fill: #2fc7c7;
+    transform: scale(1.05) translate3d(-27%, -7%, 0);
   }
 }
 @-ms-keyframes throb {
   50% {
     fill: #2fc7c7;
+    transform: scale(1.05) translate3d(-27%, -7%, 0);
   }
 }
 @-moz-keyframes throb {
   50% {
     fill: #2fc7c7;
+    transform: scale(1.05) translate3d(-27%, -7%, 0);
   }
 }
 @-webkit-keyframes throb {
   50% {
     fill: #2fc7c7;
+    transform: scale(1.05) translate3d(-27%, -7%, 0);
   }
 }
 @keyframes throb {
   50% {
     fill: #2fc7c7;
+    transform: scale(1.05) translate3d(-27%, -7%, 0);
   }
 }
