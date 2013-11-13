@@ -1,19 +1,3 @@
-configure require paths
-
-	require.config
-		paths:
-			GMaps: '../node_modules/gmaps/gmaps'
-			lodash: '../node_modules/lodash/lodash'
-			marked: '../node_modules/marked/lib/marked'
-			repocount: '../node_modules/repocount/repocount'
-			strftime: '../node_modules/strftime/strftime'
-			umodel: '../node_modules/umodel/umodel'
-			uxhr: '../node_modules/uxhr/uxhr'
-
-		shim:
-			strftime:
-				exports: 'strftime'
-
 	define (require) ->
 
 dependencies

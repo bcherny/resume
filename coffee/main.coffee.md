@@ -1,5 +1,20 @@
-spins off a Resume instance
-===========================
+## configure require paths
+
+	require.config
+		paths:
+			GMaps: '../node_modules/gmaps/gmaps'
+			lodash: '../node_modules/lodash/lodash'
+			marked: '../node_modules/marked/lib/marked'
+			repocount: '../node_modules/repocount/repocount'
+			strftime: '../node_modules/strftime/strftime'
+			umodel: '../node_modules/umodel/umodel'
+			uxhr: '../node_modules/uxhr/uxhr'
+
+		shim:
+			strftime:
+				exports: 'strftime'
+
+## spin off a Resume instance
 
 	define (require) ->
 
@@ -14,15 +29,7 @@ get the current date and month as a string (eg. "2013-11")
 		date = new Date()
 		today = "#{date.getFullYear()}-#{date.getMonth()}"
 
-load data
-
-		uxhr 'data/data.json', {},
-			complete: (res) ->
-				init JSON.parse res
-
-
-
-create a `Resume` instance!
+initializes resume
 
 		init = (data) ->
 
@@ -30,3 +37,14 @@ create a `Resume` instance!
 				element: div
 
 			resume = new Resume data
+
+loads data
+
+		load = (url, callback) ->
+			uxhr url, {},
+				complete: (res) ->
+					callback JSON.parse res
+
+create a `Resume` instance!
+
+		load 'data/data.json', init
