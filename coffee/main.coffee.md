@@ -22,19 +22,14 @@
 		Resume = require 'resume'
 		uxhr = require 'uxhr'
 
-		div = document.getElementById 'resume'
-
-get the current date and month as a string (eg. "2013-11")
-	
-		date = new Date()
-		today = "#{date.getFullYear()}-#{date.getMonth()}"
-
 initializes resume
 
 		init = (data) ->
 
+			console.log data
+
 			data = _.extend data,
-				element: div
+				element: document.getElementById 'resume'
 
 			resume = new Resume data
 

@@ -120,6 +120,15 @@ resume
 
 				templateHistoryItem: ->
 
+if end of date range is undefined, assume the project is ongoing and use today's date
+
+					if @when[1] is null
+
+get the current date and month as a string (eg. "2013-11")
+	
+						date = new Date()
+						@when[1] = "#{date.getFullYear()}-#{date.getMonth()}"
+
 format dates
 
 					from = strftime '%B %Y', util.strtotime @when[0]
@@ -135,8 +144,12 @@ format location
 format skills
 
 					skills = '<span class="tag">' + @skills.join('</span><span class="tag">') + '</span>'
+
+format responsibilities
+
+					responsibilities = '- ' + @responsibilities.join '\n- '
 					
-explicitly define data (use an array rather than an object to maintain order)
+explicitly define data (use an array rather than an object to guarantee order)
 
 					data = [
 						{ field: 'company', value: "**#{@company}**" }
@@ -144,7 +157,7 @@ explicitly define data (use an array rather than an object to maintain order)
 						{ field: 'location', value: location }
 						{ field: 'when', value: "#{from} - #{to}" }
 						{ field: 'description', value: @description }
-						{ field: 'responsibilities', value: @responsibilities }
+						{ field: 'responsibilities', value: responsibilities }
 						{ field: 'skills', value: skills }
 					]
 

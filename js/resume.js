@@ -60,7 +60,11 @@ define(function(require) {
         return "<div id=\"details\" class=\"hide\">\n	" + this.content + "\n</div>";
       },
       templateHistoryItem: function() {
-        var data, fields, from, item, location, map, skills, to, _i, _len;
+        var data, date, fields, from, item, location, map, responsibilities, skills, to, _i, _len;
+        if (this.when[1] === null) {
+          date = new Date();
+          this.when[1] = "" + (date.getFullYear()) + "-" + (date.getMonth());
+        }
         from = strftime('%B %Y', util.strtotime(this.when[0]));
         to = strftime('%B %Y', util.strtotime(this.when[1]));
         if (this.location) {
@@ -69,6 +73,7 @@ define(function(require) {
           location = '';
         }
         skills = '<span class="tag">' + this.skills.join('</span><span class="tag">') + '</span>';
+        responsibilities = '- ' + this.responsibilities.join('\n- ');
         data = [
           {
             field: 'company',
@@ -87,7 +92,7 @@ define(function(require) {
             value: this.description
           }, {
             field: 'responsibilities',
-            value: this.responsibilities
+            value: responsibilities
           }, {
             field: 'skills',
             value: skills

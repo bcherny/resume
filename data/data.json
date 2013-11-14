@@ -88,7 +88,7 @@
 				"Designed and implemented the frontend and middleware for a user-friendly authoring tool for use by doctors and 3rd and 4th years medical students",
 				"Ensured that all products were performant across browsers (including IE6 and up, Chrome, Firefox, iOS, and Android)",
 				"Wireframed and developed numerous prototype spin-off products",
-				"Proposed and lead usability improvement sprints involving: \n- User interviews \n- Live and taped usability testing \n- Automated A/B testing \n- Competitor research \n- Adoption of concepts from other industries (eg. aviation checklists) \n"
+				"Proposed and lead usability improvement sprints involving: \n\t- User interviews \n\t- Live and taped usability testing \n\t- Automated A/B testing \n\t- Competitor research \n\t- Adoption of concepts from other industries (eg. aviation checklists)"
 			],
 			"skills": ["HTML", "CSS", "SASS", "JavaScript", "NodeJS", "MongoDB", "PHP", "MySQL", "Photoshop", "Illustrator"]
 		}
