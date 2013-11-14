@@ -23,12 +23,9 @@
     Resume = require('resume');
     uxhr = require('uxhr');
     init = function(data) {
-      var resume;
-      console.log(data);
-      data = _.extend(data, {
+      return new Resume(_.extend(data, {
         element: document.getElementById('resume')
-      });
-      return resume = new Resume(data);
+      }));
     };
     load = function(url, callback) {
       return uxhr(url, {}, {

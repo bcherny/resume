@@ -26,12 +26,8 @@ initializes resume
 
 		init = (data) ->
 
-			console.log data
-
-			data = _.extend data,
+			new Resume _.extend data,
 				element: document.getElementById 'resume'
-
-			resume = new Resume data
 
 loads data
 

@@ -141,13 +141,13 @@ format location
 					else
 						location = ''
 
-format skills
-
-					skills = '<span class="tag">' + @skills.join('</span><span class="tag">') + '</span>'
-
 format responsibilities
 
 					responsibilities = '- ' + @responsibilities.join '\n- '
+
+format skills
+
+					skills = '<span class="tag">' + @skills.join('</span><span class="tag">') + '</span>'
 					
 explicitly define data (use an array rather than an object to guarantee order)
 

@@ -72,8 +72,8 @@ define(function(require) {
         } else {
           location = '';
         }
-        skills = '<span class="tag">' + this.skills.join('</span><span class="tag">') + '</span>';
         responsibilities = '- ' + this.responsibilities.join('\n- ');
+        skills = '<span class="tag">' + this.skills.join('</span><span class="tag">') + '</span>';
         data = [
           {
             field: 'company',
