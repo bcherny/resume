@@ -29,7 +29,8 @@
 				"Custom backends in PHP/MySQL, usually based on a framework like [Cake](http://cakephp.org/), [Symfony](http://symfony.com/), or [Zend](http://www.zend.com/en/)",
 				"UX design, usability testing, and A/B testing"
 			],
-			"skills": ["HTML", "CSS", "JavaScript", "PHP", "MySQL", "Photoshop", "Illustrator"]
+			"skills": ["HTML", "CSS", "JavaScript", "PHP", "MySQL", "Photoshop", "Illustrator"],
+			"images": ["BCD-Dvaro-1.png", "BCD-Hrabro.png", "BCD-OpenWin.png"]
 		},
 
 		{
@@ -49,7 +50,8 @@
 				"Drove down the cost of high resolution thin layer chromatography imaging and densitometry testing from $20,000 fixed cost for hardware plus $200 per test to $20 fixed and under $1 per test",
 				"Implemented custom software for analysis and management using HTML, CSS, JavaScript, PHP (using the [GD](http://php.net/manual/en/book.image.php) and [ImageMagick](http://php.net/manual/en/book.imagick.php) imaging libraries), and MySQL"
 			],
-			"skills": ["HTML", "CSS", "JavaScript", "PHP", "MySQL", "Photoshop", "Illustrator", "Stata", "R", "Print design"]
+			"skills": ["HTML", "CSS", "JavaScript", "PHP", "MySQL", "Photoshop", "Illustrator", "Stata", "R", "Print design"],
+			"images": ["C4-1.png", "C4-2.png"]
 		},
 
 		{
@@ -69,7 +71,8 @@
 				"Created the ForwardMetrics brand and corporate style",
 				"Managed off-site developers, setting scope and ensuring requirements were met"
 			],
-			"skills": ["HTML", "CSS", "SASS", "JavaScript", "PHP", "MySQL", "Photoshop", "Illustrator", "FontCreator"]
+			"skills": ["HTML", "CSS", "SASS", "JavaScript", "PHP", "MySQL", "Photoshop", "Illustrator", "FontCreator"],
+			"images": ["ForwardMetrics-1.png", "ForwardMetrics-2.png", "ForwardMetrics-3.png"]
 		},
 
 		{
@@ -90,7 +93,8 @@
 				"Wireframed and developed numerous prototype spin-off products",
 				"Proposed and lead usability improvement sprints involving: \n\t- User interviews \n\t- Live and taped usability testing \n\t- Automated A/B testing \n\t- Competitor research \n\t- Adoption of concepts from other industries (eg. aviation checklists)"
 			],
-			"skills": ["HTML", "CSS", "SASS", "JavaScript", "NodeJS", "MongoDB", "PHP", "MySQL", "Photoshop", "Illustrator"]
+			"skills": ["HTML", "CSS", "SASS", "JavaScript", "NodeJS", "MongoDB", "PHP", "MySQL", "Photoshop", "Illustrator"],
+			"images": ["AgileMD-1.jpg", "AgileMD-2.jpg", "AgileMD-3.jpg"]
 		}
 	]
 }
