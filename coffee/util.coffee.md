@@ -24,3 +24,21 @@ logging for load performance metrics
 				console.log message, " (#{time - @time}ms)"
 
 				@time = time
+
+## classList
+manipulate `Element.classList` in an Internet Explorer-compatible way
+
+			classList:
+
+				add: (element, className) ->
+
+					element.className += className
+
+				remove: (element, className) ->
+
+					regex = new RegExp "(^|\\s)#{className}(?:\\s|$)"
+					element.className = element.className.replace regex, '$1'
+
+				contains: (element, className) ->
+
+					(element.className.indexOf className) > -1
