@@ -291,17 +291,17 @@ render history details (what shows up when user clicks on bubbles)
 
 render history bubbles
 
-				@renderBubbles()
+				do @renderBubbles
 				util.log 'rendered bubbles!'
 
 render maps
 
-				@renderMaps()
+				do @renderMaps
 				util.log 'rendered maps!'
 
 fetch repo count?
 				
-				@getRepoCount()
+				do @getRepoCount
 				util.log 'fetched repos!'
 
 ## renderBubbles
@@ -382,21 +382,21 @@ force render before fading the map in
 
 							, 200
 
+## templateRepoCounts
+
+			templateRepoCounts: (counts) ->
+
+				for platform, count of (JSON.parse counts) when typeof count is 'number'
+					for element in document.querySelectorAll ".#{platform}"
+						element.innerHTML += " (#{count})"
+
 ## getRepoCount
 show a repository count in the DOM
 
 			getRepoCount: ->
 
-				if @options.contact.github
-					new repocount
-						github: @options.contact.github
-					, (data) ->
-
-						count = data.github.length
-						elements = document.querySelectorAll '.github'
-
-						for element in elements
-							element.innerHTML += " (#{count})"
+				uxhr 'http://www.contributor.io/api', @options.contact,
+					success: @templateRepoCounts
 
 ## resize
 `window.resize` handler, also fired onLoad

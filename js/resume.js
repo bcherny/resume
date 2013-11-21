@@ -240,22 +240,32 @@
         });
       };
 
-      Resume.prototype.getRepoCount = function() {
-        if (this.options.contact.github) {
-          return new repocount({
-            github: this.options.contact.github
-          }, function(data) {
-            var count, element, elements, _i, _len, _results;
-            count = data.github.length;
-            elements = document.querySelectorAll('.github');
-            _results = [];
-            for (_i = 0, _len = elements.length; _i < _len; _i++) {
-              element = elements[_i];
-              _results.push(element.innerHTML += " (" + count + ")");
-            }
-            return _results;
-          });
+      Resume.prototype.templateRepoCounts = function(counts) {
+        var count, element, platform, _ref, _results;
+        _ref = JSON.parse(counts);
+        _results = [];
+        for (platform in _ref) {
+          count = _ref[platform];
+          if (typeof count === 'number') {
+            _results.push((function() {
+              var _i, _len, _ref1, _results1;
+              _ref1 = document.querySelectorAll("." + platform);
+              _results1 = [];
+              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                element = _ref1[_i];
+                _results1.push(element.innerHTML += " (" + count + ")");
+              }
+              return _results1;
+            })());
+          }
         }
+        return _results;
+      };
+
+      Resume.prototype.getRepoCount = function() {
+        return uxhr('http://www.contributor.io/api', this.options.contact, {
+          success: this.templateRepoCounts
+        });
       };
 
       Resume.prototype.resize = function() {
