@@ -202,15 +202,15 @@ set options
 
 attach DOM events
 
-				@attachEvents()
+				do @attachEvents
 
 render it!
 
-				@render()
+				do @render
 
 append CSS rules for properly sizing the bubbles when they're moved out of the way (aka. when they are clicked) to the stylesheet
 
-				@resize()
+				do @resize
 
 ## attachEvents
 
@@ -231,7 +231,7 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 
 				if not isCircle and not isDetails and graph
 
-					graph.deactivate()
+					do graph.deactivate
 
 scale up `<svg>`
 

@@ -18,7 +18,6 @@ bubblegraph resume component
 simple model to keep track of bubbles
 
 			model: new umodel
-				active: null
 				bubbles: {}
 
 prepare `Raphael` animations
@@ -180,7 +179,9 @@ use `Raphael` to style each bubble rather than CSS, because it behaves more cons
 
 store in model
 
-					@model.set "bubbles/#{n}", circle
+					@model.set "bubbles/#{n}",
+						active: false
+						raphael: circle
 
 store parameters for the next iteration
 
@@ -204,28 +205,31 @@ deactivates active circles, panes
 
 			deactivate: ->
 
-				circle = @model.get 'active'
 				pane = document.querySelector '.detail.active'
+				active = _.where (@model.get 'bubbles'),
+					active: true
 
-				if circle
+				if active[0]
+
+					bubble = active[0].raphael
 
 					setTimeout =>
-
-weirdness because of `<svg>` behavior (even in modern browsers!)
-
-						className = circle.node.className
-						circle.node.className = circle.node.getAttribute 'class'
+						
+						className = bubble.attr 'class'
+						className = className.replace /(^|\\s)active(?:\\s|$)/, '$1'
+						bubble.attr 'class', className
 
 animate
 
-						circle.animate @animations.inactive
-						circle.transform 's1'
-
-update model
+						bubble
+						.animate(@animations.inactive)
+						.transform('s1')
 
 					,10
 
-					@model.set 'active', null
+update model
+
+					active[0].active = false
 
 				if pane
 
@@ -244,10 +248,9 @@ hide details container
 ## activate
 activates active circles, panes
 
-			activate: (element) ->
+			activate: (bubble) ->
 
-				id = element.node.getAttribute 'data-id'
-				bubble = @model.get "bubbles/#{id}"
+				id = bubble.node.getAttribute 'data-id'
 
 activate this
 
@@ -274,22 +277,23 @@ scale down `<svg>`
 
 				(document.querySelector 'svg').setAttribute 'class', 'small'
 
-store in model
+			toggle: (bubble) ->
 
-				@model.set 'active', bubble
+				active = _.where (@model.get 'bubbles'),
+					active: true
 
-			toggle: (element) ->
+				console.log active
 
-				if (@model.get 'active') isnt element
+				if not active[0] or active[0].raphael isnt bubble
 
 					do @deactivate
 
-					@activate element
+					@activate bubble
 
 				else
 
 scale up `<svg>`
-					
+
 					(document.querySelector 'svg').setAttribute 'class', ''
 
 					do @deactivate

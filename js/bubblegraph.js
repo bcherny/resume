@@ -13,7 +13,6 @@
       };
 
       BubbleGraph.prototype.model = new umodel({
-        active: null,
         bubbles: {}
       });
 
@@ -97,7 +96,10 @@
             stroke: '#fff',
             'stroke-width': 0
           });
-          _this.model.set("bubbles/" + n, circle);
+          _this.model.set("bubbles/" + n, {
+            active: false,
+            raphael: circle
+          });
           return prev = {
             circle: circle,
             r: r,
@@ -116,19 +118,22 @@
       };
 
       BubbleGraph.prototype.deactivate = function() {
-        var circle, pane,
+        var active, bubble, pane,
           _this = this;
-        circle = this.model.get('active');
         pane = document.querySelector('.detail.active');
-        if (circle) {
+        active = _.where(this.model.get('bubbles'), {
+          active: true
+        });
+        if (active[0]) {
+          bubble = active[0].raphael;
           setTimeout(function() {
             var className;
-            className = circle.node.className;
-            circle.node.className = circle.node.getAttribute('class');
-            circle.animate(_this.animations.inactive);
-            return circle.transform('s1');
+            className = bubble.attr('class');
+            className = className.replace(/(^|\\s)active(?:\\s|$)/, '$1');
+            bubble.attr('class', className);
+            return bubble.animate(_this.animations.inactive).transform('s1');
           }, 10);
-          this.model.set('active', null);
+          active[0].active = false;
         }
         if (pane) {
           util.classList.remove(pane, 'active');
@@ -139,24 +144,27 @@
         }
       };
 
-      BubbleGraph.prototype.activate = function(element) {
-        var bubble, id, panel;
-        id = element.node.getAttribute('data-id');
-        bubble = this.model.get("bubbles/" + id);
+      BubbleGraph.prototype.activate = function(bubble) {
+        var id, panel;
+        id = bubble.node.getAttribute('data-id');
         bubble.attr('class', "" + (bubble.attr('class')) + " active");
         util.classList.remove(document.querySelector('#details'), 'hide');
         panel = (document.querySelectorAll('.detail'))[id];
         util.classList.remove(panel, 'hide');
         util.classList.add(panel, 'active');
         bubble.toFront().animate(this.animations.active).transform('s1.1');
-        (document.querySelector('svg')).setAttribute('class', 'small');
-        return this.model.set('active', bubble);
+        return (document.querySelector('svg')).setAttribute('class', 'small');
       };
 
-      BubbleGraph.prototype.toggle = function(element) {
-        if ((this.model.get('active')) !== element) {
+      BubbleGraph.prototype.toggle = function(bubble) {
+        var active;
+        active = _.where(this.model.get('bubbles'), {
+          active: true
+        });
+        console.log(active);
+        if (!active[0] || active[0].raphael !== bubble) {
           this.deactivate();
-          return this.activate(element);
+          return this.activate(bubble);
         } else {
           (document.querySelector('svg')).setAttribute('class', '');
           return this.deactivate();
