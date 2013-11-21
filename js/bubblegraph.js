@@ -140,17 +140,16 @@
       };
 
       BubbleGraph.prototype.activate = function(element) {
-        var bubble, className, id;
-        className = element.attr('class');
+        var bubble, id, panel;
         id = element.node.getAttribute('data-id');
         bubble = this.model.get("bubbles/" + id);
-        element.attr('class', "" + className + " active");
+        bubble.attr('class', "" + (bubble.attr('class')) + " active");
         util.classList.remove(document.querySelector('#details'), 'hide');
-        element = (document.querySelectorAll('.detail'))[id];
-        util.classList.remove(element, 'hide');
-        util.classList.add(element, 'active');
+        panel = (document.querySelectorAll('.detail'))[id];
+        util.classList.remove(panel, 'hide');
+        util.classList.add(panel, 'active');
         bubble.toFront().animate(this.animations.active).transform('s1.1');
-        util.classList.add(document.querySelector('svg'), 'small');
+        (document.querySelector('svg')).setAttribute('class', 'small');
         return this.model.set('active', bubble);
       };
 
@@ -159,7 +158,7 @@
           this.deactivate();
           return this.activate(element);
         } else {
-          util.classList.remove(document.querySelector('svg'), 'small');
+          (document.querySelector('svg')).setAttribute('class', '');
           return this.deactivate();
         }
       };

@@ -246,13 +246,12 @@ activates active circles, panes
 
 			activate: (element) ->
 
-				className = element.attr 'class'
 				id = element.node.getAttribute 'data-id'
 				bubble = @model.get "bubbles/#{id}"
 
 activate this
 
-				element.attr 'class', "#{className} active"
+				bubble.attr 'class', "#{bubble.attr 'class'} active"
 
 show details container
 
@@ -260,9 +259,9 @@ show details container
 
 activate this detail panel
 
-				element = (document.querySelectorAll '.detail')[id]
-				util.classList.remove element, 'hide'
-				util.classList.add element, 'active'
+				panel = (document.querySelectorAll '.detail')[id]
+				util.classList.remove panel, 'hide'
+				util.classList.add panel, 'active'
 
 animate
 
@@ -273,7 +272,7 @@ animate
 
 scale down `<svg>`
 
-				util.classList.add (document.querySelector 'svg'), 'small'
+				(document.querySelector 'svg').setAttribute 'class', 'small'
 
 store in model
 
@@ -290,8 +289,8 @@ store in model
 				else
 
 scale up `<svg>`
-
-					util.classList.remove (document.querySelector 'svg'), 'small'
+					
+					(document.querySelector 'svg').setAttribute 'class', ''
 
 					do @deactivate
 
