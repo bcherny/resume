@@ -128,7 +128,7 @@
           bubble = active[0].raphael;
           setTimeout(function() {
             var className;
-            className = bubble.attr('class');
+            className = bubble.node.className.baseVal;
             className = className.replace(/(^|\\s)active(?:\\s|$)/, '$1');
             bubble.attr('class', className);
             return bubble.animate(_this.animations.inactive).transform('s1');
@@ -140,7 +140,8 @@
           setTimeout(function() {
             return util.classList.add(pane, 'hide');
           }, .2);
-          return util.classList.add(document.querySelector('#details'), 'hide');
+          util.classList.add(document.querySelector('#details'), 'hide');
+          return (document.querySelector('svg')).setAttribute('class', '');
         }
       };
 
@@ -153,7 +154,8 @@
         util.classList.remove(panel, 'hide');
         util.classList.add(panel, 'active');
         bubble.toFront().animate(this.animations.active).transform('s1.1');
-        return (document.querySelector('svg')).setAttribute('class', 'small');
+        (document.querySelector('svg')).setAttribute('class', 'small');
+        return this.model.set("bubbles/" + id + "/active", true);
       };
 
       BubbleGraph.prototype.toggle = function(bubble) {
@@ -161,13 +163,9 @@
         active = _.where(this.model.get('bubbles'), {
           active: true
         });
-        console.log(active);
+        this.deactivate();
         if (!active[0] || active[0].raphael !== bubble) {
-          this.deactivate();
           return this.activate(bubble);
-        } else {
-          (document.querySelector('svg')).setAttribute('class', '');
-          return this.deactivate();
         }
       };
 

@@ -215,7 +215,7 @@ deactivates active circles, panes
 
 					setTimeout =>
 						
-						className = bubble.attr 'class'
+						className = bubble.node.className.baseVal
 						className = className.replace /(^|\\s)active(?:\\s|$)/, '$1'
 						bubble.attr 'class', className
 
@@ -244,6 +244,11 @@ hide pane
 hide details container
 
 					util.classList.add (document.querySelector '#details'), 'hide'
+
+
+scale up `<svg>`
+
+					(document.querySelector 'svg').setAttribute 'class', ''
 
 ## activate
 activates active circles, panes
@@ -277,27 +282,21 @@ scale down `<svg>`
 
 				(document.querySelector 'svg').setAttribute 'class', 'small'
 
+activate in model
+
+				@model.set "bubbles/#{id}/active", true
+
+## toggle
+
 			toggle: (bubble) ->
 
 				active = _.where (@model.get 'bubbles'),
 					active: true
 
-				console.log active
+				do @deactivate
 
 				if not active[0] or active[0].raphael isnt bubble
-
-					do @deactivate
-
 					@activate bubble
-
-				else
-
-scale up `<svg>`
-
-					(document.querySelector 'svg').setAttribute 'class', ''
-
-					do @deactivate
-
 
 ## click
 `click` handler for bubbles
