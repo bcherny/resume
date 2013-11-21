@@ -6,7 +6,6 @@ dependencies
 		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
 		marked = require 'marked'
-		repocount = require 'repocount'
 		strftime = require 'strftime'
 		umodel = require 'umodel'
 		util = require 'util'
