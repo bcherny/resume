@@ -155,7 +155,7 @@
       };
 
       BubbleGraph.prototype.toggle = function(element) {
-        if (this.model.get('active') !== element) {
+        if ((this.model.get('active')) !== element) {
           this.deactivate();
           return this.activate(element);
         } else {

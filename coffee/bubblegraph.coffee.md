@@ -49,7 +49,7 @@ prepare `Raphael` animations
 
 				_.extend @options, options
 
-				@render()
+				do @render
 
 ## render
 
@@ -281,9 +281,9 @@ store in model
 
 			toggle: (element) ->
 
-				if @model.get('active') isnt element
+				if (@model.get 'active') isnt element
 
-					@deactivate()
+					do @deactivate
 
 					@activate element
 
@@ -293,7 +293,7 @@ scale up `<svg>`
 
 					util.classList.remove (document.querySelector 'svg'), 'small'
 
-					@deactivate()
+					do @deactivate
 
 
 ## click
@@ -303,7 +303,7 @@ scale up `<svg>`
 
 clear throbbing circle (used as teaching tool)
 
-				@clearThrobber()
+				do @clearThrobber
 
 activate this?
 
