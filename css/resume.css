@@ -86,26 +86,51 @@
 @-o-keyframes throb {
   50% {
     fill: #2fc7c7;
+    -webkit-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -moz-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -ms-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -o-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    transform: scale(1.05) translate3d(-27%, -7%, 0);
   }
 }
 @-ms-keyframes throb {
   50% {
     fill: #2fc7c7;
+    -webkit-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -moz-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -ms-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -o-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    transform: scale(1.05) translate3d(-27%, -7%, 0);
   }
 }
 @-moz-keyframes throb {
   50% {
     fill: #2fc7c7;
+    -webkit-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -moz-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -ms-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -o-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    transform: scale(1.05) translate3d(-27%, -7%, 0);
   }
 }
 @-webkit-keyframes throb {
   50% {
     fill: #2fc7c7;
+    -webkit-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -moz-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -ms-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -o-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    transform: scale(1.05) translate3d(-27%, -7%, 0);
   }
 }
 @keyframes throb {
   50% {
     fill: #2fc7c7;
+    -webkit-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -moz-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -ms-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    -o-transform: scale(1.05) translate3d(-27%, -7%, 0);
+    transform: scale(1.05) translate3d(-27%, -7%, 0);
   }
 }
 .spinner {
@@ -307,19 +332,6 @@ svg {
   -ms-transition: opacity 0.2s ease-out;
   -o-transition: opacity 0.2s ease-out;
   transition: opacity 0.2s ease-out;
-}
-.detail:after {
-  background-image: -webkit-linear-gradient(-90deg, transparent, #fff);
-  background-image: -moz-linear-gradient(-90deg, transparent, #fff);
-  background-image: -ms-linear-gradient(-90deg, transparent, #fff);
-  background-image: -o-linear-gradient(-90deg, transparent, #fff);
-  background-image: linear-gradient(-180deg, transparent, #fff);
-  content: "";
-  height: 170px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
 }
 .detail.active {
   -webkit-opacity: 1;

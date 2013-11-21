@@ -1,56 +1,18 @@
-resume
-==============================
-
-*note: the source is unminified and unconcatenated by design, so that it is still readable as emdedded source code. if building yourself, use the included `build.js` script with the `require.js` optimizer.*
-
-todo:
-
-- refactor!!!
-- unit tests
-- mobile version
-- legacy browser support?
-- blog about it
-
-configure require paths
-
-	require.config
-		paths:
-			GMaps: '../node_modules/gmaps/gmaps'
-			lodash: '../node_modules/lodash/lodash'
-			marked: '../node_modules/marked/lib/marked'
-			umodel: '../node_modules/umodel/umodel'
-			uxhr: '../node_modules/uxhr/uxhr'
-
 	define (require) ->
 
 dependencies
 
 		_ = require 'lodash'
+		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
 		marked = require 'marked'
+		strftime = require 'strftime'
 		umodel = require 'umodel'
+		util = require 'util'
 		uxhr = require 'uxhr'
 
-helper for logging time it took for everything
-
-		log = (message) ->
-
-			time = +new Date()
-
-			if not @time
-				@time = time
-
-			console.log message, " (#{time - @time}ms)"
-
-			@time = time
-
-helper for converting dates to human-readable format
-
-		months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-		strtotime = (string) ->
-			new Date string + '-01T12:00:00'
-
-# resume
+resume
+======
 
 		class Resume
 
@@ -86,6 +48,11 @@ helper for converting dates to human-readable format
 {Array} your skills
 
 				skills: []
+
+
+{Array} colors for bubbles
+
+				colors: ['0B486B', 'A8DBA8', '79BD9A', '3B8686', 'CFF09E']
 
 
 {Function} template for the header element
@@ -127,13 +94,6 @@ helper for converting dates to human-readable format
 
 				templateCover: ->
 
-					# collect skills from each history item
-					# skills = []
-					# _.each @history, (item) ->
-					# 	if item.skills
-					# 		skills = skills.concat item.skills
-					# skills = _.unique skills
-
 					skills = '<span class="tag">' + @skills.join('</span><span class="tag">') + '</span>'
 
 					"""
@@ -159,12 +119,19 @@ helper for converting dates to human-readable format
 
 				templateHistoryItem: ->
 
+if end of date range is undefined, assume the project is ongoing and use today's date
+
+					if @when[1] is null
+
+get the current date and month as a string (eg. "2013-11")
+	
+						date = new Date()
+						@when[1] = "#{date.getFullYear()}-#{date.getMonth()}"
+
 format dates
 
-					from = strtotime @when[0]
-					to = strtotime @when[1]
-					from = "#{months[from.getMonth()]} #{from.getFullYear()}"
-					to = "#{months[to.getMonth()]} #{to.getFullYear()}"
+					from = strftime '%B %Y', util.strtotime @when[0]
+					to = strftime '%B %Y', util.strtotime @when[1]
 
 format location
 
@@ -173,11 +140,15 @@ format location
 					else
 						location = ''
 
+format responsibilities
+
+					responsibilities = '- ' + @responsibilities.join '\n- '
+
 format skills
 
 					skills = '<span class="tag">' + @skills.join('</span><span class="tag">') + '</span>'
 					
-explicitly define data (use an array rather than an object to maintain order)
+explicitly define data (use an array rather than an object to guarantee order)
 
 					data = [
 						{ field: 'company', value: "**#{@company}**" }
@@ -185,7 +156,7 @@ explicitly define data (use an array rather than an object to maintain order)
 						{ field: 'location', value: location }
 						{ field: 'when', value: "#{from} - #{to}" }
 						{ field: 'description', value: @description }
-						{ field: 'responsibilities', value: @responsibilities }
+						{ field: 'responsibilities', value: responsibilities }
 						{ field: 'skills', value: skills }
 					]
 
@@ -216,38 +187,10 @@ return compiled
 						</section>
 					"""
 
-URLs for API `GET`s
-
-				apis:
-
-					github: 'https://api.github.com/users/:user/repos'
-
-simple model to keep track of the active bubble
+simple model
 
 			model: new umodel
-				active: null
-
-prepare `Raphael` animations
-
-			animations:
-
-				active: Raphael.animation
-						opacity: 1
-						'stroke-width': 5
-					, 200
-
-				inactive: Raphael.animation
-						opacity: .5
-						'stroke-width': 0
-					, 200
-
-				over: Raphael.animation
-						opacity: .7
-					, 200
-
-				out: Raphael.animation
-						opacity: .5
-					, 200
+				graph: null
 
 ## constructor
 						
@@ -284,10 +227,11 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 				element = event.target
 				isCircle = @isCircle element
 				isDetails = @getDetails element
+				graph = @model.get 'graph'
 
-				if not isCircle and not isDetails
+				if not isCircle and not isDetails and graph
 
-					@deactivate()
+					graph.deactivate()
 
 scale up `<svg>`
 
@@ -319,7 +263,7 @@ scale up `<svg>`
 
 			render: ->
 
-				log 'rendering...'
+				util.log 'rendering...'
 
 				html = ''
 				htmlDetails = ''
@@ -342,158 +286,35 @@ render history details (what shows up when user clicks on bubbles)
 
 				@options.element.innerHTML = html
 
-				log 'rendered history!'
+				util.log 'rendered history!'
 
 render history bubbles
 
-				@renderBubbles()
-				log 'rendered bubbles!'
+				do @renderBubbles
+				util.log 'rendered bubbles!'
 
 render maps
 
-				@renderMaps()
-				log 'rendered maps!'
+				do @renderMaps
+				util.log 'rendered maps!'
 
 fetch repo count?
 				
-				@fetchRepos()
-				log 'fetched repos!'
+				do @getRepoCount
+				util.log 'fetched repos!'
 
 ## renderBubbles
 
 			renderBubbles: ->
 
-				history = @options.history
+				graph = new BubbleGraph
+					colors: @options.colors
+					data: @options.history
+					element: @options.element
 
-compute container size
+				@model.set 'graph', graph
 
-				size = @options.element.getBoundingClientRect()
-				height = size.height/3
-
-render raphael container
-
-				paper = Raphael @options.element, size.width, size.height
-
-get timespan for each job
-
-				for item in history
-
-eg. `time = ['2012-06', '2013-06']`
-
-					time = item.when
-
-					if time?
-
-						time[0] = strtotime time[0]
-						time[1] = strtotime time[1]
-
-						diff = Math.abs(time[1].getTime() - time[0].getTime())
-						days = Math.ceil(diff / (1000 * 3600 * 24))
-
-						item.timespan = days
-
-get largest timespan, to scale bubbles appropriately
-
-				spans = _.pluck history, 'timespan'
-				max = _.max spans
-
-compute positions with the following constraints:
-
-- items with the largest time spans should be the largest in size
-- very large bubbles should be scaled down, and very small ones scaled up
-- bubbles should be tangent to one another
-- the generated layout should be visually appealing
-
-like so:
-
-```text
-      __
-     /  \ ____ 
-     \__//    \  _______
-        |      |/       \       
-         \____//         \
-              |           |
-               \         /
-                \_______/__
-                        /  \
-                        \__/            
-		time ->
-```
-
-				last = history.length - 1
-				prev =
-					r: null
-					x: null
-					y: null
-
-loop over history items, generating bubbles along the way
-
-				_.each history, (item, n) =>
-
-					className = "color#{n%5}" # className for <circle>s
-					r = size.width*item.timespan/(max*2*Math.PI)
-
-scale up small bubbles
-
-					r += max/(5*r)
-						
-subsequent circles should form a "tail"
-
-					if prev.x
-
-y is derived using the distance formula,
-
-```math
-	d = √((x₂ - x₁)² + (y₂ - y₁)²)
-```
-
-substituting in the tangency condition for `d`,
-
-```math
-	d = r₁ + r₂
-```
-
-then solving for `x₂`:
-							
-						y = (size.height - height)/2 - .3*r + _.random 0,100
-						x = prev.x + Math.sqrt(Math.abs((y - prev.y)*(y - prev.y) - (r + prev.r)*(r + prev.r)))
-
-the first bubble should be at the bottom left, 5px from the bottom of the canvas
-
-					else
-						x = 20 + r
-						y = size.height - r - 20
-
-use `Raphael` to generate the bubble
-
-					circle = paper.circle x, y, r
-					circle.mouseover => @over circle
-					circle.mouseout => @out circle
-					circle.click => @click circle
-
-colorize it. the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
-
-					if n is last
-						className += ' throb'
-
-					circle.node.setAttribute 'class', className
-					circle.node.setAttribute 'data-id', n
-
-use `Raphael` to style each bubble rather than CSS, because it behaves more consistently (even within modern browsers!!!)
-
-					circle.attr
-						opacity: .5
-						stroke: '#fff'
-						'stroke-width': 0
-
-store parameters for the next iteration
-
-					prev =
-						circle: circle
-						r: r
-						x: x
-						y: y
-
+				
 ## renderMaps
 
 			renderMaps: ->
@@ -509,11 +330,10 @@ show the pane for a sec to give it a measurable `offsetWidth`
 				details.classList.add 'hide'
 
 				placeholders = details.querySelectorAll '.map-placeholder'
-				circles = document.querySelectorAll 'circle'
 
 fetch map images from google using `GMaps`
 
-				_.each @options.history, (item, n) ->
+				_.each @options.history, (item, n) =>
 
 					location = item.location
 
@@ -524,7 +344,7 @@ fetch map images from google using `GMaps`
 							address: address
 							markers: [
 								{
-									color: getComputedStyle(circles[n]).fill
+									color: @options.colors[n%@options.colors.length]
 									address: address
 								}
 							]
@@ -561,203 +381,21 @@ force render before fading the map in
 
 							, 200
 
-## fetchRepos
-use vendor APIs to fetch repository counts. currently only supports Github
+## templateRepoCounts
 
-			fetchRepos: ->
+			templateRepoCounts: (counts) ->
 
-				api = 'github'
+				for platform, count of (JSON.parse counts) when typeof count is 'number'
+					for element in document.querySelectorAll ".#{platform}"
+						element.innerHTML += " (#{count})"
 
-				if @options.contact? and @options.contact[api]?
-
-					page = 1
-					result = []
-					uri = @parseApi api
-
-					_.defer =>
-
-						if uri
-										
-							_check = (res) =>
-
-								res = JSON.parse res
-
-the response could be paginated, try requesting the next page by incrementing the `page` GET parameter
-
-								if res.length
-
-									result = result.concat res
-									_fetch ++page
-
-								else
-									@showRepoCount result, api
-
-							_fetch = (page) =>
-								
-								uxhr uri, page: page,
-									success: _check
-
-							_fetch page
-
-## showRepoCount
+## getRepoCount
 show a repository count in the DOM
 
-			showRepoCount: (data, api) ->
+			getRepoCount: ->
 
-				count = data.length
-				elements = document.querySelectorAll ".#{api}"
-
-				for element in elements
-					element.innerHTML += " (#{count})"
-
-
-## parseApi
-templates API URLs
-
-			parseApi: (api) ->
-
-				if @options.apis? and @options.apis[api]? and @options.contact[api]?
-
-					uri = @options.apis[api]
-					uri.replace ':user', @options.contact[api]
-
-## clearThrobber
-
-			clearThrobber: ->
-
-				element = document.querySelector '.throb'
-
-				if element
-					element.classList.remove 'throb'
-
-## deactivate
-deactivates active circles, panes
-
-			deactivate: ->
-
-				circle = @model.get 'active'
-				pane = document.querySelector '.detail.active'
-
-				if circle
-
-					setTimeout =>
-
-weirdness because of `<svg>` behavior (even in modern browsers!)
-
-						className = circle.node.className
-						circle.node.className = circle.node.getAttribute 'class'
-
-animate
-
-						circle.animate @animations.inactive
-						circle.transform 's1'
-
-update model
-
-					,10
-
-					@model.set 'active', null
-
-				if pane
-
-hide pane
-
-					pane.classList.remove 'active'
-
-					setTimeout ->
-						pane.classList.add 'hide'
-					, .2
-
-hide details container
-
-					document.querySelector('#details').classList.add 'hide'
-
-## activate
-activates active circles, panes
-
-			activate: (element) ->
-
-				className = element.attr 'class'
-				id = element.node.getAttribute 'data-id'
-
-activate this
-
-				element.attr 'class', "#{className} active"
-
-show details container
-
-				document.querySelector('#details').classList.remove 'hide'
-
-activate this detail panel
-
-				classList = document.querySelectorAll('.detail')[id].classList
-				classList.remove 'hide'
-				classList.add 'active'
-
-animate
-
-				element
-				.toFront()
-				.animate(@animations.active)
-				.transform('s1.1')
-
-scale down `<svg>`
-
-				document.querySelector('svg').classList.add 'small'
-
-store in model
-
-				@model.set 'active', element
-
-			toggle: (element) ->
-
-				if @model.get('active') isnt element
-
-					@deactivate()
-
-					@activate element
-
-				else
-
-scale up `<svg>`
-
-					document.querySelector('svg').classList.remove 'small'
-
-					@deactivate()
-
-
-## click
-`click` handler for bubbles
-
-			click: (element) ->
-
-clear throbbing circle (used as teaching tool)
-
-				@clearThrobber()
-
-activate this?
-
-				@toggle element
-
-## over
-`mouseover` handler for bubbles
-
-			over: (element) ->
-
-				active = @model.get 'active'
-
-				if element isnt active
-					element.animate @animations.over
-
-## out
-`mouseout` handler for bubbles
-
-			out: (element) ->
-
-				active = @model.get 'active'
-
-				if element isnt active
-					element.animate @animations.out
+				uxhr 'http://www.contributor.io/api', @options.contact,
+					success: @templateRepoCounts
 
 ## resize
 `window.resize` handler, also fired onLoad

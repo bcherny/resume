@@ -1,109 +1,41 @@
-spins off a Resume instance
-===========================
+## configure require paths
+
+	require.config
+		paths:
+			GMaps: '../node_modules/gmaps/gmaps'
+			lodash: '../node_modules/lodash/lodash'
+			marked: '../node_modules/marked/lib/marked'
+			repocount: '../node_modules/repocount/repocount'
+			strftime: '../node_modules/strftime/strftime'
+			umodel: '../node_modules/umodel/umodel'
+			uxhr: '../node_modules/uxhr/uxhr'
+
+		shim:
+			strftime:
+				exports: 'strftime'
+
+## spin off a Resume instance
 
 	define (require) ->
 
+		_ = require 'lodash'
 		Resume = require 'resume'
+		uxhr = require 'uxhr'
 
-		div = document.getElementById 'resume'
+initializes resume
 
-get the current date and month as a string (eg. "2013-11")
-	
-		date = new Date()
-		today = "#{date.getFullYear()}-#{date.getMonth()}"
+		init = (data) ->
 
-define the data we'll be feeding into our `Resume` instance
+			new Resume _.extend data,
+				element: document.getElementById 'resume'
 
-		history = [
-			{
-				company: 'BC Design'
-				location:
-					address: '3322 Duke Court'
-					city: 'Santa Clara'
-					state: 'CA'
-				when: ['2002-01', today]
-				url: 'bcdesignplace.com'
-				title: 'Director'
-				description: 'My freelance web design company'
-				responsibilities: """
-					- Designing and developing websites and applications for clients
-					- Acquiring and managing clients
-					- Subcontracting and managing talent
-					- Wireframing sites and applications in Photoshop, hand coding into HTML/CSS/JavaScript
-					- Custom backends in PHP/MySQL, usually based on a framework like [Cake](http://cakephp.org/), [Symfony](http://symfony.com/), or [Zend](http://www.zend.com/en/)
-					- UX design, usability testing, and A/B testing
-					"""
-				skills: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL', 'Photoshop', 'Illustrator']
-			},{
-				company: 'C4'
-				location:
-					address: '5250 Toscana Way'
-					city: 'San Diego'
-					state: 'CA'
-				when: ['2009-09', '2011-10']
-				title: 'Director of web and product development'
-				description: 'Thin layer chromatography analysis software'
-				responsibilities: """
-					- Researched, developed, and implemented a fast and affordable alternative to existing laboratory densitometry software
-					- Created an automated pipeline for retrieving and delivering, testing and analyzing, and delivering printed test results for clients' samples
-					- Created an administrative backend for clients to place and track orders
-					- Drove down the cost of high resolution thin layer chromatography imaging and densitometry testing from $20,000 fixed cost for hardware plus $200 per test to $20 fixed and under $1 per test
-					- Implemented custom software for analysis and management using HTML, CSS, JavaScript, PHP (using the [GD](http://php.net/manual/en/book.image.php) and [ImageMagick](http://php.net/manual/en/book.imagick.php) imaging libraries), and MySQL
-				"""
-				skills: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL', 'Photoshop', 'Illustrator', 'Stata', 'R', 'Print design']
-			},{
-				company: 'ForwardMetrics'
-				location:
-					address: '183 Calle Magdalena'
-					city: 'Encinitas'
-					state: 'CA'
-				when: ['2011-11', '2012-06']
-				url: 'forwardmetrics.com'
-				title: 'Principal software architect'
-				description: 'Strategic planning software startup'
-				responsibilities: """
-					- Designed and implemented a suite of strategic planning and performance review software
-					- Designed and implemented a custom article publishing platform for use by thousands of authors
-					- Created the ForwardMetrics brand and corporate style
-					- Managed off-site developers, setting scope and ensuring requirements were met
-				"""
-				skills: ['HTML', 'CSS', 'SASS', 'JavaScript', 'PHP', 'MySQL', 'Photoshop', 'Illustrator', 'FontCreator']
-			},{
-				company: 'AgileMD'
-				location:
-					address: '565 Stanford Avenue'
-					city: 'Palo Alto'
-					state: 'CA'
-				when: ['2012-06', '2013-06']
-				url: 'agilemd.com'
-				title: 'Senior front end developer'
-				description: 'Clinical triage and decision making software for medical professionals'
-				responsibilities: """
-					- Rewrote the existing application frontend from the ground up with focuses on performance and usability
-					- Designed and implemented the frontend and middleware for a user-friendly authoring tool for use by doctors and 3rd and 4th years medical students
-					- Ensured that all products were performant across browsers (including IE6 and up, Chrome, Firefox, iOS, and Android)
-					- Wireframed and developed numerous prototype spin-off products
-					- Proposed and lead usability improvement sprints involving:
-						- User interviews
-						- Live and taped usability testing
-						- Automated A/B testing
-						- Competitor research
-						- Adoption of concepts from other industries (eg. aviation checklists)
-				"""
-				skills: ['HTML', 'CSS', 'SASS', 'JavaScript', 'NodeJS', 'MongoDB', 'PHP', 'MySQL', 'Photoshop', 'Illustrator']
-			}
-		]
+loads data
+
+		load = (url, callback) ->
+			uxhr url, {},
+				complete: (res) ->
+					callback JSON.parse res
 
 create a `Resume` instance!
 
-		resume = new Resume
-			element: div
-			name: 'Boris Cherny'
-			contact:
-				email: 'boris@performancejs.com'
-				github: 'eighttrackmind'
-				npm: 'bcherny'
-				www: 'performancejs.com'
-			history: history
-			objective: 'Using the **latest web technologies** to craft **amazing user experiences**'
-			skills: ['HTML', 'CSS', 'SASS', 'LESS', 'Stylus', 'JavaScript', 'CoffeeScript', 'NodeJS', 'PHP', 'MongoDB', 'MySQL', 'Photoshop', 'Illustrator']
+		load 'data/data.json', init

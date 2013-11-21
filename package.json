@@ -1,6 +1,6 @@
 {
   "name": "resume",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "js/resume.js",
   "dependencies": {
@@ -10,7 +10,8 @@
     "raphael": "~2.1.0",
     "gmaps": "git+https://github.com/eighttrackmind/gmaps.git",
     "umodel": "0.0.x",
-    "uxhr": "1.0.x"
+    "uxhr": "1.0.x",
+    "strftime": "~0.6.2"
   },
   "devDependencies": {},
   "scripts": {
