@@ -13,7 +13,8 @@
       };
 
       BubbleGraph.prototype.model = new umodel({
-        active: null
+        active: null,
+        bubbles: {}
       });
 
       BubbleGraph.prototype.animations = {
@@ -96,6 +97,7 @@
             stroke: '#fff',
             'stroke-width': 0
           });
+          _this.model.set("bubbles/" + n, circle);
           return prev = {
             circle: circle,
             r: r,
@@ -109,7 +111,7 @@
         var element;
         element = document.querySelector('.throb');
         if (element) {
-          return element.classList.remove('throb');
+          return util.classList.remove(element, 'throb');
         }
       };
 
@@ -129,26 +131,27 @@
           this.model.set('active', null);
         }
         if (pane) {
-          pane.classList.remove('active');
+          util.classList.remove(pane, 'active');
           setTimeout(function() {
-            return pane.classList.add('hide');
+            return util.classList.add(pane, 'hide');
           }, .2);
-          return document.querySelector('#details').classList.add('hide');
+          return util.classList.add(document.querySelector('#details'), 'hide');
         }
       };
 
       BubbleGraph.prototype.activate = function(element) {
-        var classList, className, id;
+        var bubble, className, id;
         className = element.attr('class');
         id = element.node.getAttribute('data-id');
+        bubble = this.model.get("bubbles/" + id);
         element.attr('class', "" + className + " active");
-        document.querySelector('#details').classList.remove('hide');
-        classList = document.querySelectorAll('.detail')[id].classList;
-        classList.remove('hide');
-        classList.add('active');
-        element.toFront().animate(this.animations.active).transform('s1.1');
-        document.querySelector('svg').classList.add('small');
-        return this.model.set('active', element);
+        util.classList.remove(document.querySelector('#details'), 'hide');
+        element = (document.querySelectorAll('.detail'))[id];
+        util.classList.remove(element, 'hide');
+        util.classList.add(element, 'active');
+        bubble.toFront().animate(this.animations.active).transform('s1.1');
+        util.classList.add(document.querySelector('svg'), 'small');
+        return this.model.set('active', bubble);
       };
 
       BubbleGraph.prototype.toggle = function(element) {
@@ -156,7 +159,7 @@
           this.deactivate();
           return this.activate(element);
         } else {
-          document.querySelector('svg').classList.remove('small');
+          util.classList.remove(document.querySelector('svg'), 'small');
           return this.deactivate();
         }
       };

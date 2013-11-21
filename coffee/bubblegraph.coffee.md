@@ -15,10 +15,11 @@ bubblegraph resume component
 				data: {}
 				element: document.body
 
-simple model to keep track of the active bubble
+simple model to keep track of bubbles
 
 			model: new umodel
 				active: null
+				bubbles: {}
 
 prepare `Raphael` animations
 
@@ -177,6 +178,10 @@ use `Raphael` to style each bubble rather than CSS, because it behaves more cons
 						stroke: '#fff'
 						'stroke-width': 0
 
+store in model
+
+					@model.set "bubbles/#{n}", circle
+
 store parameters for the next iteration
 
 					prev =
@@ -192,7 +197,7 @@ store parameters for the next iteration
 				element = document.querySelector '.throb'
 
 				if element
-					element.classList.remove 'throb'
+					util.classList.remove element, 'throb'
 
 ## deactivate
 deactivates active circles, panes
@@ -226,15 +231,15 @@ update model
 
 hide pane
 
-					pane.classList.remove 'active'
+					util.classList.remove pane, 'active'
 
 					setTimeout ->
-						pane.classList.add 'hide'
+						util.classList.add pane, 'hide'
 					, .2
 
 hide details container
 
-					document.querySelector('#details').classList.add 'hide'
+					util.classList.add (document.querySelector '#details'), 'hide'
 
 ## activate
 activates active circles, panes
@@ -243,6 +248,7 @@ activates active circles, panes
 
 				className = element.attr 'class'
 				id = element.node.getAttribute 'data-id'
+				bubble = @model.get "bubbles/#{id}"
 
 activate this
 
@@ -250,28 +256,28 @@ activate this
 
 show details container
 
-				document.querySelector('#details').classList.remove 'hide'
+				util.classList.remove (document.querySelector '#details'), 'hide'
 
 activate this detail panel
 
-				classList = document.querySelectorAll('.detail')[id].classList
-				classList.remove 'hide'
-				classList.add 'active'
+				element = (document.querySelectorAll '.detail')[id]
+				util.classList.remove element, 'hide'
+				util.classList.add element, 'active'
 
 animate
 
-				element
+				bubble
 				.toFront()
 				.animate(@animations.active)
 				.transform('s1.1')
 
 scale down `<svg>`
 
-				document.querySelector('svg').classList.add 'small'
+				util.classList.add (document.querySelector 'svg'), 'small'
 
 store in model
 
-				@model.set 'active', element
+				@model.set 'active', bubble
 
 			toggle: (element) ->
 
@@ -285,7 +291,7 @@ store in model
 
 scale up `<svg>`
 
-					document.querySelector('svg').classList.remove 'small'
+					util.classList.remove (document.querySelector 'svg'), 'small'
 
 					@deactivate()
 
