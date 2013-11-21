@@ -235,7 +235,7 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 
 scale up `<svg>`
 
-					document.querySelector('svg').classList.remove 'small'
+					util.classList.remove (document.querySelector 'svg'), 'small'
 
 ## isCircle
 
@@ -325,9 +325,9 @@ compute details pane width
 
 show the pane for a sec to give it a measurable `offsetWidth`
 
-				details.classList.remove 'hide'
+				util.classList.remove details, 'hide'
 				width = details.offsetWidth - 20 # 20 is the padding
-				details.classList.add 'hide'
+				util.classList.add details, 'hide'
 
 				placeholders = details.querySelectorAll '.map-placeholder'
 
@@ -364,7 +364,7 @@ wait for the image to finish loading, then render it nicely
 
 fade placeholder out
 
-							placeholders[n].classList.add 'fade-out'
+							util.classList.add placeholders[n], 'fade-out'
 
 remove placeholder, inject map `<img>`
 
@@ -377,7 +377,7 @@ remove, inject
 force render before fading the map in
 
 								_.defer ->
-									img.classList.add 'fade-in'
+									util.classList.add img, 'fade-in'
 
 							, 200
 

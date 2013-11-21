@@ -37,7 +37,7 @@ manipulate `Element.classList` in an Internet Explorer-compatible way
 				remove: (element, className) ->
 
 					regex = new RegExp "(^|\\s)#{className}(?:\\s|$)"
-					element.className = element.className.replace regex, '$1'
+					element.className = (element.className + '').replace regex, '$1'
 
 				contains: (element, className) ->
 

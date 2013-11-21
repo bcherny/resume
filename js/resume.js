@@ -142,7 +142,7 @@
         graph = this.model.get('graph');
         if (!isCircle && !isDetails && graph) {
           graph.deactivate();
-          return document.querySelector('svg').classList.remove('small');
+          return util.classList.remove(document.querySelector('svg'), 'small');
         }
       };
 
@@ -202,9 +202,9 @@
         var details, placeholders, width,
           _this = this;
         details = document.querySelector('#details');
-        details.classList.remove('hide');
+        util.classList.remove(details, 'hide');
         width = details.offsetWidth - 20;
-        details.classList.add('hide');
+        util.classList.add(details, 'hide');
         placeholders = details.querySelectorAll('.map-placeholder');
         return _.each(this.options.history, function(item, n) {
           var address, img, location, src;
@@ -227,11 +227,11 @@
             img.className = 'map';
             img.src = src;
             return img.onload = function() {
-              placeholders[n].classList.add('fade-out');
+              util.classList.add(placeholders[n], 'fade-out');
               return setTimeout(function() {
                 placeholders[n].parentNode.replaceChild(img, placeholders[n]);
                 return _.defer(function() {
-                  return img.classList.add('fade-in');
+                  return util.classList.add(img, 'fade-in');
                 });
               }, 200);
             };
