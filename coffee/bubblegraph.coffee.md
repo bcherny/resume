@@ -197,12 +197,19 @@ store parameters for the next iteration
 						x: x
 						y: y
 
+## throb
+grow and shrink the last rendered bubble (aka. most recent project) as an affordance to the user that bubbles are clickable
+
 			throb: (bubble, r, state = 0) =>
+
 				bubble.animate
 					r: r + (if state then @options.throbber.size else 0)
 				, @options.throbber.duration
 				, @options.throbber.easing
 				, => @throb bubble, r, not state
+
+## showClickMe
+show "click me" message in the throbbing circle, also as an affordance that it is clickable
 
 			showClickMe: (x, y, r) ->
 
