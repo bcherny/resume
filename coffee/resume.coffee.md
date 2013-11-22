@@ -3,6 +3,7 @@
 dependencies
 
 		_ = require 'lodash'
+		annie = require 'annie'
 		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
 		marked = require 'marked'
@@ -421,15 +422,14 @@ show a repository count in the DOM
 					rotate = -60 + 20*(5 - bin)
 
 define CSS rule for bubble group when it's activated and moved out of the way
-
+				
+				property = 'transform'
+				value = "scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);"
 				rule =
 					"""
 						svg.small {
-							-webkit-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
-							   -moz-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
-							    -ms-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
-							     -o-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
-							        transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							-#{annie.vendor}-#{property}: #{value}
+							#{property}: #{value}
 						}
 					"""
 
