@@ -134,12 +134,13 @@ define(function(require) {
     };
 
     Resume.prototype.clickBody = function(event) {
-      var element, graph, isCircle, isDetails;
+      var element, graph, isCircle, isClickMeText, isDetails;
       element = event.target;
       isCircle = this.isCircle(element);
       isDetails = this.getDetails(element);
+      isClickMeText = this.isClickMeText(element);
       graph = this.model.get('graph');
-      if (!isCircle && !isDetails && graph) {
+      if (!isCircle && !isDetails && !isClickMeText && graph) {
         graph.deactivate();
         return util.classList.remove(document.querySelector('svg'), 'small');
       }
@@ -151,6 +152,10 @@ define(function(require) {
 
     Resume.prototype.isDetails = function(element) {
       return element.id === 'details';
+    };
+
+    Resume.prototype.isClickMeText = function(element) {
+      return element.id === 'clickme';
     };
 
     Resume.prototype.getDetails = function(element) {

@@ -304,7 +304,7 @@ clear throbbing bubble (used as affordance)?
 					@model.set 'throbber', null
 
 activate this?
-
+				
 				@toggle bubble
 
 ## over

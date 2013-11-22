@@ -227,9 +227,10 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 				element = event.target
 				isCircle = @isCircle element
 				isDetails = @getDetails element
+				isClickMeText = @isClickMeText element
 				graph = @model.get 'graph'
 
-				if not isCircle and not isDetails and graph
+				if not isCircle and not isDetails and not isClickMeText and graph
 
 					do graph.deactivate
 
@@ -248,6 +249,12 @@ scale up `<svg>`
 			isDetails: (element) ->
 
 				element.id is 'details'
+
+## isClickMeText
+			
+			isClickMeText: (element) ->
+
+				element.id is 'clickme'
 
 ## getDetails
 
