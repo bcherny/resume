@@ -2,7 +2,6 @@
 (function() {
   require.config({
     paths: {
-      annie: '../node_modules/annie/annie',
       GMaps: '../node_modules/gmaps/gmaps',
       lodash: '../node_modules/lodash/lodash',
       marked: '../node_modules/marked/lib/marked',

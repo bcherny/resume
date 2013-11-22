@@ -3,7 +3,6 @@
 dependencies
 
 		_ = require 'lodash'
-		annie = require 'annie'
 		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
 		marked = require 'marked'
@@ -290,22 +289,19 @@ render history details (what shows up when user clicks on bubbles)
 				util.log 'rendered history!'
 
 render history bubbles
-				
-				_.defer =>
-					do @renderBubbles
-					util.log 'rendered bubbles!'
+
+				do @renderBubbles
+				util.log 'rendered bubbles!'
 
 render maps
-				
-				_.defer =>
-					do @renderMaps
-					util.log 'rendered maps!'
+
+				do @renderMaps
+				util.log 'rendered maps!'
 
 fetch repo count?
-
-				_.defer =>
-					do @getRepoCount
-					util.log 'fetched repos!'
+				
+				do @getRepoCount
+				util.log 'fetched repos!'
 
 ## renderBubbles
 
@@ -418,13 +414,15 @@ show a repository count in the DOM
 					rotate = -60 + 20*(5 - bin)
 
 define CSS rule for bubble group when it's activated and moved out of the way
-				
-				vendor = do annie.vendor.toLowerCase
+
 				rule =
 					"""
 						svg.small {
-							-#{vendor}-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
-							transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							-webkit-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							   -moz-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							    -ms-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							     -o-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							        transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
 						}
 					"""
 
