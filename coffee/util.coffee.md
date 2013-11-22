@@ -24,3 +24,35 @@ logging for load performance metrics
 				console.log message, " (#{time - @time}ms)"
 
 				@time = time
+
+## classList
+manipulate `Element.classList` in an Internet Explorer-compatible way
+
+			classList:
+
+				add: (element, className) ->
+
+					if element.tagName is 'circle'
+						element.setAttribute 'class', "#{className} #{element.className.baseVal}"
+
+					else
+						element.className += " #{className}"
+
+				remove: (element, className) ->
+
+					regex = new RegExp "(^|\\s)#{className}(?:\\s|$)"
+
+					if element.tagName is 'circle'
+						element.setAttribute 'class', (element.className.baseVal + '').replace regex, '$1'
+
+					else
+						element.className = (element.className + '').replace regex, '$1'
+
+				contains: (element, className) ->
+
+					value = element.className
+
+					if element.tagName is 'circle'
+						value = value.baseVal
+
+					(value.indexOf className) > -1

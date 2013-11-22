@@ -4,6 +4,7 @@ bubblegraph resume component
 	define (require) ->
 
 		_ = require 'lodash'
+		Throbber = require 'throbber'
 		umodel = require 'umodel'
 		util = require 'util'
 
@@ -15,10 +16,11 @@ bubblegraph resume component
 				data: {}
 				element: document.body
 
-simple model to keep track of the active bubble
+simple model to keep track of bubbles
 
 			model: new umodel
-				active: null
+				bubbles: {}
+				throbber: null
 
 prepare `Raphael` animations
 
@@ -48,7 +50,7 @@ prepare `Raphael` animations
 
 				_.extend @options, options
 
-				@render()
+				do @render
 
 ## render
 
@@ -165,7 +167,10 @@ use `Raphael` to generate the bubble
 colorize it. the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
 
 					if n is last
-						className += ' throb'
+						@model.set 'throbber', new Throbber circle,
+							click: @click
+							over: @over
+							out: @out
 
 					circle.node.setAttribute 'class', className
 					circle.node.setAttribute 'data-id', n
@@ -177,6 +182,12 @@ use `Raphael` to style each bubble rather than CSS, because it behaves more cons
 						stroke: '#fff'
 						'stroke-width': 0
 
+store in model
+
+					@model.set "bubbles/#{n}",
+						active: false
+						raphael: circle
+
 store parameters for the next iteration
 
 					prev =
@@ -185,140 +196,135 @@ store parameters for the next iteration
 						x: x
 						y: y
 
-## clearThrobber
-
-			clearThrobber: ->
-
-				element = document.querySelector '.throb'
-
-				if element
-					element.classList.remove 'throb'
-
 ## deactivate
 deactivates active circles, panes
 
 			deactivate: ->
 
-				circle = @model.get 'active'
 				pane = document.querySelector '.detail.active'
+				active = _.where (@model.get 'bubbles'),
+					active: true
 
-				if circle
+				if active[0]
+
+					bubble = active[0].raphael
 
 					setTimeout =>
-
-weirdness because of `<svg>` behavior (even in modern browsers!)
-
-						className = circle.node.className
-						circle.node.className = circle.node.getAttribute 'class'
+						
+						util.classList.remove bubble.node, active
 
 animate
 
-						circle.animate @animations.inactive
-						circle.transform 's1'
-
-update model
+						bubble
+						.animate(@animations.inactive)
+						.transform('s1')
 
 					,10
 
-					@model.set 'active', null
+update model
 
-				if pane
+					active[0].active = false
 
 hide pane
 
-					pane.classList.remove 'active'
+				if pane
+
+					util.classList.remove pane, 'active'
 
 					setTimeout ->
-						pane.classList.add 'hide'
+						util.classList.add pane, 'hide'
 					, .2
 
 hide details container
 
-					document.querySelector('#details').classList.add 'hide'
+					util.classList.add (document.querySelector '#details'), 'hide'
+
+
+scale up `<svg>`
+
+					(document.querySelector 'svg').setAttribute 'class', ''
 
 ## activate
 activates active circles, panes
 
-			activate: (element) ->
+			activate: (bubble) ->
 
-				className = element.attr 'class'
-				id = element.node.getAttribute 'data-id'
+				id = bubble.node.getAttribute 'data-id'
 
 activate this
 
-				element.attr 'class', "#{className} active"
+				util.classList.add bubble.node, 'active'
 
 show details container
 
-				document.querySelector('#details').classList.remove 'hide'
+				util.classList.remove (document.querySelector '#details'), 'hide'
 
 activate this detail panel
 
-				classList = document.querySelectorAll('.detail')[id].classList
-				classList.remove 'hide'
-				classList.add 'active'
+				panel = (document.querySelectorAll '.detail')[id]
+				util.classList.remove panel, 'hide'
+				util.classList.add panel, 'active'
 
 animate
 
-				element
+				bubble
 				.toFront()
 				.animate(@animations.active)
 				.transform('s1.1')
 
 scale down `<svg>`
 
-				document.querySelector('svg').classList.add 'small'
+				(document.querySelector 'svg').setAttribute 'class', 'small'
 
-store in model
+activate in model
 
-				@model.set 'active', element
+				@model.set "bubbles/#{id}/active", true
 
-			toggle: (element) ->
+## toggle
 
-				if @model.get('active') isnt element
+			toggle: (bubble) ->
 
-					@deactivate()
+				active = _.where (@model.get 'bubbles'),
+					active: true
 
-					@activate element
+				do @deactivate
 
-				else
-
-scale up `<svg>`
-
-					document.querySelector('svg').classList.remove 'small'
-
-					@deactivate()
-
+				if not active[0] or active[0].raphael isnt bubble
+					@activate bubble
 
 ## click
 `click` handler for bubbles
 
-			click: (element) ->
+			click: (bubble) =>
 
-clear throbbing circle (used as teaching tool)
-
-				@clearThrobber()
+clear throbbing bubble (used as affordance)?
+				
+				if throbber = @model.get 'throbber'
+					do throbber.clear
+					@model.set 'throbber', null
 
 activate this?
 
-				@toggle element
+				@toggle bubble
 
 ## over
 `mouseover` handler for bubbles
 
-			over: (element) ->
+			over: (bubble) =>
 
-				active = @model.get 'active'
+				active = _.where (@model.get 'bubbles'),
+					active: true
 
-				if element isnt active
-					element.animate @animations.over
+				if not active[0] or bubble isnt active[0]
+					bubble.animate @animations.over
 
 ## out
 `mouseout` handler for bubbles
 
-			out: (element) ->
+			out: (bubble) =>
 
-				active = @model.get 'active'
+				active = _.where (@model.get 'bubbles'),
+					active: true
 
-				if element isnt active
-					element.animate @animations.out
+				if not active[0] or bubble isnt active[0]
+					bubble.animate @animations.out
