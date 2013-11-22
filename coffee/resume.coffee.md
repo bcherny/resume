@@ -297,19 +297,22 @@ render history details (what shows up when user clicks on bubbles)
 				util.log 'rendered history!'
 
 render history bubbles
-
-				do @renderBubbles
-				util.log 'rendered bubbles!'
+				
+				_.defer =>
+					do @renderBubbles
+					util.log 'rendered bubbles!'
 
 render maps
-
-				do @renderMaps
-				util.log 'rendered maps!'
+				
+				_.defer =>
+					do @renderMaps
+					util.log 'rendered maps!'
 
 fetch repo count?
 				
-				do @getRepoCount
-				util.log 'fetched repos!'
+				_.defer =>
+					do @getRepoCount
+					util.log 'fetched repos!'
 
 ## renderBubbles
 

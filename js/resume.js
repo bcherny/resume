@@ -169,7 +169,8 @@ define(function(require) {
     };
 
     Resume.prototype.render = function() {
-      var html, htmlDetails, item, _i, _len, _ref;
+      var html, htmlDetails, item, _i, _len, _ref,
+        _this = this;
       util.log('rendering...');
       html = '';
       htmlDetails = '';
@@ -185,12 +186,18 @@ define(function(require) {
       });
       this.options.element.innerHTML = html;
       util.log('rendered history!');
-      this.renderBubbles();
-      util.log('rendered bubbles!');
-      this.renderMaps();
-      util.log('rendered maps!');
-      this.getRepoCount();
-      return util.log('fetched repos!');
+      _.defer(function() {
+        _this.renderBubbles();
+        return util.log('rendered bubbles!');
+      });
+      _.defer(function() {
+        _this.renderMaps();
+        return util.log('rendered maps!');
+      });
+      return _.defer(function() {
+        _this.getRepoCount();
+        return util.log('fetched repos!');
+      });
     };
 
     Resume.prototype.renderBubbles = function() {
