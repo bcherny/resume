@@ -201,7 +201,11 @@ define(function(require) {
       }, 0);
     };
 
-    Resume.prototype.clearSpinner = function() {};
+    Resume.prototype.clearSpinner = function() {
+      var spinner;
+      spinner = document.querySelector('#loading');
+      return util.classList.add(spinner, 'fade-out');
+    };
 
     Resume.prototype.renderBubbles = function() {
       var graph;

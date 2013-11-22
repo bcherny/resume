@@ -323,9 +323,9 @@ fetch repo count?
 
 			clearSpinner: ->
 
-				#spinner = document.querySelector '#loading'
+				spinner = document.querySelector '#loading'
 
-				#util.classList.add spinner, 'fade-out'
+				util.classList.add spinner, 'fade-out'
 
 ## renderBubbles
 

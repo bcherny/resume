@@ -226,17 +226,14 @@ header a {
 #loading {
   height: 88px;
   width: 88px;
-  margin: auto;
   -webkit-opacity: 0.6;
   -moz-opacity: 0.6;
   -ms-opacity: 0.6;
   -o-opacity: 0.6;
   opacity: 0.6;
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
+  right: 20px;
+  top: 20px;
 }
 #clickme {
   border-bottom: 4px solid rgba(255,255,255,0.2);
