@@ -326,10 +326,8 @@ compute details pane width
 show the pane for a sec to give it a measurable `offsetWidth`
 
 				util.classList.remove details, 'hide'
-				width = details.offsetWidth - 20 # 20 is the padding
+				width = details.offsetWidth # 20 is the padding
 				util.classList.add details, 'hide'
-
-				console.log "width = #{width}"
 
 				placeholders = details.querySelectorAll '.map-placeholder'
 
