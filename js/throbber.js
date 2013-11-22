@@ -12,13 +12,10 @@ define(function(require) {
       text: 'click me!'
     };
 
-    function Throbber(bubble, over, out) {
+    function Throbber(bubble, graph) {
       this.bubble = bubble;
+      this.graph = graph;
       this.throb = __bind(this.throb, this);
-      this.graph = {
-        over: over,
-        out: out
-      };
       this.state = true;
       this.r = this.bubble.attr('r');
       this.x = this.bubble.attr('cx');
@@ -53,8 +50,11 @@ define(function(require) {
       this.text.addEventListener('mouseover', function() {
         return _this.graph.over(_this.bubble);
       });
-      return this.text.addEventListener('mouseout', function() {
+      this.text.addEventListener('mouseout', function() {
         return _this.graph.out(_this.bubble);
+      });
+      return this.text.addEventListener('click', function() {
+        return _this.graph.click(_this.bubble);
       });
     };
 

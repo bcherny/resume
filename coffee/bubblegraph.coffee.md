@@ -166,7 +166,10 @@ use `Raphael` to generate the bubble
 colorize it. the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
 
 					if n is last
-						@throbber = new Throbber circle, @over, @out
+						@throbber = new Throbber circle,
+							click: @click
+							over: @over
+							out: @out
 
 					circle.node.setAttribute 'class', className
 					circle.node.setAttribute 'data-id', n
@@ -291,15 +294,15 @@ activate in model
 ## click
 `click` handler for bubbles
 
-			click: (element) ->
+			click: (bubble) =>
 
-clear throbbing circle (used as teaching tool)
+clear throbbing circle (used as affordance)
 
 				do @clearThrobber
 
 activate this?
 
-				@toggle element
+				@toggle bubble
 
 ## over
 `mouseover` handler for bubbles

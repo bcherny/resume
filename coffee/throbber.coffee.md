@@ -15,11 +15,8 @@ creates a throbbing bubble as an affordance indicating that it's clickable
 				size: 10
 				text: 'click me!'
 
-			constructor: (@bubble, over, out) ->
+			constructor: (@bubble, @graph) ->
 
-				@graph =
-					over: over
-					out: out
 				@state = true
 				@r = @bubble.attr 'r'
 				@x = @bubble.attr 'cx'
@@ -70,3 +67,6 @@ then attach DOM events
 
 				@text.addEventListener 'mouseout', =>
 					@graph.out @bubble
+
+				@text.addEventListener 'click', =>
+					@graph.click @bubble

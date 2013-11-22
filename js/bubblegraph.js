@@ -38,6 +38,7 @@ define(function(require) {
     function BubbleGraph(options) {
       this.out = __bind(this.out, this);
       this.over = __bind(this.over, this);
+      this.click = __bind(this.click, this);
       _.extend(this.options, options);
       this.render();
     }
@@ -91,7 +92,11 @@ define(function(require) {
           return _this.click(circle);
         });
         if (n === last) {
-          _this.throbber = new Throbber(circle, _this.over, _this.out);
+          _this.throbber = new Throbber(circle, {
+            click: _this.click,
+            over: _this.over,
+            out: _this.out
+          });
         }
         circle.node.setAttribute('class', className);
         circle.node.setAttribute('data-id', n);
@@ -162,9 +167,9 @@ define(function(require) {
       }
     };
 
-    BubbleGraph.prototype.click = function(element) {
+    BubbleGraph.prototype.click = function(bubble) {
       this.clearThrobber();
-      return this.toggle(element);
+      return this.toggle(bubble);
     };
 
     BubbleGraph.prototype.over = function(bubble) {
