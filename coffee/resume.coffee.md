@@ -417,7 +417,6 @@ show a repository count in the DOM
 				bin = Math.floor @options.element.offsetHeight/100
 
 				if bin < 5
-
 					scale = (bin+1)/10
 					rotate = -60 + 20*(5 - bin)
 
@@ -428,8 +427,8 @@ define CSS rule for bubble group when it's activated and moved out of the way
 				rule =
 					"""
 						svg.small {
-							-#{annie.vendor}-#{property}: #{value}
-							#{property}: #{value}
+							-#{ do annie.vendor.toLowerCase }-#{ property }: #{ value }
+							#{ property }: #{value}
 						}
 					"""
 

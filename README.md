@@ -27,5 +27,5 @@ Best viewed in a maximized browser window. Tested on **Chrome, Firefox, and Safa
 - [ ] iOS (handheld)
 - [x] IE 11
 - [x] IE 10
-- [x] IE 9 (missing `<svg>` rotation!!!)
+- [ ] IE 9 (CSS animations are buggy)
 - [ ] IE 8

@@ -285,7 +285,7 @@ define(function(require) {
       }
       property = 'transform';
       value = "scale(" + scale + ") translate3d(" + x + "%, " + y + "%, 0) rotate(" + rotate + "deg);";
-      rule = "svg.small {\n	-" + annie.vendor + "-" + property + ": " + value + "\n	" + property + ": " + value + "\n}";
+      rule = "svg.small {\n	-" + (annie.vendor.toLowerCase()) + "-" + property + ": " + value + "\n	" + property + ": " + value + "\n}";
       sheet = document.styleSheets[0];
       return sheet.insertRule(rule, sheet.cssRules.length);
     };
