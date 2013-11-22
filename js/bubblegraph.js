@@ -87,7 +87,7 @@ define(function(require) {
           return _this.click(circle);
         });
         if (n === last) {
-          _this.throbber = new Throbber(circle);
+          _this.throbber = new Throbber(circle, _this.over, _this.out);
         }
         circle.node.setAttribute('class', className);
         circle.node.setAttribute('data-id', n);
@@ -163,19 +163,24 @@ define(function(require) {
       return this.toggle(element);
     };
 
-    BubbleGraph.prototype.over = function(element) {
+    BubbleGraph.prototype.over = function(bubble) {
       var active;
-      active = this.model.get('active');
-      if (element !== active) {
-        return element.animate(this.animations.over);
+      active = _.where(this.model.get('bubbles'), {
+        active: true
+      });
+      if (!active[0] || bubble !== active[0]) {
+        console.log('a');
+        return bubble.animate(this.animations.over);
       }
     };
 
-    BubbleGraph.prototype.out = function(element) {
+    BubbleGraph.prototype.out = function(bubble) {
       var active;
-      active = this.model.get('active');
-      if (element !== active) {
-        return element.animate(this.animations.out);
+      active = _.where(this.model.get('bubbles'), {
+        active: true
+      });
+      if (!active[0] || bubble !== active[0]) {
+        return bubble.animate(this.animations.out);
       }
     };
 

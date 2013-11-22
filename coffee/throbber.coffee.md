@@ -15,8 +15,11 @@ creates a throbbing bubble as an affordance indicating that it's clickable
 				size: 10
 				text: 'click me!'
 
-			constructor: (@bubble) ->
+			constructor: (@bubble, over, out) ->
 
+				@graph =
+					over: over
+					out: out
 				@state = true
 				@r = @bubble.attr 'r'
 				@x = @bubble.attr 'cx'
@@ -41,7 +44,7 @@ creates a throbbing bubble as an affordance indicating that it's clickable
 
 render the text
 
-				element = document.createElement 'div'
+				element = @text = document.createElement 'div'
 				element.id = 'clickme'
 				element.innerHTML = @options.text
 				element.style.cssText = "left:#{ @x - @r }px; top:#{ @y }px"
@@ -55,3 +58,13 @@ set the left margin so the text is centered
 then fade the text in
 
 				util.classList.add element, 'fade-in'
+
+then attach DOM events
+
+				@attachMessageEvents
+
+			attachMessageEvents: ->
+
+				@text.addEventListener 'mouseenter', ->
+					@graph.over()
+				@text.addEventListener 'mouseleave',

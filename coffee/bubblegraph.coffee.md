@@ -166,7 +166,7 @@ use `Raphael` to generate the bubble
 colorize it. the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
 
 					if n is last
-						@throbber = new Throbber circle
+						@throbber = new Throbber circle, @over, @out
 
 					circle.node.setAttribute 'class', className
 					circle.node.setAttribute 'data-id', n
@@ -304,19 +304,22 @@ activate this?
 ## over
 `mouseover` handler for bubbles
 
-			over: (element) ->
+			over: (bubble) ->
 
-				active = @model.get 'active'
+				active = _.where (@model.get 'bubbles'),
+					active: true
 
-				if element isnt active
-					element.animate @animations.over
+				if not active[0] or bubble isnt active[0]
+					console.log 'a'
+					bubble.animate @animations.over
 
 ## out
 `mouseout` handler for bubbles
 
-			out: (element) ->
+			out: (bubble) ->
 
-				active = @model.get 'active'
+				active = _.where (@model.get 'bubbles'),
+					active: true
 
-				if element isnt active
-					element.animate @animations.out
+				if not active[0] or bubble isnt active[0]
+					bubble.animate @animations.out

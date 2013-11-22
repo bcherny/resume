@@ -12,9 +12,13 @@ define(function(require) {
       text: 'click me!'
     };
 
-    function Throbber(bubble) {
+    function Throbber(bubble, over, out) {
       this.bubble = bubble;
       this.throb = __bind(this.throb, this);
+      this.graph = {
+        over: over,
+        out: out
+      };
       this.state = true;
       this.r = this.bubble.attr('r');
       this.x = this.bubble.attr('cx');
@@ -34,13 +38,21 @@ define(function(require) {
 
     Throbber.prototype.showMessage = function() {
       var element;
-      element = document.createElement('div');
+      element = this.text = document.createElement('div');
       element.id = 'clickme';
       element.innerHTML = this.options.text;
       element.style.cssText = "left:" + (this.x - this.r) + "px; top:" + this.y + "px";
       document.body.appendChild(element);
       element.style.marginLeft = "" + (this.r - element.offsetWidth / 2) + "px";
-      return util.classList.add(element, 'fade-in');
+      util.classList.add(element, 'fade-in');
+      return this.attachMessageEvents;
+    };
+
+    Throbber.prototype.attachMessageEvents = function() {
+      this.text.addEventListener('mouseenter', function() {
+        return this.graph.over();
+      });
+      return this.text.addEventListener('mouseleave');
     };
 
     return Throbber;
