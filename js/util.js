@@ -20,7 +20,7 @@
           if (element.tagName === 'circle') {
             return element.setAttribute('class', "" + className + " " + element.className.baseVal);
           } else {
-            return element.className += className;
+            return element.className += " " + className;
           }
         },
         remove: function(element, className) {

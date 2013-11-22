@@ -329,6 +329,8 @@ show the pane for a sec to give it a measurable `offsetWidth`
 				width = details.offsetWidth - 20 # 20 is the padding
 				util.classList.add details, 'hide'
 
+				console.log "width = #{width}"
+
 				placeholders = details.querySelectorAll '.map-placeholder'
 
 fetch map images from google using `GMaps`

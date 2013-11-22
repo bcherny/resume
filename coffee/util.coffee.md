@@ -36,7 +36,7 @@ manipulate `Element.classList` in an Internet Explorer-compatible way
 						element.setAttribute 'class', "#{className} #{element.className.baseVal}"
 
 					else
-						element.className += className
+						element.className += " #{className}"
 
 				remove: (element, className) ->
 
