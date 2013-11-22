@@ -298,21 +298,34 @@ render history details (what shows up when user clicks on bubbles)
 
 render history bubbles
 				
-				_.defer =>
+				setTimeout =>
 					do @renderBubbles
 					util.log 'rendered bubbles!'
+				,0
+
+hide loading spinner
+
+				do @clearSpinner
 
 render maps
 				
-				_.defer =>
+				setTimeout =>
 					do @renderMaps
 					util.log 'rendered maps!'
+				,0
 
 fetch repo count?
 				
-				_.defer =>
+				setTimeout =>
 					do @getRepoCount
 					util.log 'fetched repos!'
+				,0
+
+			clearSpinner: ->
+
+				#spinner = document.querySelector '#loading'
+
+				#util.classList.add spinner, 'fade-out'
 
 ## renderBubbles
 

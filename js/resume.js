@@ -186,19 +186,22 @@ define(function(require) {
       });
       this.options.element.innerHTML = html;
       util.log('rendered history!');
-      _.defer(function() {
+      setTimeout(function() {
         _this.renderBubbles();
         return util.log('rendered bubbles!');
-      });
-      _.defer(function() {
+      }, 0);
+      this.clearSpinner();
+      setTimeout(function() {
         _this.renderMaps();
         return util.log('rendered maps!');
-      });
-      return _.defer(function() {
+      }, 0);
+      return setTimeout(function() {
         _this.getRepoCount();
         return util.log('fetched repos!');
-      });
+      }, 0);
     };
+
+    Resume.prototype.clearSpinner = function() {};
 
     Resume.prototype.renderBubbles = function() {
       var graph;
