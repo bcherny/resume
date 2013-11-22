@@ -215,9 +215,7 @@ deactivates active circles, panes
 
 					setTimeout =>
 						
-						className = bubble.node.className.baseVal
-						className = className.replace /(^|\\s)active(?:\\s|$)/, '$1'
-						bubble.attr 'class', className
+						util.classList.remove bubble.node, active
 
 animate
 
@@ -231,9 +229,9 @@ update model
 
 					active[0].active = false
 
-				if pane
-
 hide pane
+
+				if pane
 
 					util.classList.remove pane, 'active'
 
@@ -259,7 +257,7 @@ activates active circles, panes
 
 activate this
 
-				bubble.attr 'class', "#{bubble.attr 'class'} active"
+				util.classList.add bubble.node, 'active'
 
 show details container
 

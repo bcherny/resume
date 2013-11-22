@@ -127,10 +127,7 @@
         if (active[0]) {
           bubble = active[0].raphael;
           setTimeout(function() {
-            var className;
-            className = bubble.node.className.baseVal;
-            className = className.replace(/(^|\\s)active(?:\\s|$)/, '$1');
-            bubble.attr('class', className);
+            util.classList.remove(bubble.node, active);
             return bubble.animate(_this.animations.inactive).transform('s1');
           }, 10);
           active[0].active = false;
@@ -148,7 +145,7 @@
       BubbleGraph.prototype.activate = function(bubble) {
         var id, panel;
         id = bubble.node.getAttribute('data-id');
-        bubble.attr('class', "" + (bubble.attr('class')) + " active");
+        util.classList.add(bubble.node, 'active');
         util.classList.remove(document.querySelector('#details'), 'hide');
         panel = (document.querySelectorAll('.detail'))[id];
         util.classList.remove(panel, 'hide');

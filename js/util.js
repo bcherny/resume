@@ -17,15 +17,28 @@
       },
       classList: {
         add: function(element, className) {
-          return element.className += className;
+          if (element.tagName === 'circle') {
+            return element.setAttribute('class', "" + className + " " + element.className.baseVal);
+          } else {
+            return element.className += className;
+          }
         },
         remove: function(element, className) {
           var regex;
           regex = new RegExp("(^|\\s)" + className + "(?:\\s|$)");
-          return element.className = (element.className + '').replace(regex, '$1');
+          if (element.tagName === 'circle') {
+            return element.setAttribute('class', (element.className.baseVal + '').replace(regex, '$1'));
+          } else {
+            return element.className = (element.className + '').replace(regex, '$1');
+          }
         },
         contains: function(element, className) {
-          return (element.className.indexOf(className)) > -1;
+          var value;
+          value = element.className;
+          if (element.tagName === 'circle') {
+            value = value.baseVal;
+          }
+          return (value.indexOf(className)) > -1;
         }
       }
     };
