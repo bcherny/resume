@@ -223,6 +223,18 @@ header a {
   display: block;
   line-height: 22px;
 }
+#loading {
+  height: 88px;
+  width: 88px;
+  -webkit-opacity: 0.6;
+  -moz-opacity: 0.6;
+  -ms-opacity: 0.6;
+  -o-opacity: 0.6;
+  opacity: 0.6;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
 #clickme {
   border-bottom: 4px solid rgba(255,255,255,0.2);
   color: rgba(255,255,255,0.7);
@@ -238,15 +250,13 @@ header a {
   position: absolute;
   text-align: center;
 }
-#forkme:hover img {
-  -webkit-opacity: 1;
-  -moz-opacity: 1;
-  -ms-opacity: 1;
-  -o-opacity: 1;
-  opacity: 1;
-}
-#forkme img {
-  cursor: pointer;
+#forkme {
+  background: url("../images/forkme@2x.png") 0 0;
+  -webkit-background-size: 149px;
+  -moz-background-size: 149px;
+  -ms-background-size: 149px;
+  -o-background-size: 149px;
+  background-size: 149px;
   height: 149px;
   width: 149px;
   position: absolute;
@@ -262,11 +272,13 @@ header a {
   -ms-transition: all 0.2s linear;
   -o-transition: all 0.2s linear;
   transition: all 0.2s linear;
-  -webkit-transform: rotate(180deg);
-  -moz-transform: rotate(180deg);
-  -ms-transform: rotate(180deg);
-  -o-transform: rotate(180deg);
-  transform: rotate(180deg);
+}
+#forkme:hover {
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  -ms-opacity: 1;
+  -o-opacity: 1;
+  opacity: 1;
 }
 #resume {
   position: absolute;

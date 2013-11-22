@@ -3,6 +3,7 @@
 dependencies
 
 		_ = require 'lodash'
+		annie = require 'annie'
 		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
 		marked = require 'marked'
@@ -61,7 +62,7 @@ resume
 
 					_labels =
 						email: 'Email'
-						github: 'Github'
+						github: 'GitHub'
 						npm: 'NPM'
 						www: 'Web'
 
@@ -205,8 +206,10 @@ attach DOM events
 				do @attachEvents
 
 render it!
-
-				do @render
+				
+				setTimeout =>
+					do @render
+				, 0
 
 append CSS rules for properly sizing the bubbles when they're moved out of the way (aka. when they are clicked) to the stylesheet
 
@@ -227,9 +230,10 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 				element = event.target
 				isCircle = @isCircle element
 				isDetails = @getDetails element
+				isClickMeText = @isClickMeText element
 				graph = @model.get 'graph'
 
-				if not isCircle and not isDetails and graph
+				if not isCircle and not isDetails and not isClickMeText and graph
 
 					do graph.deactivate
 
@@ -248,6 +252,12 @@ scale up `<svg>`
 			isDetails: (element) ->
 
 				element.id is 'details'
+
+## isClickMeText
+			
+			isClickMeText: (element) ->
+
+				element.id is 'clickme'
 
 ## getDetails
 
@@ -289,19 +299,35 @@ render history details (what shows up when user clicks on bubbles)
 				util.log 'rendered history!'
 
 render history bubbles
+				
+				setTimeout =>
+					do @renderBubbles
+					util.log 'rendered bubbles!'
+				,0
 
-				do @renderBubbles
-				util.log 'rendered bubbles!'
+hide loading spinner
+
+				do @clearSpinner
 
 render maps
-
-				do @renderMaps
-				util.log 'rendered maps!'
+				
+				setTimeout =>
+					do @renderMaps
+					util.log 'rendered maps!'
+				,0
 
 fetch repo count?
 				
-				do @getRepoCount
-				util.log 'fetched repos!'
+				setTimeout =>
+					do @getRepoCount
+					util.log 'fetched repos!'
+				,0
+
+			clearSpinner: ->
+
+				spinner = document.querySelector '#loading'
+
+				util.classList.add spinner, 'fade-out'
 
 ## renderBubbles
 
@@ -409,20 +435,18 @@ show a repository count in the DOM
 				bin = Math.floor @options.element.offsetHeight/100
 
 				if bin < 5
-
 					scale = (bin+1)/10
 					rotate = -60 + 20*(5 - bin)
 
 define CSS rule for bubble group when it's activated and moved out of the way
-
+				
+				property = 'transform'
+				value = "scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);"
 				rule =
 					"""
 						svg.small {
-							-webkit-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
-							   -moz-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
-							    -ms-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
-							     -o-transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
-							        transform: scale(#{scale}) translate3d(#{x}%, #{y}%, 0) rotate(#{rotate}deg);
+							-#{ do annie.vendor.toLowerCase }-#{ property }: #{ value }
+							#{ property }: #{value}
 						}
 					"""
 

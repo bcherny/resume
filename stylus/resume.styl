@@ -109,6 +109,16 @@ header
 		display block
 		line-height 22px
 
+// spinner shown when page is loading initially
+
+#loading
+	height 88px
+	width 88px
+	opacity .6
+	position absolute
+	right 20px
+	top 20px
+
 // "click me"
 
 #clickme
@@ -125,20 +135,18 @@ header
 // "fork me on github"
 
 #forkme
+	background url("../images/forkme@2x.png") 0 0
+	background-size 149px
+	height 149px
+	width 149px
+	position absolute
+	bottom 0
+	left 0
+	opacity .5
+	transition all .2s linear
 	
-	&:hover img
+	&:hover
 		opacity 1
-
-	img
-		cursor pointer
-		height 149px
-		width 149px
-		position absolute
-		bottom 0
-		left 0
-		opacity .5
-		transition all .2s linear
-		transform rotate(180deg)
 
 // resume area
 
