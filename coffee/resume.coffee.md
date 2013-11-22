@@ -206,8 +206,10 @@ attach DOM events
 				do @attachEvents
 
 render it!
-
-				do @render
+				
+				setTimeout =>
+					do @render
+				, 0
 
 append CSS rules for properly sizing the bubbles when they're moved out of the way (aka. when they are clicked) to the stylesheet
 

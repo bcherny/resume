@@ -115,9 +115,12 @@ define(function(require) {
     });
 
     function Resume(options) {
+      var _this = this;
       _.extend(this.options, options);
       this.attachEvents();
-      this.render();
+      setTimeout(function() {
+        return _this.render();
+      }, 0);
       this.resize();
     }
 
