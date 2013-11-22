@@ -50,9 +50,11 @@ define(function(require) {
 
     Throbber.prototype.attachMessageEvents = function() {
       this.text.addEventListener('mouseenter', function() {
-        return this.graph.over();
+        return this.graph.over(this.bubble);
       });
-      return this.text.addEventListener('mouseleave');
+      return this.text.addEventListener('mouseleave', function() {
+        return this.graph.out(this.bubble);
+      });
     };
 
     return Throbber;

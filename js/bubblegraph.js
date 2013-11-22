@@ -169,7 +169,6 @@ define(function(require) {
         active: true
       });
       if (!active[0] || bubble !== active[0]) {
-        console.log('a');
         return bubble.animate(this.animations.over);
       }
     };

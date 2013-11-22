@@ -310,7 +310,6 @@ activate this?
 					active: true
 
 				if not active[0] or bubble isnt active[0]
-					console.log 'a'
 					bubble.animate @animations.over
 
 ## out

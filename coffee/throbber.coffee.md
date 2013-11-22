@@ -66,5 +66,6 @@ then attach DOM events
 			attachMessageEvents: ->
 
 				@text.addEventListener 'mouseenter', ->
-					@graph.over()
-				@text.addEventListener 'mouseleave',
+					@graph.over @bubble
+				@text.addEventListener 'mouseleave', ->
+					@graph.out @bubble
