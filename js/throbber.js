@@ -15,6 +15,7 @@ define(function(require) {
     function Throbber(bubble, graph) {
       this.bubble = bubble;
       this.graph = graph;
+      this.clear = __bind(this.clear, this);
       this.throb = __bind(this.throb, this);
       this.state = true;
       this.r = this.bubble.attr('r');
@@ -31,7 +32,14 @@ define(function(require) {
       }, this.options.duration, this.options.easing, this.throb);
     };
 
-    Throbber.prototype.clear = function() {};
+    Throbber.prototype.clear = function() {
+      var _this = this;
+      this.bubble.stop();
+      util.classList.add(this.text, 'fade-out');
+      return setTimeout(function() {
+        return document.body.removeChild(_this.text);
+      }, 2000);
+    };
 
     Throbber.prototype.showMessage = function() {
       var element;

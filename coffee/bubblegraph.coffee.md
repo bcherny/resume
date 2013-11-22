@@ -20,6 +20,7 @@ simple model to keep track of bubbles
 
 			model: new umodel
 				bubbles: {}
+				throbber: null
 
 prepare `Raphael` animations
 
@@ -166,7 +167,7 @@ use `Raphael` to generate the bubble
 colorize it. the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
 
 					if n is last
-						@throbber = new Throbber circle,
+						@model.set 'throbber', new Throbber circle,
 							click: @click
 							over: @over
 							out: @out
@@ -296,9 +297,11 @@ activate in model
 
 			click: (bubble) =>
 
-clear throbbing circle (used as affordance)
-
-				do @clearThrobber
+clear throbbing bubble (used as affordance)?
+				
+				if throbber = @model.get 'throbber'
+					do throbber.clear
+					@model.set 'throbber', null
 
 activate this?
 

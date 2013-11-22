@@ -15,7 +15,8 @@ define(function(require) {
     };
 
     BubbleGraph.prototype.model = new umodel({
-      bubbles: {}
+      bubbles: {},
+      throbber: null
     });
 
     BubbleGraph.prototype.animations = {
@@ -92,11 +93,11 @@ define(function(require) {
           return _this.click(circle);
         });
         if (n === last) {
-          _this.throbber = new Throbber(circle, {
+          _this.model.set('throbber', new Throbber(circle, {
             click: _this.click,
             over: _this.over,
             out: _this.out
-          });
+          }));
         }
         circle.node.setAttribute('class', className);
         circle.node.setAttribute('data-id', n);
@@ -168,7 +169,11 @@ define(function(require) {
     };
 
     BubbleGraph.prototype.click = function(bubble) {
-      this.clearThrobber();
+      var throbber;
+      if (throbber = this.model.get('throbber')) {
+        throbber.clear();
+        this.model.set('throbber', null);
+      }
       return this.toggle(bubble);
     };
 

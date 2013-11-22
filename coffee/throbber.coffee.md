@@ -35,7 +35,15 @@ creates a throbbing bubble as an affordance indicating that it's clickable
 				, @options.easing
 				, @throb
 
-			clear: ->
+			clear: =>
+
+				do @bubble.stop
+
+				util.classList.add @text, 'fade-out'
+
+				setTimeout =>
+					document.body.removeChild @text
+				, 2000
 
 			showMessage: ->
 
