@@ -203,7 +203,7 @@
           _this = this;
         details = document.querySelector('#details');
         util.classList.remove(details, 'hide');
-        width = details.offsetWidth;
+        width = details.offsetWidth - 20;
         util.classList.add(details, 'hide');
         placeholders = details.querySelectorAll('.map-placeholder');
         return _.each(this.options.history, function(item, n) {
