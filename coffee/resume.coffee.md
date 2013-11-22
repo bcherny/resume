@@ -61,7 +61,7 @@ resume
 
 					_labels =
 						email: 'Email'
-						github: 'Github'
+						github: 'GitHub'
 						npm: 'NPM'
 						www: 'Web'
 

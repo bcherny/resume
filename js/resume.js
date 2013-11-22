@@ -22,7 +22,7 @@ define(function(require) {
         var contacts, key, value, _labels, _ref, _template;
         _labels = {
           email: 'Email',
-          github: 'Github',
+          github: 'GitHub',
           npm: 'NPM',
           www: 'Web'
         };
