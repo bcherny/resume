@@ -4,6 +4,7 @@ bubblegraph resume component
 	define (require) ->
 
 		_ = require 'lodash'
+		Throbber = require 'throbber'
 		umodel = require 'umodel'
 		util = require 'util'
 
@@ -14,11 +15,6 @@ bubblegraph resume component
 				colors: []
 				data: {}
 				element: document.body
-				throbber:
-					duration: 500
-					easing: 'linear'
-					size: 10
-					text: 'click me!'
 
 simple model to keep track of bubbles
 
@@ -170,8 +166,7 @@ use `Raphael` to generate the bubble
 colorize it. the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
 
 					if n is last
-						@throb circle, r
-						@showClickMe x, y, r
+						@throbber = new Throbber circle
 
 					circle.node.setAttribute 'class', className
 					circle.node.setAttribute 'data-id', n
@@ -196,43 +191,6 @@ store parameters for the next iteration
 						r: r
 						x: x
 						y: y
-
-## throb
-grow and shrink the last rendered bubble (aka. most recent project) as an affordance to the user that bubbles are clickable
-
-			throb: (bubble, r, state = 0) =>
-
-				bubble.animate
-					r: r + (if state then @options.throbber.size else 0)
-				, @options.throbber.duration
-				, @options.throbber.easing
-				, => @throb bubble, r, not state
-
-## showClickMe
-show "click me" message in the throbbing circle, also as an affordance that it is clickable
-
-			showClickMe: (x, y, r) ->
-
-				element = document.createElement 'div'
-				element.id = 'clickme'
-				element.innerHTML = @options.throbber.text
-				element.style.cssText = "left:#{ x - r }px;top:#{ y }px"
-
-				document.body.appendChild element
-
-				# set the left margin so the text is centered
-				element.style.marginLeft = "#{ r - element.offsetWidth / 2 }px"
-
-				util.classList.add element, 'fade-in'
-
-## clearThrobber
-
-			clearThrobber: ->
-
-				element = document.querySelector '.throb'
-
-				if element
-					util.classList.remove element, 'throb'
 
 ## deactivate
 deactivates active circles, panes
