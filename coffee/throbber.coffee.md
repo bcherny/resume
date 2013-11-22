@@ -61,11 +61,12 @@ then fade the text in
 
 then attach DOM events
 
-				@attachMessageEvents
+				do @attachMessageEvents
 
 			attachMessageEvents: ->
 
-				@text.addEventListener 'mouseenter', ->
+				@text.addEventListener 'mouseover', =>
 					@graph.over @bubble
-				@text.addEventListener 'mouseleave', ->
+
+				@text.addEventListener 'mouseout', =>
 					@graph.out @bubble

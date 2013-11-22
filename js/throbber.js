@@ -45,15 +45,16 @@ define(function(require) {
       document.body.appendChild(element);
       element.style.marginLeft = "" + (this.r - element.offsetWidth / 2) + "px";
       util.classList.add(element, 'fade-in');
-      return this.attachMessageEvents;
+      return this.attachMessageEvents();
     };
 
     Throbber.prototype.attachMessageEvents = function() {
-      this.text.addEventListener('mouseenter', function() {
-        return this.graph.over(this.bubble);
+      var _this = this;
+      this.text.addEventListener('mouseover', function() {
+        return _this.graph.over(_this.bubble);
       });
-      return this.text.addEventListener('mouseleave', function() {
-        return this.graph.out(this.bubble);
+      return this.text.addEventListener('mouseout', function() {
+        return _this.graph.out(_this.bubble);
       });
     };
 

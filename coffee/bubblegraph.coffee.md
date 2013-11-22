@@ -304,7 +304,7 @@ activate this?
 ## over
 `mouseover` handler for bubbles
 
-			over: (bubble) ->
+			over: (bubble) =>
 
 				active = _.where (@model.get 'bubbles'),
 					active: true
@@ -315,7 +315,7 @@ activate this?
 ## out
 `mouseout` handler for bubbles
 
-			out: (bubble) ->
+			out: (bubble) =>
 
 				active = _.where (@model.get 'bubbles'),
 					active: true
