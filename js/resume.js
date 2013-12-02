@@ -177,17 +177,27 @@
         var queue,
           _this = this;
         util.log('rendering...');
-        queue = {
-          renderHistory: 'rendered history!',
-          renderBubbles: 'rendered bubbles!',
-          clearSpinner: null,
-          renderMaps: 'rendered maps!',
-          getRepoCount: 'rendered repo counts!'
-        };
-        return _.each(queue, function(message, fn) {
-          _.defer(_.bind(_this[fn], _this));
-          if (message) {
-            return util.log(message);
+        queue = [
+          {
+            fn: 'renderHistory',
+            log: 'rendered history!'
+          }, {
+            fn: 'renderBubbles',
+            log: 'rendered bubbles!'
+          }, {
+            fn: 'clearSpinner'
+          }, {
+            fn: 'renderMaps',
+            log: 'rendered maps!'
+          }, {
+            fn: 'getRepoCount',
+            log: 'rendered repo counts!'
+          }
+        ];
+        return _.each(queue, function(item) {
+          _.defer(_.bind(_this[item.fn], _this));
+          if (item.log) {
+            return util.log(item.log);
           }
         });
       };

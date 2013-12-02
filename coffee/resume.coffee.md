@@ -279,16 +279,17 @@ scale up `<svg>`
 
 				util.log 'rendering...'
 
-				queue =
-					renderHistory: 'rendered history!'
-					renderBubbles: 'rendered bubbles!'
-					clearSpinner: null
-					renderMaps: 'rendered maps!'
-					getRepoCount: 'rendered repo counts!'
+				queue = [
+					{ fn: 'renderHistory', log: 'rendered history!' }
+					{ fn: 'renderBubbles', log: 'rendered bubbles!' }
+					{ fn: 'clearSpinner' }
+					{ fn: 'renderMaps', log: 'rendered maps!' }
+					{ fn: 'getRepoCount', log: 'rendered repo counts!' }
+				]
 
-				_.each queue, (message, fn) =>
-					_.defer _.bind @[fn], @
-					util.log message if message
+				_.each queue, (item) =>
+					_.defer _.bind @[item.fn], @
+					util.log item.log if item.log
 
 ## clearSpinner
 
