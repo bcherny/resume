@@ -173,24 +173,21 @@
       };
 
       Resume.prototype.render = function() {
-        var _this = this;
+        var queue,
+          _this = this;
         util.log('rendering...');
-        _.defer(function() {
-          _this.renderHistory();
-          return util.log('rendered history!');
-        });
-        _.defer(function() {
-          _this.renderBubbles();
-          return util.log('rendered bubbles!');
-        });
-        this.clearSpinner();
-        _.defer(function() {
-          _this.renderMaps();
-          return util.log('rendered maps!');
-        });
-        return _.defer(function() {
-          _this.getRepoCount();
-          return util.log('fetched repos!');
+        queue = {
+          renderHistory: 'rendered history!',
+          renderBubbles: 'rendered bubbles!',
+          clearSpinner: null,
+          renderMaps: 'rendered maps!',
+          getRepoCount: 'rendered repo counts!'
+        };
+        return _.each(queue, function(message, fn) {
+          _.defer(_.bind(_this[fn], _this));
+          if (message) {
+            return util.log(message);
+          }
         });
       };
 

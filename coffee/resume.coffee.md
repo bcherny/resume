@@ -275,33 +275,16 @@ scale up `<svg>`
 
 				util.log 'rendering...'
 
-render history
-				
-				_.defer =>
-					do @renderHistory
-					util.log 'rendered history!'
+				queue =
+					renderHistory: 'rendered history!'
+					renderBubbles: 'rendered bubbles!'
+					clearSpinner: null
+					renderMaps: 'rendered maps!'
+					getRepoCount: 'rendered repo counts!'
 
-render history bubbles
-				
-				_.defer =>
-					do @renderBubbles
-					util.log 'rendered bubbles!'
-
-hide loading spinner
-
-				do @clearSpinner
-
-render maps
-				
-				_.defer =>
-					do @renderMaps
-					util.log 'rendered maps!'
-
-fetch repo count?
-				
-				_.defer =>
-					do @getRepoCount
-					util.log 'fetched repos!'
+				_.each queue, (message, fn) =>
+					_.defer _.bind @[fn], @
+					util.log message if message
 
 ## clearSpinner
 
