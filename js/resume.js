@@ -182,9 +182,6 @@
             fn: 'renderHistory',
             log: 'rendered history!'
           }, {
-            fn: 'renderBubbles',
-            log: 'rendered bubbles!'
-          }, {
             fn: 'clearSpinner'
           }, {
             fn: 'renderMaps',
@@ -192,6 +189,9 @@
           }, {
             fn: 'getRepoCount',
             log: 'rendered repo counts!'
+          }, {
+            fn: 'renderBubbles',
+            log: 'rendered bubbles!'
           }
         ];
         return _.each(queue, function(item) {

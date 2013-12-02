@@ -281,10 +281,10 @@ scale up `<svg>`
 
 				queue = [
 					{ fn: 'renderHistory', log: 'rendered history!' }
-					{ fn: 'renderBubbles', log: 'rendered bubbles!' }
 					{ fn: 'clearSpinner' }
 					{ fn: 'renderMaps', log: 'rendered maps!' }
 					{ fn: 'getRepoCount', log: 'rendered repo counts!' }
+					{ fn: 'renderBubbles', log: 'rendered bubbles!' }
 				]
 
 				_.each queue, (item) =>
