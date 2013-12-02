@@ -50,7 +50,7 @@
             value = _ref[key];
             contacts += "<li><a class=\"" + key + "\" href=\"" + (_template(key, value)) + "\">" + _labels[key] + "</a></li>";
           }
-          return "<header>\n	<h1>" + this.name + "'s resume</h1>\n	<ul>" + contacts + "</ul>\n</header>";
+          return "<header>\n	<h1>" + this.name + "'s Resume</h1>\n	<ul>" + contacts + "</ul>\n</header>";
         },
         templateCover: function() {
           var skills;

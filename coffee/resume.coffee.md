@@ -85,7 +85,7 @@ resume
 
 					"""
 						<header>
-							<h1>#{@name}'s resume</h1>
+							<h1>#{@name}'s Resume</h1>
 							<ul>#{contacts}</ul>
 						</header>
 					"""
