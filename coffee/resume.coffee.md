@@ -85,7 +85,7 @@ resume
 
 					"""
 						<header>
-							<h1>#{@name}'s resume</h1>
+							<h1>#{@name}'s Resume</h1>
 							<ul>#{contacts}</ul>
 						</header>
 					"""
@@ -205,6 +205,10 @@ attach DOM events
 
 				do @attachEvents
 
+set page title
+
+				document.title = "#{@options.name}'s Resume"
+
 render it!
 				
 				setTimeout =>
@@ -275,8 +279,28 @@ scale up `<svg>`
 
 				util.log 'rendering...'
 
-				html = ''
-				htmlDetails = ''
+				queue =
+					renderHistory: 'rendered history!'
+					renderBubbles: 'rendered bubbles!'
+					clearSpinner: null
+					renderMaps: 'rendered maps!'
+					getRepoCount: 'rendered repo counts!'
+
+				_.each queue, (message, fn) =>
+					_.defer _.bind @[fn], @
+					util.log message if message
+
+## clearSpinner
+
+			clearSpinner: ->
+
+				spinner = document.querySelector '#loading'
+
+				util.classList.add spinner, 'fade-out'
+
+			renderHistory: ->
+
+				html = htmlDetails = ''
 
 render header (title, contact information)
 
@@ -295,39 +319,6 @@ render history details (what shows up when user clicks on bubbles)
 					content: htmlDetails
 
 				@options.element.innerHTML = html
-
-				util.log 'rendered history!'
-
-render history bubbles
-				
-				setTimeout =>
-					do @renderBubbles
-					util.log 'rendered bubbles!'
-				,0
-
-hide loading spinner
-
-				do @clearSpinner
-
-render maps
-				
-				setTimeout =>
-					do @renderMaps
-					util.log 'rendered maps!'
-				,0
-
-fetch repo count?
-				
-				setTimeout =>
-					do @getRepoCount
-					util.log 'fetched repos!'
-				,0
-
-			clearSpinner: ->
-
-				spinner = document.querySelector '#loading'
-
-				util.classList.add spinner, 'fade-out'
 
 ## renderBubbles
 
