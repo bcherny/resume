@@ -320,6 +320,8 @@ fetch repo count?
 					do @getRepoCount
 					util.log 'fetched repos!'
 
+## clearSpinner
+
 			clearSpinner: ->
 
 				spinner = document.querySelector '#loading'
