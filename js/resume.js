@@ -173,23 +173,12 @@
       };
 
       Resume.prototype.render = function() {
-        var html, htmlDetails, item, _i, _len, _ref,
-          _this = this;
+        var _this = this;
         util.log('rendering...');
-        html = '';
-        htmlDetails = '';
-        html += this.options.templateHeader.call(this.options);
-        html += this.options.templateCover.call(this.options);
-        _ref = this.options.history;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          item = _ref[_i];
-          htmlDetails += this.options.templateHistoryItem.call(item);
-        }
-        html += this.options.templateHistory.call({
-          content: htmlDetails
+        _.defer(function() {
+          _this.renderHistory();
+          return util.log('rendered history!');
         });
-        this.options.element.innerHTML = html;
-        util.log('rendered history!');
         _.defer(function() {
           _this.renderBubbles();
           return util.log('rendered bubbles!');
@@ -209,6 +198,22 @@
         var spinner;
         spinner = document.querySelector('#loading');
         return util.classList.add(spinner, 'fade-out');
+      };
+
+      Resume.prototype.renderHistory = function() {
+        var html, htmlDetails, item, _i, _len, _ref;
+        html = htmlDetails = '';
+        html += this.options.templateHeader.call(this.options);
+        html += this.options.templateCover.call(this.options);
+        _ref = this.options.history;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          item = _ref[_i];
+          htmlDetails += this.options.templateHistoryItem.call(item);
+        }
+        html += this.options.templateHistory.call({
+          content: htmlDetails
+        });
+        return this.options.element.innerHTML = html;
       };
 
       Resume.prototype.renderBubbles = function() {

@@ -275,28 +275,11 @@ scale up `<svg>`
 
 				util.log 'rendering...'
 
-				html = ''
-				htmlDetails = ''
-
-render header (title, contact information)
-
-				html += @options.templateHeader.call @options
-
-render objective, skills
-
-				html += @options.templateCover.call @options
-
-render history details (what shows up when user clicks on bubbles)
-
-				for item in @options.history
-					htmlDetails += @options.templateHistoryItem.call item
-
-				html += @options.templateHistory.call
-					content: htmlDetails
-
-				@options.element.innerHTML = html
-
-				util.log 'rendered history!'
+render history
+				
+				_.defer =>
+					do @renderHistory
+					util.log 'rendered history!'
 
 render history bubbles
 				
@@ -327,6 +310,28 @@ fetch repo count?
 				spinner = document.querySelector '#loading'
 
 				util.classList.add spinner, 'fade-out'
+
+			renderHistory: ->
+
+				html = htmlDetails = ''
+
+render header (title, contact information)
+
+				html += @options.templateHeader.call @options
+
+render objective, skills
+
+				html += @options.templateCover.call @options
+
+render history details (what shows up when user clicks on bubbles)
+
+				for item in @options.history
+					htmlDetails += @options.templateHistoryItem.call item
+
+				html += @options.templateHistory.call
+					content: htmlDetails
+
+				@options.element.innerHTML = html
 
 ## renderBubbles
 
