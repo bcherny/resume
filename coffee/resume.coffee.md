@@ -205,6 +205,10 @@ attach DOM events
 
 				do @attachEvents
 
+set page title
+
+				document.title = "#{@options.name}'s Resume"
+
 render it!
 				
 				setTimeout =>

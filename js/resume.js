@@ -119,6 +119,7 @@
         var _this = this;
         _.extend(this.options, options);
         this.attachEvents();
+        document.title = "" + this.options.name + "'s Resume";
         setTimeout(function() {
           return _this.render();
         }, 0);
