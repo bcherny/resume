@@ -83,7 +83,7 @@
             x = 20 + r;
             y = size.height - r - 20;
           }
-          circle = paper.circle(x, y, r);
+          circle = paper.circle(0, 0, r);
           circle.mouseover(function() {
             return _this.over(circle);
           });
@@ -93,19 +93,24 @@
           circle.click(function() {
             return _this.click(circle);
           });
-          if (n === last) {
-            _this.model.set('throbber', new Throbber(circle, {
-              click: _this.click,
-              over: _this.over,
-              out: _this.out
-            }));
-          }
           circle.node.setAttribute('class', className);
           circle.node.setAttribute('data-id', n);
           circle.attr({
             opacity: .5,
             stroke: '#fff',
             'stroke-width': 0
+          });
+          circle.animate({
+            cx: x,
+            cy: y
+          }, 2000, 'elastic', function() {
+            if (n === last) {
+              return _this.model.set('throbber', new Throbber(circle, {
+                click: _this.click,
+                over: _this.over,
+                out: _this.out
+              }));
+            }
           });
           _this.model.set("bubbles/" + n, {
             active: false,
