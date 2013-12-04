@@ -61,7 +61,7 @@
           return "<div id=\"details\" class=\"hide\">\n	" + this.content + "\n</div>";
         },
         templateHistoryItem: function() {
-          var data, date, fields, from, item, location, map, responsibilities, skills, to, _i, _len;
+          var data, date, fields, from, image, images, item, location, map, n, responsibilities, skills, to, _i, _j, _len, _len1, _ref;
           if (this.when[1] === null) {
             date = new Date();
             this.when[1] = "" + (date.getFullYear()) + "-" + (date.getMonth());
@@ -106,8 +106,23 @@
               fields += "<dt>" + item.field + "</dt><dd>" + (marked(item.value)) + "</dd>";
             }
           }
-          map = this.location ? "<span class=\"map-placeholder\">\n	Loading<br />\n	map...\n	<span class=\"spinner\"></span>\n</span>" : '';
-          return "<section class=\"detail hide\">\n	" + map + "\n	<dl>\n		" + fields + "\n	</dl>\n</section>";
+          if (this.images) {
+            images = '<ul class="images">';
+            _ref = this.images;
+            for (n = _j = 0, _len1 = _ref.length; _j < _len1; n = ++_j) {
+              image = _ref[n];
+              images += "<li><img src=\"data/images/" + image + "\" alt=\"" + this.company + " screenshot\" rel=\"lightbox[" + this.company + "]\" /></li>";
+            }
+            images += '</ul>';
+          } else {
+            images = '';
+          }
+          if (this.location) {
+            map = "<span class=\"map-placeholder\">\n	Loading<br />\n	map...\n	<span class=\"spinner\"></span>\n</span>";
+          } else {
+            map = '';
+          }
+          return "<section class=\"detail hide\">\n	" + map + "\n	" + images + "\n	<dl>\n		" + fields + "\n	</dl>\n</section>";
         }
       };
 

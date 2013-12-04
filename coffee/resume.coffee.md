@@ -55,7 +55,6 @@ resume
 
 				colors: ['0B486B', 'A8DBA8', '79BD9A', '3B8686', 'CFF09E']
 
-
 {Function} template for the header element
 
 				templateHeader: ->
@@ -167,21 +166,46 @@ format other fields
 					for item in data
 						fields += "<dt>#{item.field}</dt><dd>#{marked item.value}</dd>" if item.value?
 
+screenshots
+
+					if @images
+
+						images = '<ul class="images">'
+
+						for image, n in @images
+
+							images += """
+								<li><img src="data/images/#{image}" alt="#{@company} screenshot" rel="lightbox[#{@company}]" /></li>
+							"""
+
+						images += '</ul>'
+
+					else
+
+						images = ''
+
 google map
 
-					map = if @location then """
-						<span class="map-placeholder">
-							Loading<br />
-							map...
-							<span class="spinner"></span>
-						</span>
-					""" else ''
+					if @location
+
+						map = """
+							<span class="map-placeholder">
+								Loading<br />
+								map...
+								<span class="spinner"></span>
+							</span>
+						"""
+
+					else
+
+						map = ''
 
 return compiled
 
 					"""
 						<section class="detail hide">
 							#{map}
+							#{images}
 							<dl>
 								#{ fields }
 							</dl>
