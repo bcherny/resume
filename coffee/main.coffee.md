@@ -6,6 +6,7 @@
 			GMaps: '../node_modules/gmaps/gmaps'
 			lodash: '../node_modules/lodash/lodash'
 			marked: '../node_modules/marked/lib/marked'
+			microbox: '../node_modules/microbox/microbox'
 			repocount: '../node_modules/repocount/repocount'
 			snap: '../node_modules/Snap.svg/dist/snap.svg'
 			strftime: '../node_modules/strftime/strftime'
