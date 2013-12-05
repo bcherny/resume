@@ -4,10 +4,8 @@
   "description": "My resume!",
   "main": "js/resume",
   "dependencies": {
-    "lodash": "~2.2.1",
     "marked": "~0.2.10",
     "requirejs": "~2.1.9",
-    "raphael": "~2.1.0",
     "gmaps": "git://github.com/eighttrackmind/gmaps.git",
     "umodel": "0.0.x",
     "uxhr": "1.0.x",
@@ -18,11 +16,9 @@
     "almond": "git://github.com/jrburke/almond.git"
   },
   "devDependencies": {
-    "amdclean": "~0.3.3",
     "grunt": "~0.4.2",
     "grunt-contrib-requirejs": "~0.4.1",
     "grunt-contrib-coffee": "~0.7.0",
-    "grunt-umd": "~1.3.0",
     "grunt-contrib-uglify": "~0.2.7",
     "glob": "~3.2.7",
     "grunt-contrib-concat": "~0.3.0"
