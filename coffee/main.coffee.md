@@ -12,6 +12,7 @@
 			strftime: '../node_modules/strftime/strftime'
 			umodel: '../node_modules/umodel/umodel'
 			uxhr: '../node_modules/uxhr/uxhr'
+			u: '../node_modules/u/u'
 
 		shim:
 			strftime:

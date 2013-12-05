@@ -7,6 +7,7 @@ dependencies
 		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
 		marked = require 'marked'
+		microbox = require 'microbox'
 		strftime = require 'strftime'
 		umodel = require 'umodel'
 		util = require 'util'
@@ -174,8 +175,10 @@ screenshots
 
 						for image, n in @images
 
+							url = "data/images/#{image}"
+
 							images += """
-								<li><img src="data/images/#{image}" alt="#{@company} screenshot" rel="lightbox[#{@company}]" /></li>
+								<li><a href="#{url}" rel="lightbox[#{@company}]"><img src="#{url}" alt="#{@company} screenshot" /></a></li>
 							"""
 
 						images += '</ul>'
@@ -309,6 +312,7 @@ scale up `<svg>`
 					{ fn: 'renderMaps', log: 'rendered maps!' }
 					{ fn: 'getRepoCount', log: 'rendered repo counts!' }
 					{ fn: 'renderBubbles', log: 'rendered bubbles!' }
+					{ fn: 'initLightboxes', log: 'initialized lightboxes' }
 				]
 
 				_.each queue, (item) =>
@@ -322,6 +326,12 @@ scale up `<svg>`
 				spinner = document.querySelector '#loading'
 
 				util.classList.add spinner, 'fade-out'
+
+			initLightboxes: ->
+
+				do microbox.init
+
+## renderHistory
 
 			renderHistory: ->
 
