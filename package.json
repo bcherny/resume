@@ -17,7 +17,9 @@
     "u": "git://github.com/eighttrackmind/u.git"
   },
   "devDependencies": {
-    "amdclean": "~0.3.3"
+    "amdclean": "~0.3.3",
+    "grunt": "~0.4.2",
+    "grunt-contrib-requirejs": "~0.4.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
