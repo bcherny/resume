@@ -318,6 +318,13 @@ scale up `<svg>`
 					element = element.parentNode
 
 ## render
+we queue up rendering-related tasks like this for a number of reasons:
+
+- it provides a clean interface to add/remove tasks
+- it keeps rendering tasks independent of one another
+- iteration reduces code redundancy
+- deferring prevents the UI from locking up between iterations
+- it's a readable way to organize the code
 
 			render: ->
 
