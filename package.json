@@ -13,7 +13,7 @@
     "uxhr": "1.0.x",
     "strftime": "~0.6.2",
     "annie": "0.1.x",
-    "microbox": "git://github.com/eighttrackmind/microbox.git",
+    "microbox": "3.0.x",
     "_": "git://github.com/eighttrackmind/_.git"
   },
   "devDependencies": {},
