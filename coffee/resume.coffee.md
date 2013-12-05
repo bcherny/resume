@@ -2,7 +2,6 @@
 
 dependencies
 
-		#_ = require 'lodash'
 		annie = require 'annie'
 		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
