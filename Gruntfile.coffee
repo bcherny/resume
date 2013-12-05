@@ -12,12 +12,12 @@ module.exports = (grunt) ->
 					wrap: true
 					preserveLicenseComments: false
 					optimize: 'none'
-					mainConfigFile: 'js/main.js'
-					exclude: ['lodash', 'GMaps']
-					include: ['main.js']
+					mainConfigFile: 'js/config.js'
+					exclude: []
+					include: ['app.js']
 					out: 'resume.js'
-					onBuildWrite: (name, path, contents) ->
-						(require 'amdclean').clean contents
+					# onBuildWrite: (name, path, contents) ->
+					# 	(require 'amdclean').clean contents
 
 	grunt.loadNpmTasks 'grunt-contrib-requirejs'
 	grunt.registerTask 'build', ['requirejs:js']

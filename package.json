@@ -14,7 +14,8 @@
     "strftime": "~0.6.2",
     "annie": "0.1.x",
     "microbox": "3.0.x",
-    "u": "git://github.com/eighttrackmind/u.git"
+    "u": "git://github.com/eighttrackmind/u.git",
+    "almond": "git://github.com/jrburke/almond.git"
   },
   "devDependencies": {
     "amdclean": "~0.3.3",
