@@ -12,6 +12,7 @@ dependencies
 		umodel = require 'umodel'
 		util = require 'util'
 		uxhr = require 'uxhr'
+		u = require 'u'
 
 resume
 ======
@@ -264,7 +265,11 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 				isCircle = @isCircle element
 				isDetails = @getDetails element
 				isClickMeText = @isClickMeText element
+				isLightbox = @isLightbox element
 				graph = @model.get 'graph'
+
+				if isLightbox
+					return false
 
 				if not isCircle and not isDetails and not isClickMeText and graph
 
@@ -272,7 +277,17 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 
 scale up `<svg>`
 
-					util.classList.remove (document.querySelector 'svg'), 'small'
+					u.classList.remove (document.querySelector 'svg'), 'small'
+
+## isLightbox
+
+			isLightbox: (element) ->
+
+				while element isnt document
+
+					return true if u.classList.contains element, 'microbox'
+
+					element = element.parentNode
 
 ## isCircle
 
@@ -325,7 +340,7 @@ scale up `<svg>`
 
 				spinner = document.querySelector '#loading'
 
-				util.classList.add spinner, 'fade-out'
+				u.classList.add spinner, 'fade-out'
 
 			initLightboxes: ->
 
@@ -377,9 +392,9 @@ compute details pane width
 
 show the pane for a sec to give it a measurable `offsetWidth`
 
-				util.classList.remove details, 'hide'
+				u.classList.remove details, 'hide'
 				width = details.offsetWidth - 20 # 20 is the padding
-				util.classList.add details, 'hide'
+				u.classList.add details, 'hide'
 
 				placeholders = details.querySelectorAll '.map-placeholder'
 
@@ -416,7 +431,7 @@ wait for the image to finish loading, then render it nicely
 
 fade placeholder out
 
-							util.classList.add placeholders[n], 'fade-out'
+							u.classList.add placeholders[n], 'fade-out'
 
 remove placeholder, inject map `<img>`
 
@@ -429,7 +444,7 @@ remove, inject
 force render before fading the map in
 
 								_.defer ->
-									util.classList.add img, 'fade-in'
+									u.classList.add img, 'fade-in'
 
 							, 200
 
