@@ -7,10 +7,12 @@ dependencies
 		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
 		marked = require 'marked'
+		microbox = require 'microbox'
 		strftime = require 'strftime'
 		umodel = require 'umodel'
 		util = require 'util'
 		uxhr = require 'uxhr'
+		u = require 'u'
 
 resume
 ======
@@ -54,7 +56,6 @@ resume
 {Array} colors for bubbles
 
 				colors: ['0B486B', 'A8DBA8', '79BD9A', '3B8686', 'CFF09E']
-
 
 {Function} template for the header element
 
@@ -167,15 +168,41 @@ format other fields
 					for item in data
 						fields += "<dt>#{item.field}</dt><dd>#{marked item.value}</dd>" if item.value?
 
+screenshots
+
+					if @images
+
+						images = '<dt>Screenshots</dt><dd><ul class="images">'
+
+						for image, n in @images
+
+							url = "data/images/#{image}"
+
+							images += """
+								<li><a href="#{url}" rel="lightbox[#{@company}]"><img src="#{url}" alt="#{@company} screenshot" /></a></li>
+							"""
+
+						images += '</ul></dd>'
+
+					else
+
+						images = ''
+
 google map
 
-					map = if @location then """
-						<span class="map-placeholder">
-							Loading<br />
-							map...
-							<span class="spinner"></span>
-						</span>
-					""" else ''
+					if @location
+
+						map = """
+							<span class="map-placeholder">
+								Loading<br />
+								map...
+								<span class="spinner"></span>
+							</span>
+						"""
+
+					else
+
+						map = ''
 
 return compiled
 
@@ -184,6 +211,7 @@ return compiled
 							#{map}
 							<dl>
 								#{ fields }
+								#{ images }
 							</dl>
 						</section>
 					"""
@@ -196,6 +224,8 @@ simple model
 ## constructor
 						
 			constructor: (options) ->
+
+				util.log 'loaded!'
 
 set options
 
@@ -211,13 +241,13 @@ set page title
 
 render it!
 				
-				setTimeout =>
-					do @render
-				, 0
+				do @render
 
 append CSS rules for properly sizing the bubbles when they're moved out of the way (aka. when they are clicked) to the stylesheet
 
 				do @resize
+
+				util.log 'rendered!'
 
 ## attachEvents
 
@@ -235,7 +265,11 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 				isCircle = @isCircle element
 				isDetails = @getDetails element
 				isClickMeText = @isClickMeText element
+				isLightbox = @isLightbox element
 				graph = @model.get 'graph'
+
+				if isLightbox
+					return false
 
 				if not isCircle and not isDetails and not isClickMeText and graph
 
@@ -243,7 +277,17 @@ append CSS rules for properly sizing the bubbles when they're moved out of the w
 
 scale up `<svg>`
 
-					util.classList.remove (document.querySelector 'svg'), 'small'
+					u.classList.remove (document.querySelector 'svg'), 'small'
+
+## isLightbox
+
+			isLightbox: (element) ->
+
+				while element isnt document
+
+					return true if u.classList.contains element, 'microbox'
+
+					element = element.parentNode
 
 ## isCircle
 
@@ -277,18 +321,18 @@ scale up `<svg>`
 
 			render: ->
 
-				util.log 'rendering...'
+				queue = [
+					{ fn: 'renderHistory', log: 'rendered history!' }
+					{ fn: 'clearSpinner' }
+					{ fn: 'renderMaps', log: 'rendered maps!' }
+					{ fn: 'renderBubbles', log: 'rendered bubbles!' }
+					{ fn: 'initLightboxes', log: 'initialized lightboxes' }
+					{ fn: 'getRepoCount', log: 'rendered repo counts!' }
+				]
 
-				queue =
-					renderHistory: 'rendered history!'
-					renderBubbles: 'rendered bubbles!'
-					clearSpinner: null
-					renderMaps: 'rendered maps!'
-					getRepoCount: 'rendered repo counts!'
-
-				_.each queue, (message, fn) =>
-					_.defer _.bind @[fn], @
-					util.log message if message
+				_.each queue, (item) =>
+					_.defer _.bind @[item.fn], @
+					util.log item.log if item.log
 
 ## clearSpinner
 
@@ -296,7 +340,13 @@ scale up `<svg>`
 
 				spinner = document.querySelector '#loading'
 
-				util.classList.add spinner, 'fade-out'
+				u.classList.add spinner, 'fade-out'
+
+			initLightboxes: ->
+
+				do microbox.init
+
+## renderHistory
 
 			renderHistory: ->
 
@@ -342,9 +392,9 @@ compute details pane width
 
 show the pane for a sec to give it a measurable `offsetWidth`
 
-				util.classList.remove details, 'hide'
+				u.classList.remove details, 'hide'
 				width = details.offsetWidth - 20 # 20 is the padding
-				util.classList.add details, 'hide'
+				u.classList.add details, 'hide'
 
 				placeholders = details.querySelectorAll '.map-placeholder'
 
@@ -381,7 +431,7 @@ wait for the image to finish loading, then render it nicely
 
 fade placeholder out
 
-							util.classList.add placeholders[n], 'fade-out'
+							u.classList.add placeholders[n], 'fade-out'
 
 remove placeholder, inject map `<img>`
 
@@ -394,7 +444,7 @@ remove, inject
 force render before fading the map in
 
 								_.defer ->
-									util.classList.add img, 'fade-in'
+									u.classList.add img, 'fade-in'
 
 							, 200
 

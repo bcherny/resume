@@ -3,7 +3,7 @@ throbber
 	
 	define (require) ->
 		
-		util = require 'util'
+		u = require 'u'
 
 creates a throbbing bubble as an affordance indicating that it's clickable
 
@@ -39,7 +39,7 @@ creates a throbbing bubble as an affordance indicating that it's clickable
 
 				do @bubble.stop
 
-				util.classList.add @text, 'fade-out'
+				u.classList.add @text, 'fade-out'
 
 				setTimeout =>
 					document.body.removeChild @text
@@ -62,7 +62,7 @@ set the left margin so the text is centered
 
 then fade the text in
 
-				util.classList.add element, 'fade-in'
+				u.classList.add element, 'fade-in'
 
 then attach DOM events
 

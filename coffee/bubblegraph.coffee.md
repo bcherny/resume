@@ -7,6 +7,7 @@ bubblegraph resume component
 		Throbber = require 'throbber'
 		umodel = require 'umodel'
 		util = require 'util'
+		u = require 'u'
 
 		class BubbleGraph
 
@@ -159,18 +160,10 @@ the first bubble should be at the bottom left, 5px from the bottom of the canvas
 
 use `Raphael` to generate the bubble
 
-					circle = paper.circle x, y, r
+					circle = paper.circle 0, 0, r
 					circle.mouseover => @over circle
 					circle.mouseout => @out circle
 					circle.click => @click circle
-
-colorize it. the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
-
-					if n is last
-						@model.set 'throbber', new Throbber circle,
-							click: @click
-							over: @over
-							out: @out
 
 					circle.node.setAttribute 'class', className
 					circle.node.setAttribute 'data-id', n
@@ -181,6 +174,22 @@ use `Raphael` to style each bubble rather than CSS, because it behaves more cons
 						opacity: .5
 						stroke: '#fff'
 						'stroke-width': 0
+
+add a nice start animation
+
+					circle.animate
+						cx: x
+						cy: y
+					, 2000, 'elastic',
+
+the last bubble (aka. the most recent project) should draw attention to itself, to encourage the user to click on it
+
+						=>
+							if n is last
+								@model.set 'throbber', new Throbber circle,
+									click: @click
+									over: @over
+									out: @out
 
 store in model
 
@@ -211,7 +220,7 @@ deactivates active circles, panes
 
 					setTimeout =>
 						
-						util.classList.remove bubble.node, active
+						u.classList.remove bubble.node, active
 
 animate
 
@@ -229,15 +238,15 @@ hide pane
 
 				if pane
 
-					util.classList.remove pane, 'active'
+					u.classList.remove pane, 'active'
 
 					setTimeout ->
-						util.classList.add pane, 'hide'
+						u.classList.add pane, 'hide'
 					, .2
 
 hide details container
 
-					util.classList.add (document.querySelector '#details'), 'hide'
+					u.classList.add (document.querySelector '#details'), 'hide'
 
 
 scale up `<svg>`
@@ -253,17 +262,17 @@ activates active circles, panes
 
 activate this
 
-				util.classList.add bubble.node, 'active'
+				u.classList.add bubble.node, 'active'
 
 show details container
 
-				util.classList.remove (document.querySelector '#details'), 'hide'
+				u.classList.remove (document.querySelector '#details'), 'hide'
 
 activate this detail panel
 
 				panel = (document.querySelectorAll '.detail')[id]
-				util.classList.remove panel, 'hide'
-				util.classList.add panel, 'active'
+				u.classList.remove panel, 'hide'
+				u.classList.add panel, 'active'
 
 animate
 

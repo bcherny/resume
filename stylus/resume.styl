@@ -31,30 +31,7 @@ a
 	&:hover
 		text-decoration underline
 
-// general classes
-
-.email
-.github
-.www
-	background 0 center no-repeat
-	background-size auto 20px
-	padding-left 21px
-
-.email
-	background-image url($root + "iconmonstr-email-10-icon.svg")
-.github
-	background-image url($root + "iconmonstr-github-5-icon.svg")
-.npm
-	&:before
-		content: "NPM"
-		display inline-block
-		font bold 8px "Courier New", Courier, monospace
-		position relative
-		top -2px
-		text-align center
-		width 21px
-.www
-	background-image url($root + "iconmonstr-globe-3-icon.svg")
+// generic classes
 
 .fade-in
 	opacity 1 !important
@@ -108,6 +85,31 @@ header
 		color #000
 		display block
 		line-height 22px
+
+// contact
+
+.email
+.github
+.www
+	background 0 center no-repeat
+	background-size auto 20px
+	padding-left 21px
+
+.email
+	background-image url($root + "iconmonstr-email-10-icon.svg")
+.github
+	background-image url($root + "iconmonstr-github-5-icon.svg")
+.npm
+	&:before
+		content: "NPM"
+		display inline-block
+		font bold 8px "Courier New", Courier, monospace
+		position relative
+		top -2px
+		text-align center
+		width 21px
+.www
+	background-image url($root + "iconmonstr-globe-3-icon.svg")
 
 // spinner shown when page is loading initially
 
@@ -236,6 +238,29 @@ svg
 	li
 		list-style square outside
 		margin 0 0 0 16px
+
+	.images
+		background #eee
+		text-align center
+
+		img
+			border-right 1px solid #fff
+			display inline-block
+			height 100px
+			margin-bottom -3px
+			padding 10px
+
+			&:hover
+				background #ddd
+				cursor pointer
+
+		li
+			display inline-block
+			list-style none
+			margin 0
+
+			&:first-of-type img
+				border-left 1px solid #fff
 
 	.map
 	.map-placeholder

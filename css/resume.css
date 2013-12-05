@@ -123,35 +123,6 @@ a {
 a:hover {
   text-decoration: underline;
 }
-.email,
-.github,
-.www {
-  background: 0 center no-repeat;
-  -webkit-background-size: auto 20px;
-  -moz-background-size: auto 20px;
-  -ms-background-size: auto 20px;
-  -o-background-size: auto 20px;
-  background-size: auto 20px;
-  padding-left: 21px;
-}
-.email {
-  background-image: url("../images/iconmonstr-email-10-icon.svg");
-}
-.github {
-  background-image: url("../images/iconmonstr-github-5-icon.svg");
-}
-.npm:before {
-  content: "NPM";
-  display: inline-block;
-  font: bold 8px "Courier New", Courier, monospace;
-  position: relative;
-  top: -2px;
-  text-align: center;
-  width: 21px;
-}
-.www {
-  background-image: url("../images/iconmonstr-globe-3-icon.svg");
-}
 .fade-in {
   -webkit-opacity: 1 !important;
   -moz-opacity: 1 !important;
@@ -222,6 +193,35 @@ header a {
   color: #000;
   display: block;
   line-height: 22px;
+}
+.email,
+.github,
+.www {
+  background: 0 center no-repeat;
+  -webkit-background-size: auto 20px;
+  -moz-background-size: auto 20px;
+  -ms-background-size: auto 20px;
+  -o-background-size: auto 20px;
+  background-size: auto 20px;
+  padding-left: 21px;
+}
+.email {
+  background-image: url("../images/iconmonstr-email-10-icon.svg");
+}
+.github {
+  background-image: url("../images/iconmonstr-github-5-icon.svg");
+}
+.npm:before {
+  content: "NPM";
+  display: inline-block;
+  font: bold 8px "Courier New", Courier, monospace;
+  position: relative;
+  top: -2px;
+  text-align: center;
+  width: 21px;
+}
+.www {
+  background-image: url("../images/iconmonstr-globe-3-icon.svg");
 }
 #loading {
   height: 88px;
@@ -367,6 +367,29 @@ svg {
 .detail li {
   list-style: square outside;
   margin: 0 0 0 16px;
+}
+.detail .images {
+  background: #eee;
+  text-align: center;
+}
+.detail .images img {
+  border-right: 1px solid #fff;
+  display: inline-block;
+  height: 100px;
+  margin-bottom: -3px;
+  padding: 10px;
+}
+.detail .images img:hover {
+  background: #ddd;
+  cursor: pointer;
+}
+.detail .images li {
+  display: inline-block;
+  list-style: none;
+  margin: 0;
+}
+.detail .images li:first-of-type img {
+  border-left: 1px solid #fff;
 }
 .detail .map,
 .detail .map-placeholder {

@@ -3,8 +3,8 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   define(function(require) {
-    var Throbber, util;
-    util = require('util');
+    var Throbber, u;
+    u = require('u');
     return Throbber = (function() {
       Throbber.prototype.options = {
         duration: 500,
@@ -36,7 +36,7 @@
       Throbber.prototype.clear = function() {
         var _this = this;
         this.bubble.stop();
-        util.classList.add(this.text, 'fade-out');
+        u.classList.add(this.text, 'fade-out');
         return setTimeout(function() {
           return document.body.removeChild(_this.text);
         }, 2000);
@@ -50,7 +50,7 @@
         element.style.cssText = "left:" + (this.x - this.r) + "px; top:" + this.y + "px";
         document.body.appendChild(element);
         element.style.marginLeft = "" + (this.r - element.offsetWidth / 2) + "px";
-        util.classList.add(element, 'fade-in');
+        u.classList.add(element, 'fade-in');
         return this.attachMessageEvents();
       };
 

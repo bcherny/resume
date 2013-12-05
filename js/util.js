@@ -14,32 +14,6 @@
         }
         console.log(message, " (" + (time - this.time) + "ms)");
         return this.time = time;
-      },
-      classList: {
-        add: function(element, className) {
-          if (element.tagName === 'circle') {
-            return element.setAttribute('class', "" + className + " " + element.className.baseVal);
-          } else {
-            return element.className += " " + className;
-          }
-        },
-        remove: function(element, className) {
-          var regex;
-          regex = new RegExp("(^|\\s)" + className + "(?:\\s|$)");
-          if (element.tagName === 'circle') {
-            return element.setAttribute('class', (element.className.baseVal + '').replace(regex, '$1'));
-          } else {
-            return element.className = (element.className + '').replace(regex, '$1');
-          }
-        },
-        contains: function(element, className) {
-          var value;
-          value = element.className;
-          if (element.tagName === 'circle') {
-            value = value.baseVal;
-          }
-          return (value.indexOf(className)) > -1;
-        }
       }
     };
   });
