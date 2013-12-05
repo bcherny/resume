@@ -16,7 +16,9 @@
     "microbox": "3.0.x",
     "u": "git://github.com/eighttrackmind/u.git"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "amdclean": "~0.3.3"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
