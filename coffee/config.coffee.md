@@ -4,7 +4,7 @@
 		paths:
 			annie: '../node_modules/annie/annie'
 			GMaps: '../node_modules/gmaps/gmaps'
-			lodash: '../node_modules/lodash/lodash'
+			#lodash: '../node_modules/lodash/lodash'
 			marked: '../node_modules/marked/lib/marked'
 			microbox: '../node_modules/microbox/microbox'
 			strftime: '../node_modules/strftime/strftime'

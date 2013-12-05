@@ -3,8 +3,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   define(function(require) {
-    var BubbleGraph, Throbber, u, umodel, util, _;
-    _ = require('lodash');
+    var BubbleGraph, Throbber, u, umodel, util;
     Throbber = require('throbber');
     umodel = require('umodel');
     util = require('util');

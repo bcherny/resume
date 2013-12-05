@@ -2,7 +2,7 @@
 
 	define (require) ->
 
-		_ = require 'lodash'
+		#_ = require 'lodash'
 		Resume = require 'resume'
 		uxhr = require 'uxhr'
 

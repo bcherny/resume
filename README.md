@@ -14,6 +14,7 @@ Best viewed in a maximized browser window. Tested on **Chrome, Firefox, Safari, 
 - [x] refactor!!!
 - [x] add image/screenshot support
 - [ ] unit tests
+- [ ] migrate off of Raphael toward something slimmer
 - [ ] mobile version
 - [ ] legacy browser support?
 - [ ] blog about it
