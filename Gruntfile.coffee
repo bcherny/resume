@@ -13,7 +13,7 @@ module.exports = (grunt) ->
 					preserveLicenseComments: false
 					optimize: 'none'
 					mainConfigFile: 'js/main.js'
-					exclude: ['lodash']
+					exclude: ['lodash', 'GMaps']
 					include: ['main.js']
 					out: 'resume.js'
 					onBuildWrite: (name, path, contents) ->
