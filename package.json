@@ -1,8 +1,8 @@
 {
   "name": "resume",
-  "version": "0.0.3",
-  "description": "Me resume!",
-  "main": "js/resume.js",
+  "version": "0.0.4",
+  "description": "My resume!",
+  "main": "js/resume",
   "dependencies": {
     "lodash": "~2.2.1",
     "marked": "~0.2.10",
@@ -14,7 +14,7 @@
     "strftime": "~0.6.2",
     "annie": "0.1.x",
     "microbox": "3.0.x",
-    "_": "git://github.com/eighttrackmind/_.git"
+    "u": "git://github.com/eighttrackmind/u.git"
   },
   "devDependencies": {},
   "scripts": {
