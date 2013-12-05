@@ -9,25 +9,29 @@ module.exports = (grunt) ->
 		coffee:
 			compile:
 				files: {}
-				
 			options:
 				bare: true
+
+		concat:
+			options:
+				separator: ';'
+			dist:
+				src: ['node_modules/almond/almond.js', 'resume.js']
+				dest: 'resume.js'
 		
 		requirejs:
-			js:
-				options:
-					findNestedDependencies: true
-					baseUrl: 'js'
-					wrap: true
-					preserveLicenseComments: false
-					optimize: 'none'
-					mainConfigFile: 'js/config.js'
-					exclude: []
-					include: ['app.js']
-					out: 'resume.js'
-					# onBuildWrite: (name, path, contents) ->
-					# 	(require 'amdclean').clean contents
-					# 	
+			options:
+				findNestedDependencies: true
+				baseUrl: 'js'
+				wrap: true
+				preserveLicenseComments: false
+				optimize: 'none'
+				mainConfigFile: 'js/config.js'
+				include: ['app.js']
+				out: 'resume.js'
+				# onBuildWrite: (name, path, contents) ->
+				# 	(require 'amdclean').clean contents
+				# 	
 		uglify:
 			options:
 				mangle:
@@ -37,8 +41,10 @@ module.exports = (grunt) ->
 					unused: true
 					join_vars: true
 				comments: false
+				report: 'gzip'
 			standard:
-				files: {}
+				files:
+					'resume.min.js': 'resume.js'
 
 	# compile all coffeescripts into 'js/'
 	for coffee in glob.sync 'coffee/*.coffee.md'
@@ -50,9 +56,9 @@ module.exports = (grunt) ->
 
 	# load tasks
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
+	grunt.loadNpmTasks 'grunt-contrib-concat'
 	grunt.loadNpmTasks 'grunt-contrib-uglify'
 	grunt.loadNpmTasks 'grunt-contrib-requirejs'
 
 	# register tasks
-	grunt.registerTask 'build', ['coffee', 'requirejs:js']
-	grunt.registerTask 'default', ['build']
+	grunt.registerTask 'default', ['coffee', 'requirejs', 'concat', 'uglify']
