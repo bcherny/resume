@@ -224,6 +224,8 @@ simple model
 						
 			constructor: (options) ->
 
+				util.log 'loaded!'
+
 set options
 
 				_.extend @options, options
@@ -238,13 +240,13 @@ set page title
 
 render it!
 				
-				setTimeout =>
-					do @render
-				, 0
+				do @render
 
 append CSS rules for properly sizing the bubbles when they're moved out of the way (aka. when they are clicked) to the stylesheet
 
 				do @resize
+
+				util.log 'rendered!'
 
 ## attachEvents
 
@@ -304,15 +306,13 @@ scale up `<svg>`
 
 			render: ->
 
-				util.log 'rendering...'
-
 				queue = [
 					{ fn: 'renderHistory', log: 'rendered history!' }
 					{ fn: 'clearSpinner' }
 					{ fn: 'renderMaps', log: 'rendered maps!' }
-					{ fn: 'getRepoCount', log: 'rendered repo counts!' }
 					{ fn: 'renderBubbles', log: 'rendered bubbles!' }
 					{ fn: 'initLightboxes', log: 'initialized lightboxes' }
+					{ fn: 'getRepoCount', log: 'rendered repo counts!' }
 				]
 
 				_.each queue, (item) =>

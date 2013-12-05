@@ -133,14 +133,13 @@
       });
 
       function Resume(options) {
-        var _this = this;
+        util.log('loaded!');
         _.extend(this.options, options);
         this.attachEvents();
         document.title = "" + this.options.name + "'s Resume";
-        setTimeout(function() {
-          return _this.render();
-        }, 0);
+        this.render();
         this.resize();
+        util.log('rendered!');
       }
 
       Resume.prototype.attachEvents = function() {
@@ -193,7 +192,6 @@
       Resume.prototype.render = function() {
         var queue,
           _this = this;
-        util.log('rendering...');
         queue = [
           {
             fn: 'renderHistory',
@@ -204,14 +202,14 @@
             fn: 'renderMaps',
             log: 'rendered maps!'
           }, {
-            fn: 'getRepoCount',
-            log: 'rendered repo counts!'
-          }, {
             fn: 'renderBubbles',
             log: 'rendered bubbles!'
           }, {
             fn: 'initLightboxes',
             log: 'initialized lightboxes'
+          }, {
+            fn: 'getRepoCount',
+            log: 'rendered repo counts!'
           }
         ];
         return _.each(queue, function(item) {
