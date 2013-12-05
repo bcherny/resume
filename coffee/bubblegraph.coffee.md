@@ -7,6 +7,7 @@ bubblegraph resume component
 		Throbber = require 'throbber'
 		umodel = require 'umodel'
 		util = require 'util'
+		u = require 'u'
 
 		class BubbleGraph
 
@@ -219,7 +220,7 @@ deactivates active circles, panes
 
 					setTimeout =>
 						
-						util.classList.remove bubble.node, active
+						u.classList.remove bubble.node, active
 
 animate
 
@@ -237,15 +238,15 @@ hide pane
 
 				if pane
 
-					util.classList.remove pane, 'active'
+					u.classList.remove pane, 'active'
 
 					setTimeout ->
-						util.classList.add pane, 'hide'
+						u.classList.add pane, 'hide'
 					, .2
 
 hide details container
 
-					util.classList.add (document.querySelector '#details'), 'hide'
+					u.classList.add (document.querySelector '#details'), 'hide'
 
 
 scale up `<svg>`
@@ -261,17 +262,17 @@ activates active circles, panes
 
 activate this
 
-				util.classList.add bubble.node, 'active'
+				u.classList.add bubble.node, 'active'
 
 show details container
 
-				util.classList.remove (document.querySelector '#details'), 'hide'
+				u.classList.remove (document.querySelector '#details'), 'hide'
 
 activate this detail panel
 
 				panel = (document.querySelectorAll '.detail')[id]
-				util.classList.remove panel, 'hide'
-				util.classList.add panel, 'active'
+				u.classList.remove panel, 'hide'
+				u.classList.add panel, 'active'
 
 animate
 

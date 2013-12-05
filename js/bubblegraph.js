@@ -3,11 +3,12 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   define(function(require) {
-    var BubbleGraph, Throbber, umodel, util, _;
+    var BubbleGraph, Throbber, u, umodel, util, _;
     _ = require('lodash');
     Throbber = require('throbber');
     umodel = require('umodel');
     util = require('util');
+    u = require('u');
     return BubbleGraph = (function() {
       BubbleGraph.prototype.options = {
         colors: [],
@@ -135,17 +136,17 @@
         if (active[0]) {
           bubble = active[0].raphael;
           setTimeout(function() {
-            util.classList.remove(bubble.node, active);
+            u.classList.remove(bubble.node, active);
             return bubble.animate(_this.animations.inactive).transform('s1');
           }, 10);
           active[0].active = false;
         }
         if (pane) {
-          util.classList.remove(pane, 'active');
+          u.classList.remove(pane, 'active');
           setTimeout(function() {
-            return util.classList.add(pane, 'hide');
+            return u.classList.add(pane, 'hide');
           }, .2);
-          util.classList.add(document.querySelector('#details'), 'hide');
+          u.classList.add(document.querySelector('#details'), 'hide');
           return (document.querySelector('svg')).setAttribute('class', '');
         }
       };
@@ -153,11 +154,11 @@
       BubbleGraph.prototype.activate = function(bubble) {
         var id, panel;
         id = bubble.node.getAttribute('data-id');
-        util.classList.add(bubble.node, 'active');
-        util.classList.remove(document.querySelector('#details'), 'hide');
+        u.classList.add(bubble.node, 'active');
+        u.classList.remove(document.querySelector('#details'), 'hide');
         panel = (document.querySelectorAll('.detail'))[id];
-        util.classList.remove(panel, 'hide');
-        util.classList.add(panel, 'active');
+        u.classList.remove(panel, 'hide');
+        u.classList.add(panel, 'active');
         bubble.toFront().animate(this.animations.active).transform('s1.1');
         (document.querySelector('svg')).setAttribute('class', 'small');
         return this.model.set("bubbles/" + id + "/active", true);
