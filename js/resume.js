@@ -109,14 +109,14 @@
             }
           }
           if (this.images) {
-            images = '<ul class="images">';
+            images = '<dt>Screenshots</dt><dd><ul class="images">';
             _ref = this.images;
             for (n = _j = 0, _len1 = _ref.length; _j < _len1; n = ++_j) {
               image = _ref[n];
               url = "data/images/" + image;
               images += "<li><a href=\"" + url + "\" rel=\"lightbox[" + this.company + "]\"><img src=\"" + url + "\" alt=\"" + this.company + " screenshot\" /></a></li>";
             }
-            images += '</ul>';
+            images += '</ul></dd>';
           } else {
             images = '';
           }
@@ -125,7 +125,7 @@
           } else {
             map = '';
           }
-          return "<section class=\"detail hide\">\n	" + map + "\n	" + images + "\n	<dl>\n		" + fields + "\n	</dl>\n</section>";
+          return "<section class=\"detail hide\">\n	" + map + "\n	<dl>\n		" + fields + "\n		" + images + "\n	</dl>\n</section>";
         }
       };
 

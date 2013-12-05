@@ -172,7 +172,7 @@ screenshots
 
 					if @images
 
-						images = '<ul class="images">'
+						images = '<dt>Screenshots</dt><dd><ul class="images">'
 
 						for image, n in @images
 
@@ -182,7 +182,7 @@ screenshots
 								<li><a href="#{url}" rel="lightbox[#{@company}]"><img src="#{url}" alt="#{@company} screenshot" /></a></li>
 							"""
 
-						images += '</ul>'
+						images += '</ul></dd>'
 
 					else
 
@@ -209,9 +209,9 @@ return compiled
 					"""
 						<section class="detail hide">
 							#{map}
-							#{images}
 							<dl>
 								#{ fields }
+								#{ images }
 							</dl>
 						</section>
 					"""
