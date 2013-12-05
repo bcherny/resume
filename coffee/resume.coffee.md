@@ -321,7 +321,7 @@ scale up `<svg>`
 we queue up rendering-related tasks like this for a number of reasons:
 
 - it provides a clean way to add/remove tasks
-- deferring tasks prevents the UI from locking up between iterations 
+- deferring tasks prevents the UI from locking up between iterations
 - it's a readable way to organize the code
 
 			render: ->
