@@ -432,6 +432,10 @@ create an `<img>` for map
 						img.className = 'map'
 						img.src = src
 
+ie10 likes it like this :/
+
+						img.width = width
+
 wait for the image to finish loading, then render it nicely
 
 						img.onload = ->

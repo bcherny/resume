@@ -298,6 +298,7 @@
             img.alt = '';
             img.className = 'map';
             img.src = src;
+            img.width = width;
             return img.onload = function() {
               u.classList.add(placeholders[n], 'fade-out');
               return setTimeout(function() {
