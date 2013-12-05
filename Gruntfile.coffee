@@ -16,8 +16,8 @@ module.exports = (grunt) ->
 			options:
 				separator: ';'
 			dist:
-				src: ['node_modules/almond/almond.js', 'resume.js']
-				dest: 'resume.js'
+				src: ['node_modules/almond/almond.js', '<%= pkg.name %>.js']
+				dest: '<%= pkg.name %>.js'
 		
 		requirejs:
 			options:
@@ -28,7 +28,7 @@ module.exports = (grunt) ->
 				optimize: 'none'
 				mainConfigFile: 'js/config.js'
 				include: ['app.js']
-				out: 'resume.js'
+				out: '<%= pkg.name %>.js'
 				# onBuildWrite: (name, path, contents) ->
 				# 	(require 'amdclean').clean contents
 				# 	
@@ -44,7 +44,7 @@ module.exports = (grunt) ->
 				report: 'gzip'
 			standard:
 				files:
-					'resume.min.js': 'resume.js'
+					'<%= pkg.name %>.min.js': '<%= pkg.name %>.js'
 
 	# compile all coffeescripts into 'js/'
 	for coffee in glob.sync 'coffee/*.coffee.md'
