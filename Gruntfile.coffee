@@ -13,7 +13,8 @@ module.exports = (grunt) ->
 					preserveLicenseComments: false
 					optimize: 'none'
 					mainConfigFile: 'js/main.js'
-					include: ['js/main.js']
+					exclude: ['lodash']
+					include: ['main.js']
 					out: 'resume.js'
 					onBuildWrite: (name, path, contents) ->
 						(require 'amdclean').clean contents
