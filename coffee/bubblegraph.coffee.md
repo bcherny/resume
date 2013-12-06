@@ -3,7 +3,6 @@ bubblegraph resume component
 
 	define (require) ->
 
-		_ = require 'lodash'
 		Throbber = require 'throbber'
 		umodel = require 'umodel'
 		util = require 'util'

@@ -24,11 +24,16 @@
 	<div id="resume"></div>
 
 	<script src="//maps.google.com/maps/api/js?sensor=true"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/marked/0.2.9/marked.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+
 	<!--
-		raphael doesn't support requirejs (eve should be packaged separately!), so we're stuck with using it sans require, as a browser global. raphael has lots of existing amd-compatible forks, but most of them are out of date. since keeping up to date is more important to us than consistency for resource loading, we'll opt for the bit of ugliness.
+		development:
+		<script src="node_modules/requirejs/require.js" data-main="js/app.js"></script>
 	-->
-	<script src="node_modules/raphael/raphael.js"></script>
-	<script src="node_modules/requirejs/require.js" data-main="js/main.js"></script>
+	<!-- production: -->
+	<script src="resume.min.js"></script>
 
 	<a id="forkme" href="https://github.com/eighttrackmind/resume"></a>
 

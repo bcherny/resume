@@ -1,22 +1,28 @@
 {
   "name": "resume",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "My resume!",
   "main": "js/resume",
   "dependencies": {
-    "lodash": "~2.2.1",
-    "marked": "~0.2.10",
     "requirejs": "~2.1.9",
-    "raphael": "~2.1.0",
     "gmaps": "git://github.com/eighttrackmind/gmaps.git",
     "umodel": "0.0.x",
     "uxhr": "1.0.x",
     "strftime": "~0.6.2",
     "annie": "0.1.x",
     "microbox": "3.0.x",
-    "u": "git://github.com/eighttrackmind/u.git"
+    "u": "git://github.com/eighttrackmind/u.git",
+    "almond": "git://github.com/jrburke/almond.git"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.7",
+    "glob": "~3.2.7",
+    "grunt-shell": "~0.6.1",
+    "requirejs": "~2.1.9"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
