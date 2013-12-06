@@ -7,8 +7,6 @@ Best viewed in a maximized browser window. Tested on **Chrome, Firefox, Safari, 
 
 [Documentation](https://github.com/eighttrackmind/resume/blob/master/coffee/resume.coffee.md)
 
-*note: at the cost of load time performance, the source is unminified and unconcatenated by design so that it is still readable as embedded source code. if building yourself, use the included `build.js` script with the `require.js` optimizer.*
-
 ## todo
 
 - [x] refactor!!!
