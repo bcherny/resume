@@ -5,7 +5,6 @@ dependencies
 		annie = require 'annie'
 		BubbleGraph = require 'bubblegraph'
 		GMaps = require 'GMaps'
-		marked = require 'marked'
 		microbox = require 'microbox'
 		strftime = require 'strftime'
 		umodel = require 'umodel'

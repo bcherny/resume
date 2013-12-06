@@ -1,9 +1,8 @@
 define(function(require) {
-  var BubbleGraph, GMaps, Resume, annie, marked, microbox, strftime, u, umodel, util, uxhr;
+  var BubbleGraph, GMaps, Resume, annie, microbox, strftime, u, umodel, util, uxhr;
   annie = require('annie');
   BubbleGraph = require('bubblegraph');
   GMaps = require('GMaps');
-  marked = require('marked');
   microbox = require('microbox');
   strftime = require('strftime');
   umodel = require('umodel');
