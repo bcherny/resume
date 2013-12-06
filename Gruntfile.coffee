@@ -19,19 +19,26 @@ module.exports = (grunt) ->
 				src: ['node_modules/almond/almond.js', '<%= pkg.name %>.js']
 				dest: '<%= pkg.name %>.js'
 		
-		requirejs:
-			options:
-				findNestedDependencies: true
-				baseUrl: 'js'
-				wrap: true
-				preserveLicenseComments: false
-				optimize: 'none'
-				mainConfigFile: 'js/config.js'
-				include: ['app.js']
-				out: '<%= pkg.name %>.js'
+		# requirejs:
+		# 	options:
+		# 		findNestedDependencies: true
+		# 		baseUrl: 'js'
+		# 		wrap: true
+		# 		preserveLicenseComments: false
+		# 		optimize: 'none'
+		# 		mainConfigFile: 'js/config.js'
+		# 		include: ['app.js']
+		# 		out: '<%= pkg.name %>.js'
 				# onBuildWrite: (name, path, contents) ->
 				# 	(require 'amdclean').clean contents
-				# 	
+		
+		shell:
+			rjs:
+				command: 'node ./node_modules/requirejs/bin/r.js -o build.js'
+				options:
+					stderr: true
+					stdout: true
+
 		uglify:
 			options:
 				mangle:
@@ -59,6 +66,7 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-concat'
 	grunt.loadNpmTasks 'grunt-contrib-uglify'
 	grunt.loadNpmTasks 'grunt-contrib-requirejs'
+	grunt.loadNpmTasks 'grunt-shell'
 
 	# register tasks
-	grunt.registerTask 'default', ['coffee', 'requirejs', 'concat', 'uglify']
+	grunt.registerTask 'default', ['coffee', 'shell', 'concat', 'uglify']
