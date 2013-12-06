@@ -28,3 +28,10 @@ Best viewed in a maximized browser window. Tested on **Chrome, Firefox, Safari, 
 - [x] IE 10
 - [ ] IE 9 (CSS animations are buggy)
 - [ ] IE 8
+
+## building it yourself
+
+```bash
+npm install
+grunt
+```
